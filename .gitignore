@@ -1,4 +1,8 @@
 /build/
 .settings
 .project
+<<<<<<< HEAD
 .classpath
+=======
+.classpath
+>>>>>>> branch 'dev' of https://github.com/thomascaud/pimpmytrainee.git
