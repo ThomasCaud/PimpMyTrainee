@@ -1,44 +1,39 @@
 *,body {
 	margin: 0;
-	padding: 0;
 	overflow: hidden;
+	padding: 0;
 }
 
 #login-page-background {
-	width: 100%;
-	height: 100%;
-	padding: 0;
-	margin: 0;
 	background-color: #efefef;
+	height: 100%;
+	margin: 0;
+	padding: 0;
+	width: 100%;
 }
 
 #login-form {
-	
+	background-color: white;
+	margin-top: 100px;
+	padding: 30 50 50 50;
 	position: relative;
 	width : 100%;
-	padding: 30 50 50 50;
-	margin-top: 100px;
-	
-	background-color: white;
 }
 
 #login-form-header {
-	
-	position: relative;
 	display:block;
 	margin : 0;
 	margin-bottom : 10;
+	position: relative;
 }
 
 #login-form-img {
-	width: 100%;
 	padding: 20 0;
+	width: 100%;
 }
 
 #login-form-img > img {
-	
-	width: 300px;
 	display:block;
 	margin: 0 auto;
-	
+	width: 300px;
 }
