@@ -1,0 +1,39 @@
+*,body {
+	margin: 0;
+	overflow: hidden;
+	padding: 0;
+}
+
+#login-page-background {
+	background-color: #efefef;
+	height: 100%;
+	margin: 0;
+	padding: 0;
+	width: 100%;
+}
+
+#login-form {
+	background-color: white;
+	margin-top: 100px;
+	padding: 30 50 50 50;
+	position: relative;
+	width : 100%;
+}
+
+#login-form-header {
+	display:block;
+	margin : 0;
+	margin-bottom : 10;
+	position: relative;
+}
+
+#login-form-img {
+	padding: 20 0;
+	width: 100%;
+}
+
+#login-form-img > img {
+	display:block;
+	margin: 0 auto;
+	width: 300px;
+}
