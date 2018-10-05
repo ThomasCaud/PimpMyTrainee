@@ -5,3 +5,5 @@
 [backlog](https://docs.google.com/spreadsheets/d/1vrUvAffUUXPhspSMyQPbueTpPJWQQVnDg4vZOlJkims/edit#gid=0)
 
 [conception docs](https://www.draw.io/?state=%7B%22ids%22:%5B%221_sYbC-iX6ZuQz93vhznhe_jSPPEFOHzX%22%5D,%22action%22:%22open%22,%22userId%22:%22107121994581211840457%22%7D)
+
+[memo Java EE](https://hackmd.io/xleRSMswRuKDRJ1SaE9KPA?edit)
