@@ -1,7 +1,7 @@
-package models_beans;
+package models.beans;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.sql.Timestamp;
 
 public class User implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -12,7 +12,7 @@ public class User implements Serializable {
 	private String password;
 	private String company;
 	private String phone;
-	private Date creationDate;
+	private Timestamp creationDate;
 	private Boolean isActive;
 	
 	public User() {
@@ -23,8 +23,8 @@ public class User implements Serializable {
 		this.password = "noPassword";
 		this.company = "noCompany";
 		this.phone = "noPhone";
-		this.creationDate = new Date();
-		this.isActive = false;
+		this.creationDate = new Timestamp(System.currentTimeMillis());
+		this.isActive = true;
 	}
 
 	public int getId() {
@@ -83,11 +83,11 @@ public class User implements Serializable {
 		this.phone = phone;
 	}
 	
-	public Date getCreationDate() {
+	public Timestamp getCreationDate() {
 		return creationDate;
 	}
 	
-	public void setCreationDate(Date creationDate) {
+	public void setCreationDate(Timestamp creationDate) {
 		this.creationDate = creationDate;
 	}
 	
