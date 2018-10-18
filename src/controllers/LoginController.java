@@ -43,9 +43,6 @@ public class LoginController extends HttpServlet {
 			this.getServletContext().getRequestDispatcher( VIEW ).forward( request, response );
 			return;
 		}
-		
-		System.out.println(user);
-		System.out.println(user.getClass());
 	}
 
 }
