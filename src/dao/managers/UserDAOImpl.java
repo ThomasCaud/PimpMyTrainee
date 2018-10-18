@@ -16,20 +16,18 @@ import models.beans.User;
 
 public class UserDAOImpl implements UserDAO {
 	
-	private DAOFactory daoFactory;
-	
 	private static final String SQL_SELECT_PAR_EMAIL = "SELECT * FROM Users WHERE email = ?";
 
+	private DAOFactory daoFactory;
 
 	public UserDAOImpl() {
 	}
 	
 	public UserDAOImpl( DAOFactory daoFactory ) {
-        this.daoFactory = daoFactory;
-    }
+        	this.daoFactory = daoFactory;
+    	}
 	
 	private static User map( ResultSet resultSet ) throws SQLException {
-		
 		User user = null;
 		
 		if( resultSet.getString("role").equals("admin") ) {
@@ -48,7 +46,7 @@ public class UserDAOImpl implements UserDAO {
 		user.setCreationDate( resultSet.getTimestamp( "creationDate" ) );
 		user.setIsActive( resultSet.getBoolean( "isActive" ) );
 		
-	    return user;
+		return user;
 	}
 
 	@Override
@@ -58,27 +56,26 @@ public class UserDAOImpl implements UserDAO {
 	@Override
 	public User findUserByEmail(String email) throws DAOException {
 		Connection connection = null;
-	    PreparedStatement preparedStatement = null;
-	    ResultSet resultSet = null;
-	    User user = null;
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+	    	User user = null;
 
-	    try {
-	        /* Récupération d'une connexion depuis la Factory */
-	        connection = daoFactory.getConnection();
-	        preparedStatement = initPreparedStatement( connection, SQL_SELECT_PAR_EMAIL, false, email );
-	        resultSet = preparedStatement.executeQuery();
-	        
-	        /* Parcours de la ligne de données de l'éventuel ResulSet retourné */
-	        if ( resultSet.next() ) {
-	            user = map( resultSet );
-	        }
-	    } catch ( SQLException e ) {
-	        throw new DAOException( e );
-	    } finally {
-	    	silentClose( resultSet, preparedStatement, connection );
-	    }
+		try {
+			/* Récupération d'une connexion depuis la Factory */
+			connection = daoFactory.getConnection();
+			preparedStatement = initPreparedStatement( connection, SQL_SELECT_PAR_EMAIL, false, email );
+			resultSet = preparedStatement.executeQuery();
 
-	    return user;
+			/* Parcours de la ligne de données de l'éventuel ResulSet retourné */
+			if ( resultSet.next() ) {
+				user = map( resultSet );
+			}
+		} catch ( SQLException e ) {
+			throw new DAOException( e );
+		} finally {
+			silentClose( resultSet, preparedStatement, connection );
+		}
+
+		return user;
 	}
-
 }
