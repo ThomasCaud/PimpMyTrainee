@@ -10,6 +10,8 @@ import dao.DAOCommon;
 import dao.DAOFactory;
 import dao.exceptions.DAOException;
 import dao.interfaces.UserDAO;
+import models.beans.Administrator;
+import models.beans.Trainee;
 import models.beans.User;
 
 public class UserDAOImpl implements UserDAO {
@@ -28,10 +30,18 @@ public class UserDAOImpl implements UserDAO {
 	
 	private static User map( ResultSet resultSet ) throws SQLException {
 		
-		User user = new User();
+		User user = null;
+		
+		if( resultSet.getString("role").equals("admin") ) {
+			user = new Administrator();
+		} else {
+			user = new Trainee();
+		}
+
 		user.setId( resultSet.getInt( "id" ) );
 		user.setFirstname( resultSet.getString( "firstname" ) );
 		user.setLastname( resultSet.getString( "lastname" ) );
+		user.setEmail( resultSet.getString( "email" ) );
 		user.setPassword( resultSet.getString( "password" ) );
 		user.setCompany( resultSet.getString( "company" ) );
 		user.setPhone( resultSet.getString( "phone" ) );

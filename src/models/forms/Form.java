@@ -26,7 +26,7 @@ public abstract class Form {
 		protected void validateEmail(String email) throws Exception {
 			if ( email != null ) {
 		        if ( !email.matches( "([^.@]+)(\\.[^.@]+)*@([^.@]+\\.)+([^.@]+)" ) ) {
-		            throw new Exception( "The email address is not invalid." );
+		            throw new Exception( "The email address is not valid." );
 		        }
 		    } else {
 		        throw new Exception( "The email address is empty." );
