@@ -37,3 +37,8 @@
 	margin: 0 auto;
 	width: 300px;
 }
+
+.form-error {
+	display:block;
+	color: red;
+}

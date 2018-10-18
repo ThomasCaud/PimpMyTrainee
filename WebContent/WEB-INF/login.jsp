@@ -14,20 +14,17 @@
 					
 					<h2 id="login-form-header" class="text-center">Login to Your Account</h2>
 					
-					<div class="alert alert-danger">
-						<span class="alert-heading"><strong>Error :</strong></span><br>
-						- Bad password for this email
-					</div>
-					
 					<form method="post" action="login">
 						<fieldset>
 							<div class="form-group">
 						      <label>Email address</label>
-						      <input type="text" name="email" class="form-control" placeholder="Enter email">
+						      <input type="text" name="email" class="form-control" placeholder="Enter email" value="<c:out value="${user.email}"/>" >
+						      <div class="form-error">${form.errors['email']}</div>
 						    </div>
 						    <div class="form-group">
 						      <label>Password</label>
 						      <input type="password" name="password" class="form-control" placeholder="Password">
+						      <div class="form-error">${form.errors['password']}</div>
 						    </div>
 						     <button type="submit" class="btn btn-primary btn-block">Login</button>
 						</fieldset>
