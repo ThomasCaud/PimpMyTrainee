@@ -8,13 +8,33 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import models.beans.User;
+import models.forms.LoginForm;
+
 @WebServlet("/login")
 public class LoginController extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
+	private static final String ATT_FORM = "form";
+	private static final String ATT_USER = "user";
+	private static final String VIEW = "/WEB-INF/login.jsp";
 	
 	public void doGet( HttpServletRequest request, HttpServletResponse response )	throws ServletException, IOException {
-		this.getServletContext().getRequestDispatcher( "/WEB-INF/login.jsp" ).forward( request, response );
+		this.getServletContext().getRequestDispatcher( VIEW ).forward( request, response );
+	}
+	
+	public void doPost( HttpServletRequest request, HttpServletResponse response )	throws ServletException, IOException {
+		LoginForm loginForm = new LoginForm();
+		
+		User user = loginForm.connectUser(request);
+		
+		request.setAttribute(ATT_FORM, loginForm);
+		request.setAttribute(ATT_USER, user);
+		
+		if( !loginForm.getErrors().isEmpty() ) {
+			this.getServletContext().getRequestDispatcher( VIEW ).forward( request, response );
+			return;
+		}
 	}
 
 }
