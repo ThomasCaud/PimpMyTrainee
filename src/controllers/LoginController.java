@@ -8,6 +8,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import dao.DAOFactory;
+import dao.interfaces.UserDAO;
 import models.beans.User;
 import models.forms.LoginForm;
 
@@ -18,13 +20,19 @@ public class LoginController extends HttpServlet {
 	private static final String ATT_FORM = "form";
 	private static final String ATT_USER = "user";
 	private static final String VIEW = "/WEB-INF/login.jsp";
+	private static final String CONF_DAO_FACTORY = "daofactory";
+	private UserDAO userDAO;
+	
+	public void init() throws ServletException {
+        this.userDAO = ( (DAOFactory) getServletContext().getAttribute( CONF_DAO_FACTORY ) ).getUserDAO();
+	}
 	
 	public void doGet( HttpServletRequest request, HttpServletResponse response )	throws ServletException, IOException {
 		this.getServletContext().getRequestDispatcher( VIEW ).forward( request, response );
 	}
 	
 	public void doPost( HttpServletRequest request, HttpServletResponse response )	throws ServletException, IOException {
-		LoginForm loginForm = new LoginForm();
+		LoginForm loginForm = new LoginForm(userDAO);
 		
 		User user = loginForm.connectUser(request);
 		
