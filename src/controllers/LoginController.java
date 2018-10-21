@@ -7,6 +7,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import dao.DAOFactory;
 import dao.interfaces.UserDAO;
@@ -21,6 +22,7 @@ public class LoginController extends HttpServlet {
 	private static final String ATT_USER = "user";
 	private static final String VIEW = "/WEB-INF/login.jsp";
 	private static final String CONF_DAO_FACTORY = "daofactory";
+	private static final String URL_REDIRECT_CONNECTED = "/";
 	private UserDAO userDAO;
 	
 	public void init() throws ServletException {
@@ -43,6 +45,11 @@ public class LoginController extends HttpServlet {
 			this.getServletContext().getRequestDispatcher( VIEW ).forward( request, response );
 			return;
 		}
+		
+		/* Récupération de la session depuis la requête */
+        HttpSession session = request.getSession();
+        session.setAttribute(ATT_USER, user);
+        response.sendRedirect(request.getServletContext().getContextPath()+URL_REDIRECT_CONNECTED);
 	}
 
 }

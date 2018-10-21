@@ -4,12 +4,21 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
-public abstract class Form {
+import org.jasypt.util.password.ConfigurablePasswordEncryptor;
+
+public abstract class AbstractForm {
 		// Map that contains all the errors that are thrown during the form validation process
-		private Map<String,String> errors = new HashMap<String,String>();
-		
+		protected Map<String,String> errors = new HashMap<String,String>();
+		protected static final String ALGO_CHIFFREMENT = "SHA-256";
+		ConfigurablePasswordEncryptor passwordEncryptor = new ConfigurablePasswordEncryptor();
+	    
 		public Map<String,String> getErrors() { return errors; }
 		protected void setError( String field, String message ) { errors.put( field, message ); }
+		
+		AbstractForm() {
+			passwordEncryptor.setAlgorithm( ALGO_CHIFFREMENT );
+		    passwordEncryptor.setPlainDigest( false );
+		}
 		
 		/*
 		 * Return null if the corresponding request's field is empty and its value otherwise.
