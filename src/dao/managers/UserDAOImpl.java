@@ -28,13 +28,7 @@ public class UserDAOImpl implements UserDAO {
     	}
 	
 	private static User map( ResultSet resultSet ) throws SQLException {
-		User user = null;
-		
-		if( resultSet.getString("role").equals("admin") ) {
-			user = new Administrator();
-		} else {
-			user = new Trainee();
-		}
+		User user = new User();
 
 		user.setId( resultSet.getInt( "id" ) );
 		user.setFirstname( resultSet.getString( "firstname" ) );
@@ -45,6 +39,7 @@ public class UserDAOImpl implements UserDAO {
 		user.setPhone( resultSet.getString( "phone" ) );
 		user.setCreationDate( resultSet.getTimestamp( "creationDate" ) );
 		user.setIsActive( resultSet.getBoolean( "isActive" ) );
+		user.setRole( resultSet.getString( "role" ) );
 		
 		return user;
 	}

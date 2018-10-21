@@ -13,11 +13,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import controllers.LoginController;
+
 @WebFilter( urlPatterns = "/*" )
 public class ConnectedOnlyFilter implements Filter {
 	
 	public static final String URL_LOGIN  = "/login";
-    public static final String ATT_SESSION_USER = "user";
 
 	@Override
 	public void destroy() {
@@ -41,7 +42,7 @@ public class ConnectedOnlyFilter implements Filter {
             return;
         }
 
-        if ( session.getAttribute( ATT_SESSION_USER ) == null ) {
+        if ( session.getAttribute( Config.ATT_SESSION_USER ) == null ) {
             if( !path.equals("/login") ) 
         		response.sendRedirect(request.getServletContext().getContextPath()+URL_LOGIN);
         	else 
