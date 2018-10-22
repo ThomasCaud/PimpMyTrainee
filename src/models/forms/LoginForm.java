@@ -1,9 +1,6 @@
 package models.forms;
 
 import javax.servlet.http.HttpServletRequest;
-
-import org.jasypt.util.password.ConfigurablePasswordEncryptor;
-
 import dao.interfaces.UserDAO;
 import models.beans.User;
 
@@ -44,6 +41,8 @@ public class LoginForm extends AbstractForm {
 		User user = new User();
 		processEmailValidation(email,user);
 		processPasswordValidation(password,user);
+		
+		System.out.println(passwordEncryptor.encryptPassword(password));
 		
 		if( this.getErrors().isEmpty() ) {
 			User existingUser = userDAO.findUserByEmail(email);
