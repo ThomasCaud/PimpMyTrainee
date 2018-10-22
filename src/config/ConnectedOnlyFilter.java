@@ -17,6 +17,7 @@ import javax.servlet.http.HttpSession;
 public class ConnectedOnlyFilter implements Filter {
 	
 	public static final String URL_LOGIN  = "/login";
+	public static final String URL_ALREADY_LOGGED_IN  = "/home";
 
 	@Override
 	public void destroy() {
@@ -51,7 +52,7 @@ public class ConnectedOnlyFilter implements Filter {
         	if( !path.equals("/login") ) 
         		chain.doFilter( request, response );
         	else
-        		response.sendRedirect(request.getServletContext().getContextPath());
+        		response.sendRedirect(request.getServletContext().getContextPath()+URL_ALREADY_LOGGED_IN);
         }
 
 	}

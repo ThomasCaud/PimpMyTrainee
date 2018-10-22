@@ -41,7 +41,11 @@ public class LoginForm extends AbstractForm {
 		User user = new User();
 		processEmailValidation(email,user);
 		processPasswordValidation(password,user);
+<<<<<<< Upstream, based on origin/master
 		
+=======
+
+>>>>>>> 317d153 [MLS] Initialisation de la homepage côté Admin
 		if( this.getErrors().isEmpty() ) {
 			User existingUser = userDAO.findUserByEmail(email);
 			

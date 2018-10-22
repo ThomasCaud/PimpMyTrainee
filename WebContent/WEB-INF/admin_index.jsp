@@ -1,5 +1,5 @@
 <%@ include file="header.jsp" %>
 
-${sessionScope.user}
+<%@ include file="admin_navbar.jsp" %>
 
 <%@ include file="footer.jsp" %>
