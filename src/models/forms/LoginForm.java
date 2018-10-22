@@ -41,9 +41,7 @@ public class LoginForm extends AbstractForm {
 		User user = new User();
 		processEmailValidation(email,user);
 		processPasswordValidation(password,user);
-		
-		System.out.println(passwordEncryptor.encryptPassword(password));
-		
+
 		if( this.getErrors().isEmpty() ) {
 			User existingUser = userDAO.findUserByEmail(email);
 			

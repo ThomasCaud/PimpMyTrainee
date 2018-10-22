@@ -23,7 +23,7 @@ public class LoginController extends HttpServlet {
 	private static final String ATT_USER = "user";
 	private static final String VIEW = "/WEB-INF/login.jsp";
 	private static final String CONF_DAO_FACTORY = "daofactory";
-	private static final String URL_REDIRECT_CONNECTED = "/";
+	private static final String URL_REDIRECT_CONNECTED = "/home";
 	private UserDAO userDAO;
 	
 	public void init() throws ServletException {
