@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import config.Config;
 import dao.DAOFactory;
 import dao.interfaces.UserDAO;
 import models.beans.User;
@@ -48,7 +49,7 @@ public class LoginController extends HttpServlet {
 		
 		/* Récupération de la session depuis la requête */
         HttpSession session = request.getSession();
-        session.setAttribute(ATT_USER, user);
+        session.setAttribute(Config.ATT_SESSION_USER, user);
         response.sendRedirect(request.getServletContext().getContextPath()+URL_REDIRECT_CONNECTED);
 	}
 
