@@ -6,12 +6,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import static dao.DAOCommon.*;
 
-import dao.DAOCommon;
 import dao.DAOFactory;
 import dao.exceptions.DAOException;
 import dao.interfaces.UserDAO;
-import models.beans.Administrator;
-import models.beans.Trainee;
+import models.beans.E_Role;
 import models.beans.User;
 
 public class UserDAOImpl implements UserDAO {
@@ -39,7 +37,7 @@ public class UserDAOImpl implements UserDAO {
 		user.setPhone( resultSet.getString( "phone" ) );
 		user.setCreationDate( resultSet.getTimestamp( "creationDate" ) );
 		user.setIsActive( resultSet.getBoolean( "isActive" ) );
-		user.setRole( resultSet.getString( "role" ) );
+		user.setRole( E_Role.valueOf(resultSet.getString( "role" ).toUpperCase() ) );
 		
 		return user;
 	}

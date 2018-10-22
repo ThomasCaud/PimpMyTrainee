@@ -26,7 +26,7 @@ public class User implements Serializable {
 		this.phone = "noPhone";
 		this.creationDate = new Timestamp(System.currentTimeMillis());
 		this.isActive = true;
-		this.role = role.TRAINEE; 
+		this.role = E_Role.TRAINEE; 
 	}
 
 	public int getId() {

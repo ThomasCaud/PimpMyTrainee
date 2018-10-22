@@ -1,9 +1,6 @@
 package models.forms;
 
 import javax.servlet.http.HttpServletRequest;
-
-import org.jasypt.util.password.ConfigurablePasswordEncryptor;
-
 import dao.interfaces.UserDAO;
 import models.beans.User;
 

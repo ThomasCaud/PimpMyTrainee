@@ -13,8 +13,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import controllers.LoginController;
-
 @WebFilter( urlPatterns = "/*" )
 public class ConnectedOnlyFilter implements Filter {
 	

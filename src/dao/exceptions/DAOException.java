@@ -2,6 +2,8 @@ package dao.exceptions;
 
 public class DAOException extends RuntimeException {
 
+	private static final long serialVersionUID = 1L;
+
 	public DAOException(String arg0) {
 		super(arg0);
 	}
