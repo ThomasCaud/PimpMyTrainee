@@ -22,12 +22,10 @@ public class LoginController extends HttpServlet {
 	private static final String ATT_FORM = "form";
 	private static final String ATT_USER = "user";
 	private static final String VIEW = "/WEB-INF/login.jsp";
-	private static final String CONF_DAO_FACTORY = "daofactory";
-	private static final String URL_REDIRECT_CONNECTED = "/home";
 	private UserDAO userDAO;
 	
 	public void init() throws ServletException {
-        this.userDAO = ( (DAOFactory) getServletContext().getAttribute( CONF_DAO_FACTORY ) ).getUserDAO();
+        this.userDAO = ( (DAOFactory) getServletContext().getAttribute( Config.CONF_DAO_FACTORY ) ).getUserDAO();
 	}
 	
 	public void doGet( HttpServletRequest request, HttpServletResponse response )	throws ServletException, IOException {
@@ -50,7 +48,7 @@ public class LoginController extends HttpServlet {
 		/* Récupération de la session depuis la requête */
         HttpSession session = request.getSession();
         session.setAttribute(Config.ATT_SESSION_USER, user);
-        response.sendRedirect(request.getServletContext().getContextPath()+URL_REDIRECT_CONNECTED);
+        response.sendRedirect(request.getServletContext().getContextPath()+Config.URL_REDIRECT_CONNECTED);
 	}
 
 }
