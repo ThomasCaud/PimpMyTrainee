@@ -13,8 +13,8 @@ import config.Config;
 import models.beans.E_Role;
 import models.beans.User;
 
-@WebServlet( name="home", urlPatterns = {"/home"} )
-public class IndexController extends HttpServlet {
+@WebServlet( "/home" )
+public class HomeController extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
 	private static final String VIEW_ADMIN = "/WEB-INF/admin_index.jsp";

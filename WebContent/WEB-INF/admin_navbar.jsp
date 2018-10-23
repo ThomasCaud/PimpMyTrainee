@@ -6,14 +6,14 @@
 
   <div class="collapse navbar-collapse" id="navbarColor01">
     <ul class="navbar-nav mr-auto">
-      <li class="nav-item active">
-        <a class="nav-link" href="home">Home <span class="sr-only">(current)</span></a>
+      <li class="nav-item">
+        <a class="nav-link" href="home">Home</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#">Users Management</a>
+        <a class="nav-link" href="users">Users Management</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#">Quizzes Management</a>
+        <a class="nav-link" href="quizzes">Quizzes Management</a>
       </li>
     </ul>
     <form class="form-inline my-2 my-lg-0">
