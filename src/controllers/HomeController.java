@@ -13,7 +13,7 @@ import config.Config;
 import models.beans.E_Role;
 import models.beans.User;
 
-@WebServlet( "/home" )
+@WebServlet( urlPatterns = {"/home",""} )
 public class HomeController extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
