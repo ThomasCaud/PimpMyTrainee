@@ -6,6 +6,8 @@
 
 	<h1 style="margin-top:50px">Users Management</h1>
 	
+	<a href="" class="btn btn-primary"><i class="fa fa-plus"></i> Create a profile</a>
+	
 	<table class="table table-hover table-sm table-bordered">
 	
 		<thead>
@@ -30,7 +32,9 @@
 				<td>${user.creationDate}</td>
 				<td>${user.role}</td>
 				<td>${user.isActive}</td>
-				<td></td>
+				<td>
+					
+				</td>
 			</tr>
 			</c:forEach>
 		</thead>
@@ -38,5 +42,10 @@
 	</table>
 
 </div>
+
+<label class="switch">
+					  <input type="checkbox">
+					  <span class="slider round"></span>
+					</label>
 
 <%@ include file="footer.jsp" %>
