@@ -20,6 +20,19 @@
 				<th>Active user</th>
 				<th>Action</th>
 			</tr>
+			<c:forEach items="${users}" var="user">
+			<tr>
+				<td>${user.firstname}</td>
+				<td>${user.lastname}</td>
+				<td>${user.email}</td>
+				<td>${user.company}</td>
+				<td>${user.phone}</td>
+				<td>${user.creationDate}</td>
+				<td>${user.role}</td>
+				<td>${user.isActive}</td>
+				<td></td>
+			</tr>
+			</c:forEach>
 		</thead>
 	
 	</table>
