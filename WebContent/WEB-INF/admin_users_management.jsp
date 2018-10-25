@@ -4,27 +4,44 @@
 
 <div class="container">
 
-	<h1 style="margin-top:50px">Users Management</h1>
+	<hr>
+
+	<div class="row align-items-center">
 	
-	<a href="" class="btn btn-primary"><i class="fa fa-plus"></i> Create a profile</a>
+		<div class="col-12 col-sm-8 col-md-10">
+			<h1>Users Management</h1>
+		</div>
+		<div class="col-12 col-sm-4 col-md-2">
+			<a href="<c:url value = "/createUser"/>" class="btn btn-info"><i class="fa fa-plus"></i> Create a profile</a>
+		</div>
+		
+	</div>
 	
-	<table class="table table-hover table-sm table-bordered">
+	<hr>
 	
-		<thead>
+	<div class="row">
+	
+		<table class="table table-responsive-sm table-sm table-bordered">
+	
+		<thead class="thead-dark">
 			<tr>
+				<th>#</th>
 				<th>Firstname</th>
 				<th>Lastname</th>
 				<th>Email</th>
 				<th>Company</th>
 				<th>Phone</th>
-				<th>Created at</th>
+				<th>Creation</th>
 				<th>Role</th>
 				<th>Active user</th>
-				<th>Action</th>
+				<th class="text-center">Action</th>
 			</tr>
+		</thead>
+		<tbody>
 			<c:forEach items="${users}" var="user">
 			
 			<tr>
+				<th scope="row">${user.id}</th>
 				<td>${user.firstname}</td>
 				<td>${user.lastname}</td>
 				<td>${user.email}</td>
@@ -32,23 +49,15 @@
 				<td>${user.phone}</td>
 				<td>${user.creationDate}</td>
 				<td>${user.role}</td>
-				<td>
-					<label class="switch">
-						<c:choose>
-							<c:when test="${user.isActive}"><input type="checkbox" checked></c:when>
-							<c:otherwise><input type="checkbox"></c:otherwise>
-						</c:choose>
-					  <span class="slider round"></span>
-					</label>
-				</td>
-				<td>
-					
-				</td>
+				<td>${user.isActive}</td>
+				<td class="text-center"><a href="<c:url value = "/viewUser/${user.id}"/>" class="btn btn-link"><i class="fa fa-eye"></i></a></td>
 			</tr>
 			</c:forEach>
-		</thead>
-	
+		</tbody>
+		
 	</table>
+	
+	</div>
 
 </div>
 
