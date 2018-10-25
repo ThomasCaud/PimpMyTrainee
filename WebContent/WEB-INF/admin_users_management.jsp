@@ -4,15 +4,13 @@
 
 <div class="container">
 
-	<hr>
-
 	<div class="row align-items-center">
 	
 		<div class="col-12 col-sm-8 col-md-10">
 			<h1>Users Management</h1>
 		</div>
 		<div class="col-12 col-sm-4 col-md-2">
-			<a href="<c:url value = "/createUser"/>" class="btn btn-info"><i class="fa fa-plus"></i> Create a profile</a>
+			<a href="<c:url value = "/registerUser"/>" class="btn btn-info"><i class="fa fa-plus"></i> Register an user</a>
 		</div>
 		
 	</div>
