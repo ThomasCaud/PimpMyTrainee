@@ -1,4 +1,4 @@
-package config;
+package common;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
