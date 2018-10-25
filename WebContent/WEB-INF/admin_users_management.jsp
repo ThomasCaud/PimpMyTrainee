@@ -23,6 +23,7 @@
 				<th>Action</th>
 			</tr>
 			<c:forEach items="${users}" var="user">
+			
 			<tr>
 				<td>${user.firstname}</td>
 				<td>${user.lastname}</td>
@@ -31,7 +32,15 @@
 				<td>${user.phone}</td>
 				<td>${user.creationDate}</td>
 				<td>${user.role}</td>
-				<td>${user.isActive}</td>
+				<td>
+					<label class="switch">
+						<c:choose>
+							<c:when test="${user.isActive}"><input type="checkbox" checked></c:when>
+							<c:otherwise><input type="checkbox"></c:otherwise>
+						</c:choose>
+					  <span class="slider round"></span>
+					</label>
+				</td>
 				<td>
 					
 				</td>
@@ -43,9 +52,6 @@
 
 </div>
 
-<label class="switch">
-					  <input type="checkbox">
-					  <span class="slider round"></span>
-					</label>
+
 
 <%@ include file="footer.jsp" %>

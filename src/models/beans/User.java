@@ -119,7 +119,7 @@ public class User implements Serializable {
 		sb.append("company = "+this.company+"\n");
 		sb.append("phone = "+this.phone+"\n");
 		sb.append("creationDate = "+this.creationDate+"\n");
-		sb.append("isActive = "+this.isActive);
+		sb.append("isActive = "+this.isActive+"\n");
 		sb.append("role = "+this.role);
 		return sb.toString();
 	}

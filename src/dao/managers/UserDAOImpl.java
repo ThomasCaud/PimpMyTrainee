@@ -16,7 +16,7 @@ import models.beans.User;
 
 public class UserDAOImpl implements UserDAO {
 	
-	private static final String SQL_SELECT_PAR_EMAIL = "SELECT * FROM Users WHERE email = ?";
+	private static final String SQL_SELECT_PAR_EMAIL_ACTIF = "SELECT * FROM Users WHERE email = ? AND isActive = 1";
 	private static final String SQL_SELECT_ALL = "SELECT * FROM Users";
 
 	private DAOFactory daoFactory;
@@ -39,7 +39,7 @@ public class UserDAOImpl implements UserDAO {
 		user.setCompany( resultSet.getString( "company" ) );
 		user.setPhone( resultSet.getString( "phone" ) );
 		user.setCreationDate( resultSet.getTimestamp( "creationDate" ) );
-		user.setIsActive( resultSet.getBoolean( "isActive" ) );
+		user.setIsActive( resultSet.getInt( "isActive" ) == 1 ? true : false );
 		user.setRole( E_Role.valueOf(resultSet.getString( "role" ).toUpperCase() ) );
 		
 		return user;
@@ -50,7 +50,7 @@ public class UserDAOImpl implements UserDAO {
 	}
 
 	@Override
-	public User findUserByEmail(String email) throws DAOException {
+	public User findActiveUserByEmail(String email) throws DAOException {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
@@ -59,7 +59,7 @@ public class UserDAOImpl implements UserDAO {
 		try {
 			/* Récupération d'une connexion depuis la Factory */
 			connection = daoFactory.getConnection();
-			preparedStatement = initPreparedStatement( connection, SQL_SELECT_PAR_EMAIL, false, email );
+			preparedStatement = initPreparedStatement( connection, SQL_SELECT_PAR_EMAIL_ACTIF, false, email );
 			resultSet = preparedStatement.executeQuery();
 
 			/* Parcours de la ligne de données de l'éventuel ResulSet retourné */
