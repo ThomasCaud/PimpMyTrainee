@@ -18,6 +18,7 @@ public class UserDAOImpl implements UserDAO {
 	
 	private static final String SQL_SELECT_PAR_EMAIL_ACTIF = "SELECT * FROM Users WHERE email = ? AND isActive = 1";
 	private static final String SQL_SELECT_PAR_EMAIL = "SELECT * FROM Users WHERE email = ?";
+	private static final String SQL_SELECT_PAR_ID = "SELECT * FROM Users WHERE id = ?";
 	private static final String SQL_SELECT_ALL = "SELECT * FROM Users";
 	private static final String SQL_INSERT_USER = "INSERT INTO Users (firstname, lastname, email, password, company, phone, creationDate, isActive, role) VALUES (?,?,?,?,?,?,NOW(),?,?)";
 
@@ -117,6 +118,32 @@ public class UserDAOImpl implements UserDAO {
 			/* Récupération d'une connexion depuis la Factory */
 			connection = daoFactory.getConnection();
 			preparedStatement = initPreparedStatement( connection, SQL_SELECT_PAR_EMAIL, false, email );
+			resultSet = preparedStatement.executeQuery();
+
+			/* Parcours de la ligne de données de l'éventuel ResulSet retourné */
+			if ( resultSet.next() ) {
+				user = map( resultSet );
+			}
+		} catch ( SQLException e ) {
+			throw new DAOException( e );
+		} finally {
+			silentClose( resultSet, preparedStatement, connection );
+		}
+
+		return user;
+	}
+	
+	@Override
+	public User findUserByID(Integer id) throws DAOException {
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+	    User user = null;
+
+		try {
+			/* Récupération d'une connexion depuis la Factory */
+			connection = daoFactory.getConnection();
+			preparedStatement = initPreparedStatement( connection, SQL_SELECT_PAR_ID, false, id );
 			resultSet = preparedStatement.executeQuery();
 
 			/* Parcours de la ligne de données de l'éventuel ResulSet retourné */

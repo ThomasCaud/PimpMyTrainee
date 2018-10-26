@@ -10,6 +10,7 @@ public interface UserDAO {
 	void createUser(User user) throws DAOException;
 	User findActiveUserByEmail(String email) throws DAOException;
 	User findUserByEmail(String email) throws DAOException;
+	User findUserByID(Integer id) throws DAOException;
 	ArrayList<User> findAllUsers() throws DAOException;
 
 }
