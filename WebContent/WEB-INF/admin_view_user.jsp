@@ -30,7 +30,7 @@
 			    	
 			    	<hr>
 			    	
-			    	<form method="post" action="">
+			    	<form method="post" action="<c:url value = "/viewUser/${user.id}" />">
 						<fieldset>
 							<div class="form-group">
 						      <label>Firstname</label>
@@ -63,35 +63,35 @@
 						    </div>
 						    
 						    <div class="form-group">
-						      <label>Date of creation : ${user.creationDate } </label>
-						    </div>
-						    
-						    <div class="form-group">
 						      <label>Role</label>
-						      <select class="form-control"">
-						        <option  <c:if test = "${user.role == 'ADMIN'}">selected</c:if> >Admin</option>
-						        <option  <c:if test = "${user.role == 'TRAINEE'}">selected</c:if> >Trainee</option>
+						      <select name="role" class="form-control"">
+						        <option value="ADMIN" <c:if test = "${user.role == 'ADMIN'}">selected</c:if> >Admin</option>
+						        <option value="TRAINEE" <c:if test = "${user.role == 'TRAINEE'}">selected</c:if> >Trainee</option>
 						      </select>
 						    </div>
 						    
-						    <div class="form-group">
-						    	<label>This user's account is active</label>
-							    <div class="form-check">
-							        <label class="form-check-label">
-							        	<input type="radio" class="form-check-input" name="optionsRadios" value="option1" <c:if test = "${user.isActive == 'true'}">checked</c:if>>
-							          	Yes
-							        </label>
-							    </div>
-							    <div class="form-check">
-							    	<label class="form-check-label">
-							        	<input type="radio" class="form-check-input" name="optionsRadios" value="option2" <c:if test = "${user.isActive == 'false'}">checked</c:if>>
-							          	No
-							    	</label>
-							    </div>
-							  </div>
+						    <fieldset class="form-group">
+						      <legend>This user's account is active</legend>
+						      <div class="form-check">
+						        <label class="form-check-label">
+						          <input type="radio" class="form-check-input" name="isActive" value="true">
+						          Yes
+						        </label>
+						      </div>
+						      <div class="form-check">
+						      <label class="form-check-label">
+						          <input type="radio" class="form-check-input" name="isActive" value="false">
+						          No
+						        </label>
+						      </div>
+						    </fieldset>
+							  
+							<div class="form-group">
+						      	<label>Date of creation : ${user.creationDate } </label>
+						    </div>
 						    
 						    <div class="form-group">
-						      <button type="submit" class="btn btn-lg btn-warning btn-block">Save modifications</button>
+						      	<button type="submit" class="btn btn-lg btn-warning btn-block">Save modifications</button>
 						    </div>
 						    
 						

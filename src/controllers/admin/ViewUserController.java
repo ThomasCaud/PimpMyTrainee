@@ -10,11 +10,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.mail.EmailException;
+
 import common.Config;
 import dao.DAOFactory;
 import dao.interfaces.UserDAO;
 import models.beans.E_Role;
 import models.beans.User;
+import models.forms.RegisterUserForm;
+import models.forms.UpdateUserForm;
 
 @WebServlet( "/viewUser/*" )
 public class ViewUserController extends HttpServlet {
@@ -22,6 +26,8 @@ public class ViewUserController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private static final String VIEW = "/WEB-INF/admin_view_user.jsp";
 	private static final String ATT_USER = "user";
+	private static final String ATT_ID = "id";
+	private static final String ATT_FORM = "form";
 	private UserDAO userDAO;
 	
 	public void init() throws ServletException {
@@ -65,6 +71,44 @@ public class ViewUserController extends HttpServlet {
 		request.setAttribute(ATT_USER, user);
 		
 		this.getServletContext().getRequestDispatcher( VIEW ).forward( request, response );
+	}
+	
+	public void doPost( HttpServletRequest request, HttpServletResponse response )	throws ServletException, IOException {
+		UpdateUserForm updateUserForm = new UpdateUserForm(userDAO);
+		
+		String pathInfo = request.getPathInfo();
+		
+		if( pathInfo == null || pathInfo.isEmpty() ) {
+			response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+			return;
+		}
+		
+		String urlId = request.getPathInfo().substring(1, request.getPathInfo().length());
+		Integer id;
+		
+		try {
+			id = Integer.parseInt(urlId);
+		} catch(NumberFormatException e) {
+			response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+			return;
+		}
+		
+		request.setAttribute(ATT_ID, id);
+		
+		User user = null;
+		try {
+			user = updateUserForm.updateUser(request);
+		} catch (EmailException e) {
+			e.printStackTrace();
+		}
+		
+		request.setAttribute(ATT_FORM, updateUserForm);
+		request.setAttribute(ATT_USER, user);
+		
+		System.out.println(user);
+		
+		this.getServletContext().getRequestDispatcher( VIEW ).forward( request, response );
+		return;
 	}
 
 }
