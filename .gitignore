@@ -4,3 +4,4 @@
 .classpath
 /bin/
 /WebContent/WEB-INF/classes
+/src/common/common.properties

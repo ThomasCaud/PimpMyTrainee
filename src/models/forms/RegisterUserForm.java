@@ -4,6 +4,9 @@ import java.sql.Timestamp;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.mail.EmailException;
+
+import common.GmailEmailSendor;
 import common.RandomStringGenerator;
 import dao.interfaces.UserDAO;
 import models.beans.E_Role;
@@ -63,7 +66,7 @@ public class RegisterUserForm extends AbstractForm {
 		}
 		
 		// Main method called by the servlet to process the registration
-		public User registerUser(HttpServletRequest request) {
+		public User registerUser(HttpServletRequest request) throws EmailException {
 			String firstname = getFieldValue(request,FIELD_FIRSTNAME);
 			String lastname = getFieldValue(request,FIELD_LASTNAME);
 			String email = getFieldValue(request,FIELD_EMAIL);
@@ -94,6 +97,11 @@ public class RegisterUserForm extends AbstractForm {
 				user.setCreationDate(new Timestamp(System.currentTimeMillis()));
 				
 				userDAO.createUser(user);
+				
+				// TODO (not working yet)
+				// GmailEmailSendor.getInstance().sendSimpleEmail("Your password for PimpMyTrainee", password, user.getEmail());
+				
+				System.out.println("Password = "+password);
 				
 				return user;
 			}

@@ -13,7 +13,7 @@ import dao.managers.UserDAOImpl;
 
 public class DAOFactory {
 	
-	private static final String PROPERTIES_FILE = "/dao/dao.properties";
+	private static final String PROPERTIES_FILE = "/common/common.properties";
 	private static final String PROP_URL = "url";
 	private static final String PROP_DRIVER = "driver";
 	private static final String PROP_USER = "user";
