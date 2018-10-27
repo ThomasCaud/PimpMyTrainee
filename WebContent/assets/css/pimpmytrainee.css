@@ -3,6 +3,10 @@
 	padding: 0;
 }
 
+.container {
+	overflow: visible;
+}
+
 #login-page-background {
 	background-color: #efefef;
 	height: 100%;
