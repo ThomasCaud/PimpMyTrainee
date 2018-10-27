@@ -25,12 +25,9 @@
 			</ul>
 			
 			<div id="myTabContent" class="tab-content">
-				
 				<div class="tab-pane fade show active" id="usersInformation">
-			    	
 			    	<hr>
-			    	
-			    	<form method="post" action="<c:url value = "/viewUser/${user.id}" />">
+			    	<form method="post" action="">
 						<fieldset>
 							<div class="form-group">
 						      <label>Firstname</label>
@@ -64,7 +61,7 @@
 						    
 						    <div class="form-group">
 						      <label>Role</label>
-						      <select name="role" class="form-control"">
+						      <select name="role" class="form-control">
 						        <option value="ADMIN" <c:if test = "${user.role == 'ADMIN'}">selected</c:if> >Admin</option>
 						        <option value="TRAINEE" <c:if test = "${user.role == 'TRAINEE'}">selected</c:if> >Trainee</option>
 						      </select>
@@ -93,23 +90,14 @@
 						    <div class="form-group">
 						      	<button type="submit" class="btn btn-lg btn-warning btn-block">Save modifications</button>
 						    </div>
-						    
-						
 						</fieldset>
 					</form>
-			    	
 			    </div>
-			  	
 			  	<div class="tab-pane fade" id="records">
-			    	
-			    </div>
-			  	
+			  	</div>
 			</div>
-		
 		</div>
-	
 	</div>
-
 </div>
 
 <%@ include file="footer.jsp" %>

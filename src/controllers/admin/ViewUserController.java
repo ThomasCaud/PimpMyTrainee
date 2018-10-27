@@ -73,15 +73,8 @@ public class ViewUserController extends HttpServlet {
 		this.getServletContext().getRequestDispatcher( VIEW ).forward( request, response );
 	}
 	
-	public void doPost( HttpServletRequest request, HttpServletResponse response )	throws ServletException, IOException {
+	public void doPost( HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException {
 		UpdateUserForm updateUserForm = new UpdateUserForm(userDAO);
-		
-		String pathInfo = request.getPathInfo();
-		
-		if( pathInfo == null || pathInfo.isEmpty() ) {
-			response.sendError(HttpServletResponse.SC_BAD_REQUEST);
-			return;
-		}
 		
 		String urlId = request.getPathInfo().substring(1, request.getPathInfo().length());
 		Integer id;
@@ -94,20 +87,22 @@ public class ViewUserController extends HttpServlet {
 		}
 		
 		request.setAttribute(ATT_ID, id);
+
+		User updatedUser = updateUserForm.updateUser(request);
+
+		request.setAttribute(ATT_FORM, updateUserForm);
+		request.setAttribute(ATT_USER, updatedUser);
+
+		userDAO.updateUser(updatedUser);
+
+		String pathInfo = request.getPathInfo();
 		
-		User user = null;
-		try {
-			user = updateUserForm.updateUser(request);
-		} catch (EmailException e) {
-			e.printStackTrace();
+		if( pathInfo == null || pathInfo.isEmpty() ) {
+			response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+			return;
 		}
 		
-		request.setAttribute(ATT_FORM, updateUserForm);
-		request.setAttribute(ATT_USER, user);
-		
-		System.out.println(user);
-		
-		this.getServletContext().getRequestDispatcher( VIEW ).forward( request, response );
+		this.getServletContext().getRequestDispatcher(VIEW).forward(request, response);
 		return;
 	}
 

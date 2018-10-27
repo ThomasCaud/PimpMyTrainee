@@ -78,7 +78,7 @@ public class UpdateUserForm extends AbstractForm {
 	}
 	
 	// Main method called by the servlet to process the registration
-	public User updateUser(HttpServletRequest request) throws EmailException {
+	public User updateUser(HttpServletRequest request) {
 		String firstname = getFieldValue(request,FIELD_FIRSTNAME);
 		String lastname = getFieldValue(request,FIELD_LASTNAME);
 		String email = getFieldValue(request,FIELD_EMAIL);
@@ -86,9 +86,10 @@ public class UpdateUserForm extends AbstractForm {
 		String phone = getFieldValue(request,FIELD_PHONE);
 		String role = getFieldValue(request,FIELD_ROLE);
 		String isActive = getFieldValue(request,FIELD_IS_ACTIVE);
-		
+		System.out.println("isActive: " + isActive);
+
 		User previousUser = userDAO.findUserByID((int)request.getAttribute("id"));
-		User user = new User();
+		User user = new User(previousUser);
 		
 		if( !previousUser.getFirstname().equals(firstname) )
 			processFirstnameValidation(firstname,user);
@@ -107,32 +108,12 @@ public class UpdateUserForm extends AbstractForm {
 		
 		if( !previousUser.getRole().toString().equals(role) )
 			//processRoleValidation(role,user);
-			
-		processIsActiveValidation(isActive,user);
-		
-		if( this.getErrors().isEmpty() ) {
-			/*User existingUser = userDAO.findActiveUserByEmail(email);
-			
-			if( existingUser != null ) {
-				setError(FIELD_EMAIL, "This email address is already taken.");
-				return user;
-			}
-			
-			String password = RandomStringGenerator.getRandomString(10);
-			
-			user.setPassword(passwordEncryptor.encryptPassword(password));
-			user.setRole(E_Role.TRAINEE);
-			user.setIsActive(true);
-			user.setCreationDate(new Timestamp(System.currentTimeMillis()));
-			
-			userDAO.createUser(user);
-			
-			// TODO (not working yet)
-			// GmailEmailSendor.getInstance().sendSimpleEmail("Your password for PimpMyTrainee", password, user.getEmail());
-			
-			System.out.println("Password = "+password);
-			
-			return user;*/
+
+		if( !previousUser.getIsActive().equals(isActive == "true"))
+			processIsActiveValidation(isActive,user);
+
+		if(this.getErrors().isEmpty()) {
+			return user;
 		}
 		return previousUser;
 	}

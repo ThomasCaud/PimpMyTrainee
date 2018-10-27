@@ -69,8 +69,5 @@ public class RegisterUserController extends HttpServlet {
 			this.getServletContext().getRequestDispatcher( VIEW_STEP2 ).forward( request, response );
 			return;
 		}
-		
-		
 	}
-	
 }
