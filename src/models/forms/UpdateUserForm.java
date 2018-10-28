@@ -68,12 +68,10 @@ public class UpdateUserForm extends AbstractForm {
 	}
 	
 	public void processIsActiveValidation( String isActiveStr, User user ) {
-		
-		if( isActiveStr == null || !isActiveStr.toUpperCase().equals("TRUE") || !isActiveStr.toUpperCase().equals("FALSE") )
+		if( isActiveStr == null || (!isActiveStr.toUpperCase().equals("TRUE") && !isActiveStr.toUpperCase().equals("FALSE")))
 			setError(FIELD_IS_ACTIVE, "One the two radio buttons must be checked.");
 		
-		boolean isActive = isActiveStr.toUpperCase().equals("TRUE") ? true : false;
-		
+		boolean isActive = isActiveStr.toUpperCase().equals("TRUE");
 		user.setIsActive(isActive);
 	}
 	
@@ -86,7 +84,6 @@ public class UpdateUserForm extends AbstractForm {
 		String phone = getFieldValue(request,FIELD_PHONE);
 		String role = getFieldValue(request,FIELD_ROLE);
 		String isActive = getFieldValue(request,FIELD_IS_ACTIVE);
-		System.out.println("isActive: " + isActive);
 
 		User previousUser = userDAO.findUserByID((int)request.getAttribute("id"));
 		User user = new User(previousUser);
@@ -106,15 +103,16 @@ public class UpdateUserForm extends AbstractForm {
 		if( !previousUser.getPhone().equals(phone) )
 			processPhoneValidation(phone,user);
 		
-		if( !previousUser.getRole().toString().equals(role) )
+//		if( !previousUser.getRole().toString().equals(role) )
 			//processRoleValidation(role,user);
 
-		if( !previousUser.getIsActive().equals(isActive == "true"))
+		if( !previousUser.getIsActive().toString().equals(isActive) )
 			processIsActiveValidation(isActive,user);
 
 		if(this.getErrors().isEmpty()) {
 			return user;
 		}
+
 		return previousUser;
 	}
 }

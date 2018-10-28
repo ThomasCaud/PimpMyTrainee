@@ -68,16 +68,28 @@
 						    </div>
 						    
 						    <fieldset class="form-group">
-						      <legend>This user's account is active</legend>
+						      <label>Active account</label>
 						      <div class="form-check">
 						        <label class="form-check-label">
-						          <input type="radio" class="form-check-input" name="isActive" value="true">
+						          <input
+						          	type="radio"
+						          	class="form-check-input"
+						          	name="isActive"
+						          	value="true"
+						          	<c:if test= "${user.isActive}">checked="checked" </c:if>
+						          >
 						          Yes
 						        </label>
 						      </div>
 						      <div class="form-check">
 						      <label class="form-check-label">
-						          <input type="radio" class="form-check-input" name="isActive" value="false">
+						          <input
+						          	type="radio"
+						          	class="form-check-input"
+						          	name="isActive"
+						          	value="false"
+						          	<c:if test= "${!user.isActive}">checked="checked" </c:if>
+						          >
 						          No
 						        </label>
 						      </div>

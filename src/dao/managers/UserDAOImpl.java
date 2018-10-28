@@ -85,7 +85,6 @@ public class UserDAOImpl implements UserDAO {
 	public void updateUser(User user) throws DAOException {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
-		ResultSet resultSet = null;
 
 		try {
 			connection = daoFactory.getConnection();
@@ -98,7 +97,7 @@ public class UserDAOImpl implements UserDAO {
 				user.getEmail(),
 				user.getCompany(),
 				user.getPhone(),
-				(user.getIsActive() ? 1 : 0),
+				user.getIsActive(),
 				user.getRole().toString().toLowerCase(),
 				user.getId()
 			);
