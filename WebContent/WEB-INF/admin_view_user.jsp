@@ -60,11 +60,7 @@
 						    </div>
 						    
 						    <div class="form-group">
-						      <label>Role</label>
-						      <select name="role" class="form-control">
-						        <option value="ADMIN" <c:if test = "${user.role == 'ADMIN'}">selected</c:if> >Admin</option>
-						        <option value="TRAINEE" <c:if test = "${user.role == 'TRAINEE'}">selected</c:if> >Trainee</option>
-						      </select>
+						      <label>Role: ${user.role}</label>
 						    </div>
 						    
 						    <fieldset class="form-group">

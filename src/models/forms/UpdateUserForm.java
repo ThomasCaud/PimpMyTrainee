@@ -82,7 +82,6 @@ public class UpdateUserForm extends AbstractForm {
 		String email = getFieldValue(request,FIELD_EMAIL);
 		String company = getFieldValue(request,FIELD_COMPANY);
 		String phone = getFieldValue(request,FIELD_PHONE);
-		String role = getFieldValue(request,FIELD_ROLE);
 		String isActive = getFieldValue(request,FIELD_IS_ACTIVE);
 
 		User previousUser = userDAO.findUserByID((int)request.getAttribute("id"));
@@ -102,9 +101,6 @@ public class UpdateUserForm extends AbstractForm {
 		
 		if( !previousUser.getPhone().equals(phone) )
 			processPhoneValidation(phone,user);
-		
-//		if( !previousUser.getRole().toString().equals(role) )
-			//processRoleValidation(role,user);
 
 		if( !previousUser.getIsActive().toString().equals(isActive) )
 			processIsActiveValidation(isActive,user);
