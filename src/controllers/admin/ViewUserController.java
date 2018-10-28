@@ -1,7 +1,6 @@
 package controllers.admin;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -10,14 +9,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.commons.mail.EmailException;
-
 import common.Config;
 import dao.DAOFactory;
 import dao.interfaces.UserDAO;
 import models.beans.E_Role;
 import models.beans.User;
-import models.forms.RegisterUserForm;
 import models.forms.UpdateUserForm;
 
 @WebServlet( "/viewUser/*" )

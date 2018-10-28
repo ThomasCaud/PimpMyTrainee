@@ -1,7 +1,6 @@
 package controllers.admin;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -13,12 +12,10 @@ import javax.servlet.http.HttpSession;
 import org.apache.commons.mail.EmailException;
 
 import common.Config;
-import common.GmailEmailSendor;
 import dao.DAOFactory;
 import dao.interfaces.UserDAO;
 import models.beans.E_Role;
 import models.beans.User;
-import models.forms.LoginForm;
 import models.forms.RegisterUserForm;
 
 @WebServlet( "/registerUser" )
