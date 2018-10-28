@@ -2,8 +2,4 @@ url = jdbc:mysql://localhost:3306/pimpmytrainee?serverTimezone=UTC&useSSL=false
 driver = com.mysql.cj.jdbc.Driver
 user = ai12
 password = passworddatabase
-smtp_server = smtp-relay.gmail.com
-smtp_username = smtpserver@gmail.com
-smtp_password = smtppassword
-smtp_ssl_port = 465
-email_sender = emailsender@gmail.com
+send_grid_key = goToTheCredentialsDoc

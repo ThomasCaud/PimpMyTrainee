@@ -97,9 +97,12 @@ public class RegisterUserForm extends AbstractForm {
 				user.setCreationDate(new Timestamp(System.currentTimeMillis()));
 				
 				userDAO.createUser(user);
-				
-				// TODO (not working yet)
-				// GmailEmailSendor.getInstance().sendSimpleEmail("Your password for PimpMyTrainee", password, user.getEmail());
+
+				GmailEmailSendor.getInstance().sendSimpleEmail(
+					"Your password for PimpMyTrainee",
+					"Thanks for subscribing! Your password is " + password,
+					user.getEmail()
+				);
 				
 				System.out.println("Password = "+password);
 				
