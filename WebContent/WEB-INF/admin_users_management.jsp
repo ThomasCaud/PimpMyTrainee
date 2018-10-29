@@ -71,6 +71,7 @@
 		</tbody>
 	</table>
 	
+	<c:if test = "${search == null || search == ''}">
 	<div class="row justify-content-center">
 		<ul class="pagination">
 			<li class="page-item <c:if test = "${paginationActive == 1}">disabled</c:if>">
@@ -88,6 +89,7 @@
 			</li>
 		</ul>
 	</div>
+	</c:if>
 </div>
 
 <%@ include file="footer.jsp" %>

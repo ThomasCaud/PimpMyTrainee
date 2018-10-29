@@ -64,15 +64,15 @@ public class UsersController extends HttpServlet {
 		Integer nbNeededPages = (int) nbAllUsers / nbUsersPerPage;
 		if( res != 0 ) nbNeededPages++;
     
-    String search = request.getParameter(ATT_SEARCH);
-    if(search != null) {
+		String search = request.getParameter(ATT_SEARCH);
+    	if(search != null) {
 			users = userDAO.findUsersByNameOrLastnameOrCompany(search);
 		} else {
 			users = userDAO.findAllUsers((offset-1)*Config.NB_USERS_PER_PAGE,nbUsersPerPage);
 		}
 		
 		request.setAttribute(ATT_USERS, users);
-    request.setAttribute(ATT_SEARCH, search);
+		request.setAttribute(ATT_SEARCH, search);
 		request.setAttribute(ATT_PAGINATION_ACTIVE, offset);
 		request.setAttribute(ATT_PAGINATION_TOTAL, nbNeededPages);
 		
