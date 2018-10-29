@@ -8,24 +8,21 @@
 			<h1>Users Management</h1>
 		</div>
 
-		<form method="get" action="">
-			<div class="col-12 col-sm-4 col-md-8">
-				<input type="text" class="form-control" placeholder="Search" name="searchByNameOrLastname">
-			</div>
+		<form method="GET" class="col-12 col-sm-4 col-md-8">
+			<fieldset>
+				<span class="col-12 col-sm-4 col-md-4">
+					<input type="text" class="form-control" placeholder="Search" name="search">
+				</span>
 
-			<div class="col-12 col-sm-4 col-md-2">
-				<a href="<c:url value = "/users"/>"
-				   class="btn btn-info"
-				>
-				   <i class="fa fa-search"></i>
-				   <span> Search</span>
-				</a>
-			</div>
+				<span class="col-12 col-sm-4 col-md-2">
+					<button type="submit" class="btn btn-lg btn-primary btn-block"><span class="fa fa-search"></span></button>
+				</span>
+			</fieldset>
 		</form>
 
-		<div class="col-12 col-sm-4 col-md-2">
+		<span class="col-12 col-sm-4 col-md-2">
 			<a href="<c:url value = "/registerUser"/>" class="btn btn-info"><i class="fa fa-plus"></i> Register an user</a>
-		</div>
+		</span>
 	</div>
 	<hr>
 	

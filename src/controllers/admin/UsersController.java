@@ -21,7 +21,7 @@ public class UsersController extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
 	private static final String VIEW = "/WEB-INF/admin_users_management.jsp";
-	private static final String FIELD_SEARCH = "searchByNameOrLastname";
+	private static final String ATT_SEARCH = "search";
 	private static final String ATT_USERS = "users";
 	private UserDAO userDAO;
 
@@ -31,11 +31,6 @@ public class UsersController extends HttpServlet {
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response)	throws ServletException, IOException {
 		HttpSession session = request.getSession();
-		String nameOrLastnameSearch = request.getParameter(FIELD_SEARCH);
-		// todo bien récupérer cette information
-		// + modifier le DAO pour que la recherche se fasse sur le nom et prénom
-		
-		System.out.println(nameOrLastnameSearch);
 
 		User user = (User) session.getAttribute(Config.ATT_SESSION_USER);
 		
@@ -44,11 +39,16 @@ public class UsersController extends HttpServlet {
 			return;
 		}
 		
-		ArrayList<User> users = userDAO.findAllUsers();
+		ArrayList<User> users;
+		String search = request.getParameter(ATT_SEARCH);
+		if(search != null) {
+			users = userDAO.findUsersByNameOrLastnameOrCompany(search);
+		} else {
+			users = userDAO.findAllUsers();
+		}
 
 		request.setAttribute(ATT_USERS, users);
 		
 		this.getServletContext().getRequestDispatcher( VIEW ).forward( request, response );
 	}
-
 }

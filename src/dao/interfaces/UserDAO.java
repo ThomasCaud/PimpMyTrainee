@@ -13,5 +13,5 @@ public interface UserDAO {
 	User findUserByEmail(String email) throws DAOException;
 	User findUserByID(Integer id) throws DAOException;
 	ArrayList<User> findAllUsers() throws DAOException;
-
+	ArrayList<User> findUsersByNameOrLastnameOrCompany(String filter) throws DAOException;
 }
