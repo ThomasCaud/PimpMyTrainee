@@ -98,11 +98,11 @@ public class RegisterUserForm extends AbstractForm {
 				
 				userDAO.createUser(user);
 
-				GmailEmailSendor.getInstance().sendSimpleEmail(
+				/*GmailEmailSendor.getInstance().sendSimpleEmail(
 					"Your password for PimpMyTrainee",
 					"Thanks for subscribing! Your password is " + password,
 					user.getEmail()
-				);
+				);*/
 				
 				System.out.println("Password = "+password);
 				
