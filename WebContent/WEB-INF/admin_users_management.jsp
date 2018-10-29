@@ -43,7 +43,7 @@
 				<th>Phone</th>
 				<th>Creation</th>
 				<th>Role</th>
-				<th>Active user</th>
+				<th>Status</th>
 				<th class="text-center">Action</th>
 			</tr>
 		</thead>
@@ -59,7 +59,12 @@
 				<td>${user.phone}</td>
 				<td>${user.creationDate}</td>
 				<td>${user.role}</td>
-				<td>${user.isActive}</td>
+				<td>
+					<c:choose>
+						<c:when test = "${user.isActive}"><span class="badge badge-pill badge-success">Active</span></c:when>
+						<c:otherwise><span class="badge badge-pill badge-danger">Deleted</span></c:otherwise>
+					</c:choose>
+				</td>
 				<td class="text-center"><a href="<c:url value = "/viewUser/${user.id}"/>" class="btn btn-link"><i class="fa fa-eye"></i></a></td>
 			</tr>
 			</c:forEach>
