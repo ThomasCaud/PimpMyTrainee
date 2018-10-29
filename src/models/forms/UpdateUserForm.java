@@ -1,14 +1,8 @@
 package models.forms;
 
-import java.sql.Timestamp;
-
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.mail.EmailException;
-
-import common.RandomStringGenerator;
 import dao.interfaces.UserDAO;
-import models.beans.E_Role;
 import models.beans.User;
 
 public class UpdateUserForm extends AbstractForm {
@@ -19,7 +13,6 @@ public class UpdateUserForm extends AbstractForm {
 	private static final String FIELD_EMAIL = "email";
 	private static final String FIELD_COMPANY = "company";
 	private static final String FIELD_PHONE = "phone";
-	private static final String FIELD_ROLE = "role";
 	private static final String FIELD_IS_ACTIVE = "isActive";
 	private UserDAO userDAO;
 	
