@@ -21,25 +21,28 @@ public class UsersController extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
 	private static final String VIEW = "/WEB-INF/admin_users_management.jsp";
+	private static final String ATT_SEARCH = "search";
 	private static final String ATT_USERS = "users";
 	private static final String ATT_PAGINATION_ACTIVE = "paginationActive";
 	private static final String ATT_PAGINATION_TOTAL = "paginationTotal";
 	private UserDAO userDAO;
-	
+
 	public void init() throws ServletException {
         this.userDAO = ( (DAOFactory) getServletContext().getAttribute( Config.CONF_DAO_FACTORY ) ).getUserDAO();
 	}
-	
-	public void doGet( HttpServletRequest request, HttpServletResponse response )	throws ServletException, IOException {
+
+	public void doGet(HttpServletRequest request, HttpServletResponse response)	throws ServletException, IOException {
 		HttpSession session = request.getSession();
-		
+
 		User user = (User) session.getAttribute(Config.ATT_SESSION_USER);
 		
 		if(user == null || user.getRole() != E_Role.ADMIN ) {
 			response.sendRedirect(request.getServletContext().getContextPath()+Config.URL_REDIRECT_ROOT);		
 			return;
 		}
-		
+  
+    ArrayList<User> users = null;
+
 		Integer offset = 1;
 		String offsetUrl = request.getParameter("p");
 		
@@ -60,14 +63,19 @@ public class UsersController extends HttpServlet {
 		Integer res = nbAllUsers % nbUsersPerPage;
 		Integer nbNeededPages = (int) nbAllUsers / nbUsersPerPage;
 		if( res != 0 ) nbNeededPages++;
-		
-		ArrayList<User> users = userDAO.findAllUsers((offset-1)*Config.NB_USERS_PER_PAGE,nbUsersPerPage);
+    
+    String search = request.getParameter(ATT_SEARCH);
+    if(search != null) {
+			users = userDAO.findUsersByNameOrLastnameOrCompany(search);
+		} else {
+			users = userDAO.findAllUsers((offset-1)*Config.NB_USERS_PER_PAGE,nbUsersPerPage);
+		}
 		
 		request.setAttribute(ATT_USERS, users);
+    request.setAttribute(ATT_SEARCH, search);
 		request.setAttribute(ATT_PAGINATION_ACTIVE, offset);
 		request.setAttribute(ATT_PAGINATION_TOTAL, nbNeededPages);
 		
 		this.getServletContext().getRequestDispatcher( VIEW ).forward( request, response );
 	}
-
 }

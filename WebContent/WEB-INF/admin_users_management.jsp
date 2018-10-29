@@ -17,45 +17,59 @@
 	
 	<hr>
 	
-	<div class="row">
+	<div class="row justify-content-center">
+
+		<div class="col-12 col-sm-12 col-lg-5">
+			<form method="get" action="" class="form-inline">
+				<input type="text" class="form-control col-10" placeholder="Search" name="search">
+				<div class="col-2"><button type="submit" class="btn btn-primary form-control"><i class="fa fa-search"></i></button></div>
+			</form>
+		</div>	
 	
-		<table class="table table-responsive-sm table-sm table-bordered">
-	
-			<thead class="thead-dark">
-				<tr>
-					<th>#</th>
-					<th>Firstname</th>
-					<th>Lastname</th>
-					<th>Email</th>
-					<th>Company</th>
-					<th>Phone</th>
-					<th>Creation</th>
-					<th>Role</th>
-					<th>Active user</th>
-					<th class="text-center">Action</th>
-				</tr>
-			</thead>
-			<tbody>
-				<c:forEach items="${users}" var="user">
-				
-				<tr>
-					<th scope="row">${user.id}</th>
-					<td>${user.firstname}</td>
-					<td>${user.lastname}</td>
-					<td>${user.email}</td>
-					<td>${user.company}</td>
-					<td>${user.phone}</td>
-					<td>${user.creationDate}</td>
-					<td>${user.role}</td>
-					<td>${user.isActive}</td>
-					<td class="text-center"><a href="<c:url value = "/viewUser/${user.id}"/>" class="btn btn-link"><i class="fa fa-eye"></i></a></td>
-				</tr>
-				</c:forEach>
-			</tbody>
-		
-		</table>
-		
 	</div>
+	
+	<hr>
+	
+	<c:if test = "${search != null && search != ''}"><h5 class="inline-block">Results for the search "${search}" <a href="<c:url value = "/users"/>" class="btn btn-danger btn-sm"><i class="fa fa-times"></i></a></h5></c:if>
+	
+	<table class="table table-responsive-sm table-sm table-bordered">
+		<thead class="thead-dark">
+			<tr>
+				<th>#</th>
+				<th>Firstname</th>
+				<th>Lastname</th>
+				<th>Email</th>
+				<th>Company</th>
+				<th>Phone</th>
+				<th>Creation</th>
+				<th>Role</th>
+				<th>Status</th>
+				<th class="text-center">Action</th>
+			</tr>
+		</thead>
+		<tbody>
+			<c:forEach items="${users}" var="user">
+
+			<tr>
+				<th scope="row">${user.id}</th>
+				<td>${user.firstname}</td>
+				<td>${user.lastname}</td>
+				<td>${user.email}</td>
+				<td>${user.company}</td>
+				<td>${user.phone}</td>
+				<td>${user.creationDate}</td>
+				<td>${user.role}</td>
+				<td>
+					<c:choose>
+						<c:when test = "${user.isActive}"><span class="badge badge-pill badge-success">Active</span></c:when>
+						<c:otherwise><span class="badge badge-pill badge-danger">Deleted</span></c:otherwise>
+					</c:choose>
+				</td>
+				<td class="text-center"><a href="<c:url value = "/viewUser/${user.id}"/>" class="btn btn-link"><i class="fa fa-eye"></i></a></td>
+			</tr>
+			</c:forEach>
+		</tbody>
+	</table>
 	
 	<div class="row justify-content-center">
 		<ul class="pagination">

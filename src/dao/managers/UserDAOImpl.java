@@ -20,10 +20,11 @@ public class UserDAOImpl implements UserDAO {
 	private static final String SQL_SELECT_PAR_EMAIL = "SELECT * FROM Users WHERE email = ?";
 	private static final String SQL_SELECT_PAR_ID = "SELECT * FROM Users WHERE id = ?";
 	private static final String SQL_SELECT_ALL = "SELECT * FROM Users";
+	private static final String SQL_SELECTED_BY_NAME_OR_LASTNAME_OR_COMPANY = "SELECT * FROM Users WHERE firstname like ? or lastname like ? or company like ?";
 	private static final String SQL_SELECT_ALL_WITH_OFFSET_LIMIT = "SELECT * FROM Users LIMIT ?,?";
 	private static final String SQL_COUNT_ALL = "SELECT count(*) as count FROM Users";
 	private static final String SQL_INSERT_USER = "INSERT INTO Users (firstname, lastname, email, password, company, phone, creationDate, isActive, role) VALUES (?,?,?,?,?,?,NOW(),?,?)";
-	private static final String SQL_UPDATE_USER = "UPDATE Users set firstname = ?, lastname = ?, email = ?, company = ?, phone = ?, isActive = ?, role = ? where id = ?";
+	private static final String SQL_UPDATE_USER = "UPDATE Users set firstname = ?, lastname = ?, email = ?, company = ?, phone = ?, isActive = ?, role = ? WHERE id = ?";
 
 	private DAOFactory daoFactory;
 
@@ -195,23 +196,49 @@ public class UserDAOImpl implements UserDAO {
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
 		ArrayList<User> users = new ArrayList<User>();
-		
+
 		try {
 			connection = daoFactory.getConnection();
 			preparedStatement = initPreparedStatement( connection, SQL_SELECT_ALL, false);
 			resultSet = preparedStatement.executeQuery();
-			
+
 			while ( resultSet.next() ) {
 				User user = map( resultSet );
 				users.add(user);
 			}
-			
+
 		} catch (SQLException e) {
 			throw new DAOException( e );
 		} finally {
 			silentClose( resultSet, preparedStatement, connection );
 		}
-		
+
+		return users;
+	}
+
+	@Override
+	public ArrayList<User> findUsersByNameOrLastnameOrCompany(String filter) throws DAOException {
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+		ArrayList<User> users = new ArrayList<User>();
+
+		try {
+			connection = daoFactory.getConnection();
+			preparedStatement = initPreparedStatement( connection, SQL_SELECTED_BY_NAME_OR_LASTNAME_OR_COMPANY, false, '%' + filter + '%', '%' + filter + '%', '%' + filter + '%');
+			resultSet = preparedStatement.executeQuery();
+
+			while ( resultSet.next() ) {
+				User user = map( resultSet );
+				users.add(user);
+			}
+
+		} catch (SQLException e) {
+			throw new DAOException( e );
+		} finally {
+			silentClose( resultSet, preparedStatement, connection );
+		}
+
 		return users;
 	}
 	

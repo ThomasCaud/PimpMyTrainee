@@ -32,8 +32,7 @@ public class RegisterUserController extends HttpServlet {
         this.userDAO = ( (DAOFactory) getServletContext().getAttribute( Config.CONF_DAO_FACTORY ) ).getUserDAO();
 	}
 	
-	public void doGet( HttpServletRequest request, HttpServletResponse response )	throws ServletException, IOException {
-		
+	public void doGet( HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException {
 		HttpSession session = request.getSession();
 		
 		User user = (User) session.getAttribute(Config.ATT_SESSION_USER);

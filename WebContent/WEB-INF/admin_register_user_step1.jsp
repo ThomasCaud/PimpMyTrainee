@@ -3,9 +3,7 @@
 <%@ include file="admin_navbar.jsp" %>
 
 <div class="container">
-
 	<div class="row ">
-	
 		<div class="col-12 col-sm-8 offset-sm-2">
 		
 			<div class="row align-items-center">
