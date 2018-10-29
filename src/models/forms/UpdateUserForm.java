@@ -98,11 +98,10 @@ public class UpdateUserForm extends AbstractForm {
 		if( !previousUser.getIsActive().toString().equals(isActive) )
 			processIsActiveValidation(isActive,user);
 
-		if(this.getErrors().isEmpty()) {
-			return user;
-		}
+		if(this.getErrors().isEmpty())
+			userDAO.updateUser(user);
 
-		return previousUser;
+		return user;
 	}
 }
 
