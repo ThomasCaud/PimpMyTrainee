@@ -99,6 +99,7 @@ public class UpdateUserForm extends AbstractForm {
 			processIsActiveValidation(isActive,user);
 
 		if(this.getErrors().isEmpty()) {
+			userDAO.updateUser(user);
 			return user;
 		}
 
