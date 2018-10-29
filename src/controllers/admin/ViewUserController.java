@@ -88,15 +88,6 @@ public class ViewUserController extends HttpServlet {
 
 		request.setAttribute(ATT_FORM, updateUserForm);
 		request.setAttribute(ATT_USER, updatedUser);
-
-		userDAO.updateUser(updatedUser);
-
-		String pathInfo = request.getPathInfo();
-		
-		if( pathInfo == null || pathInfo.isEmpty() ) {
-			response.sendError(HttpServletResponse.SC_BAD_REQUEST);
-			return;
-		}
 		
 		this.getServletContext().getRequestDispatcher(VIEW).forward(request, response);
 		return;

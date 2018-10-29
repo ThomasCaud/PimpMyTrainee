@@ -46,6 +46,23 @@
 				    </div>
 				    
 				    <div class="form-group">
+						<label>Role</label>
+				     	<select class="form-control" name="role">
+				        	<option 
+				        		value="TRAINEE" 
+				        		<c:if test= "${user.role == 'TRAINEE'}">selected </c:if> >
+				        		Trainee
+				        	</option>
+				        	<option 
+				        		value="ADMIN" 
+				        		<c:if test= "${user.role == 'ADMIN'}">selected </c:if> >
+				        		Admin
+				        	</option>
+				      	</select>
+				    	<div class="form-error">${form.errors['role']}</div>
+				    </div>
+				    
+				    <div class="form-group">
 				      <button type="submit" class="btn btn-lg btn-primary btn-block">Register</button>
 				    </div>
 				    
