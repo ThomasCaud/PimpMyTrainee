@@ -6,6 +6,8 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.jasypt.util.password.ConfigurablePasswordEncryptor;
 
+import models.beans.E_Role;
+
 public abstract class AbstractForm {
 		// Map that contains all the errors that are thrown during the form validation process
 		protected Map<String,String> errors = new HashMap<String,String>();
@@ -59,6 +61,19 @@ public abstract class AbstractForm {
 		        }
 		    } else {
 		        throw new Exception( "The password is empty." );
+		    }
+		}
+		
+		protected void validateRole(String role) throws Exception {
+			
+			if ( role != null ) {
+		        try {
+		        	E_Role.valueOf(role);
+		        } catch	(IllegalArgumentException e) {
+		        	throw new Exception( "The role is incorrect. ");
+		        }
+		    } else {
+		        throw new Exception( "The role is empty." );
 		    }
 		}
 		

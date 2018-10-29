@@ -19,6 +19,7 @@ public class RegisterUserForm extends AbstractForm {
 		private static final String FIELD_EMAIL = "email";
 		private static final String FIELD_COMPANY = "company";
 		private static final String FIELD_PHONE = "phone";
+		private static final String FIELD_ROLE = "role";
 		private UserDAO userDAO;
 		
 		public RegisterUserForm( UserDAO userDAO ) {
@@ -65,6 +66,16 @@ public class RegisterUserForm extends AbstractForm {
 			user.setPhone(phone);
 		}
 		
+		public void processRoleValidation( String role, User user ) {
+			try {
+				validateRole(role);
+				user.setRole(E_Role.valueOf(role));
+			} catch (Exception e) {
+				user.setRole(E_Role.TRAINEE);
+				setError(FIELD_ROLE, e.getMessage());
+			}
+		}
+		
 		// Main method called by the servlet to process the registration
 		public User registerUser(HttpServletRequest request) throws EmailException {
 			String firstname = getFieldValue(request,FIELD_FIRSTNAME);
@@ -72,6 +83,7 @@ public class RegisterUserForm extends AbstractForm {
 			String email = getFieldValue(request,FIELD_EMAIL);
 			String company = getFieldValue(request,FIELD_COMPANY);
 			String phone = getFieldValue(request,FIELD_PHONE);
+			String role = getFieldValue(request,FIELD_ROLE);
 			
 			User user = new User();
 			
@@ -80,6 +92,7 @@ public class RegisterUserForm extends AbstractForm {
 			processEmailValidation(email,user);
 			processCompanyValidation(company,user);
 			processPhoneValidation(phone,user);
+			processRoleValidation(role,user);
 			
 			if( this.getErrors().isEmpty() ) {
 				User existingUser = userDAO.findActiveUserByEmail(email);
@@ -92,17 +105,16 @@ public class RegisterUserForm extends AbstractForm {
 				String password = RandomStringGenerator.getRandomString(10);
 				
 				user.setPassword(passwordEncryptor.encryptPassword(password));
-				user.setRole(E_Role.TRAINEE);
 				user.setIsActive(true);
 				user.setCreationDate(new Timestamp(System.currentTimeMillis()));
 				
 				userDAO.createUser(user);
 
-				GmailEmailSendor.getInstance().sendSimpleEmail(
+				/*GmailEmailSendor.getInstance().sendSimpleEmail(
 					"Your password for PimpMyTrainee",
 					"Thanks for subscribing! Your password is " + password,
 					user.getEmail()
-				);
+				);*/
 				
 				System.out.println("Password = "+password);
 				
