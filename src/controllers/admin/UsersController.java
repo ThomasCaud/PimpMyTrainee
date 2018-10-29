@@ -48,6 +48,7 @@ public class UsersController extends HttpServlet {
 		}
 
 		request.setAttribute(ATT_USERS, users);
+		request.setAttribute(ATT_SEARCH, search);
 		
 		this.getServletContext().getRequestDispatcher( VIEW ).forward( request, response );
 	}
