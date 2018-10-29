@@ -42,6 +42,16 @@ public abstract class AbstractForm {
 		    }
 		}
 		
+		protected void validatePhone(String phone) throws Exception {
+			if ( phone != null ) {
+		        if ( !phone.matches( "^(?:(?:\\+|00)33[\\s.-]{0,3}(?:\\(0\\)[\\s.-]{0,3})?|0)[1-9](?:(?:[\\s.-]?\\d{2}){4}|\\d{2}(?:[\\s.-]?\\d{3}){2})$" ) ) {
+		            throw new Exception( "The phone is not valid." );
+		        }
+		    } else {
+		        throw new Exception( "The phone is empty." );
+		    }
+		}
+		
 		protected void validatePassword(String password) throws Exception {
 			if ( password != null ) {
 		        if ( password.length() < 6 ) {
@@ -50,5 +60,12 @@ public abstract class AbstractForm {
 		    } else {
 		        throw new Exception( "The password is empty." );
 		    }
+		}
+		
+		protected boolean isNullOrEmpty(String str) {
+			if ( str == null || str.isEmpty() ) {
+				return true;
+			}
+			return false;
 		}
 }

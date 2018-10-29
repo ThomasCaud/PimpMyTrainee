@@ -1,4 +1,4 @@
-package config;
+package common;
 
 import java.io.IOException;
 
@@ -51,7 +51,7 @@ public class ConnectedOnlyFilter implements Filter {
         	if( !path.equals("/login") ) 
         		chain.doFilter( request, response );
         	else
-        		response.sendRedirect(request.getServletContext().getContextPath());
+        		response.sendRedirect(request.getServletContext().getContextPath()+Config.URL_REDIRECT_ROOT);
         }
 
 	}

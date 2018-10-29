@@ -29,6 +29,19 @@ public class User implements Serializable {
 		this.role = E_Role.TRAINEE; 
 	}
 
+	public User(User u) {
+		this.id = u.getId();
+		this.firstname = u.getFirstname();
+		this.lastname = u.getLastname();
+		this.email = u.getEmail();
+		this.password = u.getPassword();
+		this.company = u.getCompany();
+		this.phone = u.getPhone();
+		this.creationDate = u.getCreationDate();
+		this.isActive = u.getIsActive();
+		this.role = u.getRole();
+	}
+
 	public int getId() {
 		return id;
 	}
@@ -119,7 +132,7 @@ public class User implements Serializable {
 		sb.append("company = "+this.company+"\n");
 		sb.append("phone = "+this.phone+"\n");
 		sb.append("creationDate = "+this.creationDate+"\n");
-		sb.append("isActive = "+this.isActive);
+		sb.append("isActive = "+this.isActive+"\n");
 		sb.append("role = "+this.role);
 		return sb.toString();
 	}

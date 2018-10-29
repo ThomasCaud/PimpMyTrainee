@@ -23,7 +23,7 @@
 						    </div>
 						    <div class="form-group">
 						      <label>Password</label>
-						      <input type="password" name="password" class="form-control" placeholder="Password">
+						      <input type="password" name="password" class="form-control" placeholder="Enter password">
 						      <div class="form-error">${form.errors['password']}</div>
 						    </div>
 						     <button type="submit" class="btn btn-primary btn-block">Login</button>

@@ -1,7 +1,10 @@
 *,body {
 	margin: 0;
-	overflow: hidden;
 	padding: 0;
+}
+
+.container {
+	overflow: visible;
 }
 
 #login-page-background {
@@ -35,7 +38,7 @@
 #login-form-img > img {
 	display:block;
 	margin: 0 auto;
-	width: 300px;
+	width: 300px!important;
 }
 
 .form-error {
