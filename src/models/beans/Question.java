@@ -67,11 +67,11 @@ public class Question implements Serializable {
 		this.position = position;
 	}
 
-	public ArrayList<PossibleAnswers> getPossibleAnswers() {
+	public ArrayList<PossibleAnswer> getPossibleAnswers() {
 		return this.possibleAnswers;
 	}
 
-	public void setPossibleAnswers(ArrayList<PossibleAnswers> pa) {
+	public void setPossibleAnswers(ArrayList<PossibleAnswer> pa) {
 		this.possibleAnswers = pa;
 	}
 	
