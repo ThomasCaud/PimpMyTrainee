@@ -57,8 +57,13 @@
 				<td>${user.email}</td>
 				<td>${user.company}</td>
 				<td>${user.phone}</td>
-				<td>${user.creationDate}</td>
-				<td>${user.role}</td>
+				<td><fmt:formatDate type="both" value="${user.creationDate}"/></td>
+				<td>
+					<c:choose>
+						<c:when test = "${user.role == 'ADMIN'}"><span class="badge badge-pill badge-warning">${user.role.label}</span></c:when>
+						<c:otherwise><span class="badge badge-pill badge-info">${user.role.label}</span></c:otherwise>
+					</c:choose>
+				</td>
 				<td>
 					<c:choose>
 						<c:when test = "${user.isActive}"><span class="badge badge-pill badge-success">Active</span></c:when>
