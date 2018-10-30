@@ -4,4 +4,4 @@ CREATE TABLE `themes` (
   
 	PRIMARY KEY (`id`),
 	UNIQUE KEY `label` (`label`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
