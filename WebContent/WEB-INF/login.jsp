@@ -14,7 +14,7 @@
 					
 					<h2 id="login-form-header" class="text-center">Login to Your Account</h2>
 					
-					<form method="post" action="login">
+					<form method="post" action="">
 						<fieldset>
 							<div class="form-group">
 						      <label>Email address</label>

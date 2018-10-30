@@ -18,7 +18,7 @@
 				<div class="card-body text-center">
 					<h4 class="card-title">Successful registration !</h4>
 					<p class="card-text">An email has been sent to ${user.email} with the credentials to login to the website.</p>
-					<a href="<c:url value = "/users" />" class="btn btn-warning">Go back to the users list</a>
+					<a href="<c:url value = "/${applicationScope.URL_USERS}" />" class="btn btn-warning">Go back to the users list</a>
 				</div>
 			</div>
 		
