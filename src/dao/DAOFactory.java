@@ -9,8 +9,10 @@ import java.util.Properties;
 
 import dao.exceptions.DAOConfigurationException;
 import dao.interfaces.QuizDAO;
+import dao.interfaces.ThemeDAO;
 import dao.interfaces.UserDAO;
 import dao.managers.QuizDAOImpl;
+import dao.managers.ThemeDAOImpl;
 import dao.managers.UserDAOImpl;
 
 public class DAOFactory {
@@ -77,4 +79,8 @@ public class DAOFactory {
 	public QuizDAO getQuizDAO() {
         return new QuizDAOImpl( this );
     }
+
+	public ThemeDAO getThemeDAO() {
+		 return new ThemeDAOImpl( this );
+	}
 }
