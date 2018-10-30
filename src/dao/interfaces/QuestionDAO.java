@@ -1,11 +1,10 @@
 package dao.interfaces;
 
-import java.util.ArrayList;
-
 import dao.exceptions.DAOException;
 import models.beans.Question;
+import models.beans.Quiz;
 
 public interface QuestionDAO {
-    // todo add create
+	void create(Quiz quiz, Question question) throws DAOException;
     Question findByID(Integer id) throws DAOException;
 }

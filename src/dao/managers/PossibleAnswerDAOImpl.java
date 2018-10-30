@@ -1,17 +1,19 @@
 package dao.managers;
 
+import static dao.DAOCommon.initPreparedStatement;
+import static dao.DAOCommon.silentClose;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import static dao.DAOCommon.*;
-
 import dao.DAOFactory;
 import dao.exceptions.DAOException;
 import dao.interfaces.PossibleAnswerDAO;
 import models.beans.PossibleAnswer;
+import models.beans.Question;
 
 public class PossibleAnswerDAOImpl implements PossibleAnswerDAO {
 
@@ -38,21 +40,15 @@ public class PossibleAnswerDAOImpl implements PossibleAnswerDAO {
 		pa.setIsActive( resultSet.getInt( "isActive" ) == 1 ? true : false );
 		pa.setPosition( resultSet.getInt( "position" ) );
 
-        // todo gérer questionDAO
-        // QuestionDAO questionDAO = DAOFactory.getInstance().getQuestionDAO();
-        // Question question = questionDAO.findQuestionByID( resultSet.getInt("question") );
-        // pa.setQuestion(question);
-
         return pa;
 	}
 
-	public void create(PossibleAnswer pa) throws DAOException {
+	public void create(Question qu, PossibleAnswer pa) throws DAOException {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
 
 	    try {
-			// Récupération d'une connexion depuis la Factory
 			connection = daoFactory.getConnection();
 			preparedStatement = initPreparedStatement(
 				connection,
@@ -62,7 +58,7 @@ public class PossibleAnswerDAOImpl implements PossibleAnswerDAO {
                 pa.getIsCorrect(),
                 pa.getIsActive(),
                 pa.getPosition(),
-                pa.getQuestion().getId()
+                qu.getId()
 			);
 			int status = preparedStatement.executeUpdate();
 
@@ -85,7 +81,7 @@ public class PossibleAnswerDAOImpl implements PossibleAnswerDAO {
 		}
 	}
 
-	public void update(PossibleAnswer pa) throws DAOException {
+	public void update(Question qu, PossibleAnswer pa) throws DAOException {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 
@@ -99,7 +95,7 @@ public class PossibleAnswerDAOImpl implements PossibleAnswerDAO {
                 pa.getIsCorrect(),
                 pa.getIsActive(),
                 pa.getPosition(),
-                pa.getQuestion().getId(),
+                qu.getId(),
                 pa.getId()
 			);
 			preparedStatement.executeUpdate();
@@ -118,12 +114,10 @@ public class PossibleAnswerDAOImpl implements PossibleAnswerDAO {
 	    PossibleAnswer pa = null;
 
 		try {
-			/* Récupération d'une connexion depuis la Factory */
 			connection = daoFactory.getConnection();
 			preparedStatement = initPreparedStatement( connection, SQL_SELECT_BY_ID, false, id );
 			resultSet = preparedStatement.executeQuery();
 
-			/* Parcours de la ligne de données de l'éventuel ResulSet retourné */
 			if ( resultSet.next() ) {
 				pa = map( resultSet );
 			}

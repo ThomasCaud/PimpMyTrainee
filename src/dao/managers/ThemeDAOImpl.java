@@ -1,18 +1,18 @@
 package dao.managers;
 
+import static dao.DAOCommon.initPreparedStatement;
+import static dao.DAOCommon.silentClose;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import static dao.DAOCommon.*;
-
 import dao.DAOFactory;
 import dao.exceptions.DAOException;
 import dao.interfaces.ThemeDAO;
 import models.beans.Theme;
-import models.beans.User;
 
 public class ThemeDAOImpl implements ThemeDAO {
 

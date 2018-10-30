@@ -1,7 +1,6 @@
 package models.beans;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 
 public class Question implements Serializable {
