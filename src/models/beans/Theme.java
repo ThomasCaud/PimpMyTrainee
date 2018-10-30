@@ -36,7 +36,7 @@ public class Theme implements Serializable {
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		sb.append("id = "+this.id+"\n");
-		sb.append("label = "+this.label+"\n");
+		sb.append("label = "+this.label);
 		return sb.toString();
 	}
 }

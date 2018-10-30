@@ -20,10 +20,33 @@
 			<form method="post" action="">
 				<fieldset>
 					<div class="form-group">
-				      <label>Title</label>
-				      <input type="text" class="form-control" placeholder="Enter title" name="title" value="<c:out value="${quiz.title}"/>">
-				      <div class="form-error">${form.errors['title']}</div>
+				      	<label>Quiz Title</label>
+				      	<input type="text" class="form-control" placeholder="Enter quiz title" name="title" value="<c:out value="${quiz.title}"/>">
+				      	<div class="form-error">${form.errors['title']}</div>
 				    </div>
+				    
+				    <div class="form-group">
+				      	<label>Quiz Theme</label>
+				      	<div class="row no-gutters">
+				      	
+				      		<div class="col-12 col-sm-8">
+						      <select class="form-control">
+						      	<c:forEach items="${themes}" var="theme">
+						        <option value="${theme.id}">${theme.label}</option>
+						        </c:forEach>
+						      </select>
+							</div>
+							
+							<div class="col-12 mt-2 mt-sm-0 col-sm-3 offset-sm-1">
+						    	<a href="<c:url value = "/${applicationScope.URL_CREATE_THEME}"/>" class="btn btn-info btn-block"><i class="fa fa-plus"></i> New theme</a>
+							</div>
+				      	
+				      	</div>
+					      	
+				    </div>
+				    
+				    
+					
 				</fieldset>
 			</form>
 		

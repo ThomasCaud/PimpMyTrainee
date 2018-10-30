@@ -12,10 +12,12 @@ import dao.DAOFactory;
 import dao.exceptions.DAOException;
 import dao.interfaces.ThemeDAO;
 import models.beans.Theme;
+import models.beans.User;
 
 public class ThemeDAOImpl implements ThemeDAO {
 
 	private static final String SQL_SELECT_PAR_ID = "SELECT * FROM Themes WHERE id = ?";
+	private static final String SQL_SELECT_ALL = "SELECT * FROM Themes";
 
 	private DAOFactory daoFactory;
 
@@ -57,5 +59,31 @@ public class ThemeDAOImpl implements ThemeDAO {
 		}
 
 		return theme;
+	}
+
+	@Override
+	public ArrayList<Theme> findAllThemes() throws DAOException {
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+		ArrayList<Theme> themes = new ArrayList<Theme>();
+
+		try {
+			connection = daoFactory.getConnection();
+			preparedStatement = initPreparedStatement( connection, SQL_SELECT_ALL, false);
+			resultSet = preparedStatement.executeQuery();
+
+			while ( resultSet.next() ) {
+				Theme theme = map( resultSet );
+				themes.add(theme);
+			}
+
+		} catch (SQLException e) {
+			throw new DAOException( e );
+		} finally {
+			silentClose( resultSet, preparedStatement, connection );
+		}
+
+		return themes;
 	}
 }

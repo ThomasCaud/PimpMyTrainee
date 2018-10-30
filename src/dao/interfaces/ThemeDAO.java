@@ -7,4 +7,5 @@ import models.beans.Theme;
 
 public interface ThemeDAO {
 	Theme findThemeByID(Integer id) throws DAOException;
+	ArrayList<Theme> findAllThemes() throws DAOException;
 }

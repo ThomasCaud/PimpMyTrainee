@@ -1,6 +1,7 @@
 package controllers.admin;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -9,7 +10,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import common.Config;
+import dao.interfaces.ThemeDAO;
+import dao.DAOFactory;
 import models.beans.E_Role;
+import models.beans.Theme;
 import models.beans.User;
 
 @WebServlet( "/"+Config.URL_CREATE_QUIZ )
@@ -18,10 +22,12 @@ public class CreateQuizController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private static final String ATT_FORM = "form";
 	private static final String ATT_QUIZ = "quiz";
+	private static final String ATT_THEMES = "themes";
 	private static final String VIEW = "/WEB-INF/admin_create_quiz.jsp";
+	private ThemeDAO themeDAO;
 	
 	public void init() throws ServletException {
-        //this.userDAO = ( (DAOFactory) getServletContext().getAttribute( Config.CONF_DAO_FACTORY ) ).getUserDAO();
+        this.themeDAO = ( (DAOFactory) getServletContext().getAttribute( Config.CONF_DAO_FACTORY ) ).getThemeDAO();
 	}
 	
 	public void doGet( HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException {
@@ -33,6 +39,10 @@ public class CreateQuizController extends HttpServlet {
 			response.sendError(HttpServletResponse.SC_FORBIDDEN);	
 			return;
 		}
+		
+		ArrayList<Theme> themes = themeDAO.findAllThemes();
+		
+		request.setAttribute(ATT_THEMES, themes);
 		
 		this.getServletContext().getRequestDispatcher( VIEW ).forward( request, response );
 	}
