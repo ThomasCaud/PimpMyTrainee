@@ -13,4 +13,6 @@ public class Config {
 	public static final String URL_VIEW_USER = "viewUser";
 	public static final String URL_REGISTER_USER = "registerUser";
 	public static final String URL_QUIZZES = "quizzes";
+	public static final String URL_CREATE_QUIZ = "createQuiz";
+	public static final String URL_VIEW_QUIZ = "viewQuiz";
 }
