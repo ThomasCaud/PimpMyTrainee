@@ -9,16 +9,16 @@ public class Quiz implements Serializable {
 	private int id;
 	private String title;
 	private Boolean isActive;
-	private ArrayList<PossibleAnswer> possibleAnswers;
+	private ArrayList<Question> questions;
 	private Theme theme;
 	private User admninistrator;
 	private Timestamp creationDate;
-	
+
 	public Quiz() {
 		this.id = -1;
 		this.title = "notitle";
 		this.isActive = true;
-		this.possibleAnswers = new ArrayList<PossibleAnswer>();
+		this.questions = new ArrayList<Question>();
 		this.theme = new Theme("Default");
 		this.admninistrator = null;
 		this.creationDate = new Timestamp(System.currentTimeMillis());
@@ -27,7 +27,7 @@ public class Quiz implements Serializable {
 	public Quiz(String title, Theme theme, User administrator) {
 		this.title = title;
 		this.isActive = true;
-		this.possibleAnswers = new ArrayList<PossibleAnswer>();
+		this.questions = new ArrayList<Question>();
 		this.theme = theme;
 		this.admninistrator = administrator;
 		this.creationDate = new Timestamp(System.currentTimeMillis());
@@ -37,7 +37,7 @@ public class Quiz implements Serializable {
 		this.id = q.getId();
 		this.title = q.getTitle();
 		this.isActive = q.getIsActive();
-		this.possibleAnswers = q.getPossibleAnswers();
+		this.questions = q.getQuestions();
 		this.theme = q.getTheme();
 		this.admninistrator = q.getAdministrator();
 		this.creationDate = q.getCreationDate();
@@ -67,12 +67,12 @@ public class Quiz implements Serializable {
 		this.isActive = isActive;
 	}
 
-	public ArrayList<PossibleAnswers> getPossibleAnswers() {
-		return this.possibleAnswers;
+	public ArrayList<Question> getQuestions() {
+		return this.questions;
 	}
 
-	public void setPossibleAnswers(ArrayList<PossibleAnswers> pa) {
-		this.possibleAnswers = pa;
+	public void setQuestions(ArrayList<Question> questions) {
+		this.questions = questions;
 	}
 
 	public Theme getTheme() {
@@ -104,6 +104,7 @@ public class Quiz implements Serializable {
 		sb.append("id = "+this.id+"\n");
 		sb.append("title = "+this.title+"\n");
 		sb.append("isActive = "+this.isActive+"\n");
+		sb.append("questions="+this.questions+"\n");
 		sb.append("administrator="+this.administrator.toString()+"\n");
 		sb.append("creationDate = "+this.creationDate+"\n");
 		return sb.toString();
