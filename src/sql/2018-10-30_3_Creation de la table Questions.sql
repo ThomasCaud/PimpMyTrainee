@@ -6,5 +6,5 @@ CREATE TABLE `questions` (
   	`quiz` bigint(20) unsigned NOT NULL,
 
 	PRIMARY KEY (`id`),
-	FOREIGN KEY (quiz) REFERENCES Quizzes(id)
+	FOREIGN KEY (quiz) REFERENCES Quizzes(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;

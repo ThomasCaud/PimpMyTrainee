@@ -7,5 +7,5 @@ CREATE TABLE `possibleanswers` (
   	`question` bigint(20) unsigned NOT NULL,
 
 	PRIMARY KEY (`id`),
-	FOREIGN KEY (question) REFERENCES Questions(id)
+	FOREIGN KEY (question) REFERENCES Questions(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
