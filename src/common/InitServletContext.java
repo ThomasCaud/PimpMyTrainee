@@ -1,5 +1,7 @@
 package common;
 
+import java.lang.reflect.Field;
+
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
@@ -8,7 +10,7 @@ import javax.servlet.annotation.WebListener;
 import dao.DAOFactory;
 
 @WebListener
-public class InitDAOFactory implements ServletContextListener {
+public class InitServletContext implements ServletContextListener {
 	
 	private static final String ATT_DAO_FACTORY = "daofactory";
     private DAOFactory daoFactory;
@@ -26,6 +28,22 @@ public class InitDAOFactory implements ServletContextListener {
         this.daoFactory = DAOFactory.getInstance();
         /* Enregistrement dans un attribut ayant pour portée toute l'application */
         servletContext.setAttribute( ATT_DAO_FACTORY, this.daoFactory );
+        
+        // Chargement dans l'application des URLs de l'appli
+        for(Field field : Config.class.getDeclaredFields() ) {
+        	String fieldName = field.getName();
+        	if( fieldName.startsWith("URL_") ) {
+        		try {
+					servletContext.setAttribute( fieldName, field.get(fieldName) );
+				} catch (SecurityException e) {
+					e.printStackTrace();
+				} catch (IllegalArgumentException e) {
+					e.printStackTrace();
+				} catch (IllegalAccessException e) {
+					e.printStackTrace();
+				}
+        	}
+        }
 	}
 
 }

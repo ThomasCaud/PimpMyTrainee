@@ -15,7 +15,7 @@ import dao.interfaces.UserDAO;
 import models.beans.User;
 import models.forms.LoginForm;
 
-@WebServlet("/login")
+@WebServlet("/"+Config.URL_LOGIN)
 public class LoginController extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
@@ -48,7 +48,7 @@ public class LoginController extends HttpServlet {
 		/* Récupération de la session depuis la requête */
         HttpSession session = request.getSession();
         session.setAttribute(Config.ATT_SESSION_USER, user);
-        response.sendRedirect(request.getServletContext().getContextPath()+Config.URL_REDIRECT_ROOT);
+        response.sendRedirect(request.getServletContext().getContextPath()+Config.URL_ROOT);
 	}
 
 }

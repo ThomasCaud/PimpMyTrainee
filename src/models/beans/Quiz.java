@@ -11,7 +11,7 @@ public class Quiz implements Serializable {
 	private Boolean isActive;
 	private ArrayList<Question> questions;
 	private Theme theme;
-	private User admninistrator;
+	private User administrator;
 	private Timestamp creationDate;
 
 	public Quiz() {
@@ -20,7 +20,7 @@ public class Quiz implements Serializable {
 		this.isActive = true;
 		this.questions = new ArrayList<Question>();
 		this.theme = new Theme("Default");
-		this.admninistrator = null;
+		this.administrator = null;
 		this.creationDate = new Timestamp(System.currentTimeMillis());
 	}
 
@@ -29,7 +29,7 @@ public class Quiz implements Serializable {
 		this.isActive = true;
 		this.questions = new ArrayList<Question>();
 		this.theme = theme;
-		this.admninistrator = administrator;
+		this.administrator = administrator;
 		this.creationDate = new Timestamp(System.currentTimeMillis());
 	}
 
@@ -39,7 +39,7 @@ public class Quiz implements Serializable {
 		this.isActive = q.getIsActive();
 		this.questions = q.getQuestions();
 		this.theme = q.getTheme();
-		this.admninistrator = q.getAdministrator();
+		this.administrator = q.getAdministrator();
 		this.creationDate = q.getCreationDate();
 	}
 
@@ -84,7 +84,7 @@ public class Quiz implements Serializable {
 	}
 
 	public User getAdministrator() {
-		return this.admninistrator;
+		return this.administrator;
 	}
 
 	public void setAdministrator(User u) {

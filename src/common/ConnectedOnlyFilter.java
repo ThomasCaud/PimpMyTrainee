@@ -41,17 +41,17 @@ public class ConnectedOnlyFilter implements Filter {
         }
 
 		/* Si aucun utilisateur en session (donc pas connecté), alors redirection vers la page de login */
-	/* Si déjà connecté et essaye d'accéder à la page de login, alors redirection sur la page principale */
+        /* Si déjà connecté et essaye d'accéder à la page de login, alors redirection sur la page principale */
         if ( session.getAttribute( Config.ATT_SESSION_USER ) == null ) {
-            if( !path.equals("/login") ) 
+            if( !path.equals("/"+Config.URL_LOGIN) ) 
         		response.sendRedirect(request.getServletContext().getContextPath()+URL_LOGIN);
         	else 
         		chain.doFilter( request, response );
         } else {
-        	if( !path.equals("/login") ) 
+        	if( !path.equals("/"+Config.URL_LOGIN) ) 
         		chain.doFilter( request, response );
         	else
-        		response.sendRedirect(request.getServletContext().getContextPath()+Config.URL_REDIRECT_ROOT);
+        		response.sendRedirect(request.getServletContext().getContextPath()+Config.URL_ROOT);
         }
 
 	}
