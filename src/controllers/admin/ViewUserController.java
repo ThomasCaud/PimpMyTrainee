@@ -16,7 +16,7 @@ import models.beans.E_Role;
 import models.beans.User;
 import models.forms.UpdateUserForm;
 
-@WebServlet( "/viewUser/*" )
+@WebServlet( "/"+Config.URL_VIEW_USER+"/*" )
 public class ViewUserController extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;

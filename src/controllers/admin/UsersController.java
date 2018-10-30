@@ -16,7 +16,7 @@ import dao.interfaces.UserDAO;
 import models.beans.E_Role;
 import models.beans.User;
 
-@WebServlet( "/users" )
+@WebServlet( "/"+Config.URL_USERS )
 public class UsersController extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;

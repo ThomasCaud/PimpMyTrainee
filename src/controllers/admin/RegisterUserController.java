@@ -18,7 +18,7 @@ import models.beans.E_Role;
 import models.beans.User;
 import models.forms.RegisterUserForm;
 
-@WebServlet( "/registerUser" )
+@WebServlet( "/"+Config.URL_REGISTER_USER )
 public class RegisterUserController extends HttpServlet {
 	
 	private static final long serialVersionUID = 1L;
