@@ -66,7 +66,7 @@ public class QuizzesController extends HttpServlet {
 		if( res != 0 ) nbNeededPages++;
     
 		String search = request.getParameter(ATT_SEARCH);
-		System.out.println(search);
+
     	if(search != null) {
     		quizzes = quizDAO.findQuizzesByTitleOrTheme(search);
 		} else {
