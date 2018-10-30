@@ -20,8 +20,9 @@ public class QuizDAOImpl implements QuizDAO {
 	private static final String SQL_SELECT_ALL = "SELECT * FROM Quizzes";
 	private static final String SQL_SELECT_ALL_WITH_OFFSET_LIMIT = "SELECT * FROM Quizzes LIMIT ?,?";
 	private static final String SQL_COUNT_ALL = "SELECT count(*) as count FROM Quizzes";
-	private static final String SQL_INSERT_QUIZ = "INSERT INTO Quizzes (...) VALUES (...)";
-	private static final String SQL_UPDATE_QUIZ = "UPDATE Quizzes set ... WHERE id = ?";
+	private static final String SQL_INSERT_QUIZ = "INSERT INTO Quizzes (title, theme, creator, creationDate, isActive) VALUES (?,?,?,NOW(),?)";
+
+	private static final String SQL_UPDATE_QUIZ = "UPDATE Quizzes set title = ?, theme = ?, isActive = ? WHERE id = ?";
 
 	private DAOFactory daoFactory;
 
@@ -42,8 +43,6 @@ public class QuizDAOImpl implements QuizDAO {
 	}
 
 	public void createQuiz(Quiz quiz) throws DAOException {
-		// TODO
-		/*
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
@@ -55,10 +54,13 @@ public class QuizDAOImpl implements QuizDAO {
 				connection,
 				SQL_INSERT_QUIZ,
 				true,
-				// todo after writing model
+				quiz.getTitle(),
+				quiz.getTheme().getId(),
+				quiz.getAdministrator().getId(),
+				quiz.getIsActive()
 			);
 			int status = preparedStatement.executeUpdate();
-			
+
 			if( status == 0 ) {
 				throw new DAOException( "Échec de la création du quiz, aucune ligne ajoutée dans la table." );
 			}
@@ -75,12 +77,11 @@ public class QuizDAOImpl implements QuizDAO {
 			throw new DAOException( e );
 		} finally {
 			silentClose( resultSet, preparedStatement, connection );
-		}*/
+		}
 	}
 
 	public void updateQuiz(Quiz quiz) throws DAOException {
-		// TODO
-		/* Connection connection = null;
+		 Connection connection = null;
 		PreparedStatement preparedStatement = null;
 
 		try {
@@ -89,16 +90,19 @@ public class QuizDAOImpl implements QuizDAO {
 				connection,
 				SQL_UPDATE_QUIZ,
 				false,
-				// todo after writing model
+				quiz.getTitle(),
+				quiz.getTheme().getId(),
+				quiz.getIsActive(),
+				quiz.getAdministrator().getId()
 			);
 			preparedStatement.executeUpdate();
 		} catch ( SQLException e ) {
 			throw new DAOException( e );
 		} finally {
 			silentClose( null, preparedStatement, connection );
-		}*/
+		}
 	}
-	
+
 	@Override
 	public Quiz findQuizByID(Integer id) throws DAOException {
 		Connection connection = null;
@@ -150,7 +154,7 @@ public class QuizDAOImpl implements QuizDAO {
 
 		return quizzes;
 	}
-	
+
 	@Override
 	public ArrayList<Quiz> findAllQuizzes(Integer offset, Integer limit) throws DAOException {
 		Connection connection = null;
@@ -173,10 +177,10 @@ public class QuizDAOImpl implements QuizDAO {
 		} finally {
 			silentClose( resultSet, preparedStatement, connection );
 		}
-		
+
 		return quizzes;
 	}
-	
+
 	@Override
 	public Integer countAllQuizzes() throws DAOException {
 		Connection connection = null;
