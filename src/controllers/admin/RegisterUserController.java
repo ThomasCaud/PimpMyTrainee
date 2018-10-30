@@ -35,10 +35,10 @@ public class RegisterUserController extends HttpServlet {
 	public void doGet( HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException {
 		HttpSession session = request.getSession();
 		
-		User user = (User) session.getAttribute(Config.ATT_SESSION_USER);
+		User sessionUser = (User) session.getAttribute(Config.ATT_SESSION_USER);
 		
-		if(user == null || user.getRole() != E_Role.ADMIN ) {
-			response.sendRedirect(request.getServletContext().getContextPath()+Config.URL_REDIRECT_ROOT);		
+		if(sessionUser == null || sessionUser.getRole() != E_Role.ADMIN ) {
+			response.sendError(HttpServletResponse.SC_FORBIDDEN);	
 			return;
 		}
 		
