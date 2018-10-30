@@ -11,8 +11,12 @@ import static dao.DAOCommon.*;
 import dao.DAOFactory;
 import dao.exceptions.DAOException;
 import dao.interfaces.QuizDAO;
+import dao.interfaces.ThemeDAO;
+import dao.interfaces.UserDAO;
 import models.beans.E_Role;
 import models.beans.Quiz;
+import models.beans.Theme;
+import models.beans.User;
 
 public class QuizDAOImpl implements QuizDAO {
 
@@ -37,8 +41,18 @@ public class QuizDAOImpl implements QuizDAO {
 		Quiz quiz = new Quiz();
 
 		quiz.setId( resultSet.getInt( "id" ) );
-		// todo after writing model
+		quiz.setTitle( resultSet.getString("title") );
+		quiz.setIsActive( resultSet.getInt( "isActive" ) == 1 ? true : false );
+		quiz.setCreationDate( resultSet.getTimestamp( "creationDate" ) );
 		
+		UserDAO userDAO = DAOFactory.getInstance().getUserDAO();
+		User user = userDAO.findUserByID( resultSet.getInt("creator") );
+		quiz.setCreator(user);
+		
+		ThemeDAO themeDAO = DAOFactory.getInstance().getThemeDAO();
+		Theme theme = themeDAO.findThemeByID( resultSet.getInt("theme") );
+		quiz.setTheme(theme);
+				
 		return quiz;
 	}
 
