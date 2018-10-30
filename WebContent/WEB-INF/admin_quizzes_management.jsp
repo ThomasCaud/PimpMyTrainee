@@ -55,7 +55,7 @@
 				<td><fmt:formatDate type="both" value="${quiz.creationDate}"/></td>
 				<td>
 					<c:choose>
-						<c:when test = "${user.isActive}"><span class="badge badge-pill badge-success">Active</span></c:when>
+						<c:when test = "${quiz.isActive}"><span class="badge badge-pill badge-success">Active</span></c:when>
 						<c:otherwise><span class="badge badge-pill badge-danger">Deleted</span></c:otherwise>
 					</c:choose>
 				</td>
