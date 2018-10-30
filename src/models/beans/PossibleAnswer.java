@@ -28,7 +28,7 @@ public class PossibleAnswer implements Serializable {
 
 	public PossibleAnswer(PossibleAnswer pa) {
 		this.id = pa.getId();
-		this.label = pa.getlabel();
+		this.label = pa.getLabel();
 		this.isActive = pa.getIsActive();
 		this.isCorrect = pa.getIsCorrect();
 		this.position = pa.getPosition();

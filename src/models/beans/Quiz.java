@@ -11,7 +11,7 @@ public class Quiz implements Serializable {
 	private Boolean isActive;
 	private ArrayList<PossibleAnswer> possibleAnswers;
 	private Theme theme;
-	private User admninistrator;
+	private User administrator;
 	private Timestamp creationDate;
 	
 	public Quiz() {
@@ -20,7 +20,7 @@ public class Quiz implements Serializable {
 		this.isActive = true;
 		this.possibleAnswers = new ArrayList<PossibleAnswer>();
 		this.theme = new Theme("Default");
-		this.admninistrator = null;
+		this.administrator = null;
 		this.creationDate = new Timestamp(System.currentTimeMillis());
 	}
 
@@ -29,7 +29,7 @@ public class Quiz implements Serializable {
 		this.isActive = true;
 		this.possibleAnswers = new ArrayList<PossibleAnswer>();
 		this.theme = theme;
-		this.admninistrator = administrator;
+		this.administrator = administrator;
 		this.creationDate = new Timestamp(System.currentTimeMillis());
 	}
 
@@ -39,7 +39,7 @@ public class Quiz implements Serializable {
 		this.isActive = q.getIsActive();
 		this.possibleAnswers = q.getPossibleAnswers();
 		this.theme = q.getTheme();
-		this.admninistrator = q.getAdministrator();
+		this.administrator = q.getAdministrator();
 		this.creationDate = q.getCreationDate();
 	}
 
@@ -67,11 +67,11 @@ public class Quiz implements Serializable {
 		this.isActive = isActive;
 	}
 
-	public ArrayList<PossibleAnswers> getPossibleAnswers() {
+	public ArrayList<PossibleAnswer> getPossibleAnswers() {
 		return this.possibleAnswers;
 	}
 
-	public void setPossibleAnswers(ArrayList<PossibleAnswers> pa) {
+	public void setPossibleAnswers(ArrayList<PossibleAnswer> pa) {
 		this.possibleAnswers = pa;
 	}
 
@@ -84,7 +84,7 @@ public class Quiz implements Serializable {
 	}
 
 	public User getAdministrator() {
-		return this.admninistrator;
+		return this.administrator;
 	}
 
 	public void setAdministrator(User u) {

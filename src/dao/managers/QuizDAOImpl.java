@@ -12,6 +12,7 @@ import dao.DAOFactory;
 import dao.exceptions.DAOException;
 import dao.interfaces.QuizDAO;
 import models.beans.E_Role;
+import models.beans.Quiz;
 
 public class QuizDAOImpl implements QuizDAO {
 
@@ -40,15 +41,15 @@ public class QuizDAOImpl implements QuizDAO {
 		return quiz;
 	}
 
-	@Override
 	public void createQuiz(Quiz quiz) throws DAOException {
-		
+		// TODO
+		/*
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
 	    
 	    try {
-			/* Récupération d'une connexion depuis la Factory */
+			// Récupération d'une connexion depuis la Factory
 			connection = daoFactory.getConnection();
 			preparedStatement = initPreparedStatement(
 				connection,
@@ -74,12 +75,12 @@ public class QuizDAOImpl implements QuizDAO {
 			throw new DAOException( e );
 		} finally {
 			silentClose( resultSet, preparedStatement, connection );
-		}
+		}*/
 	}
 
-	@Override
 	public void updateQuiz(Quiz quiz) throws DAOException {
-		Connection connection = null;
+		// TODO
+		/* Connection connection = null;
 		PreparedStatement preparedStatement = null;
 
 		try {
@@ -95,7 +96,7 @@ public class QuizDAOImpl implements QuizDAO {
 			throw new DAOException( e );
 		} finally {
 			silentClose( null, preparedStatement, connection );
-		}
+		}*/
 	}
 	
 	@Override
