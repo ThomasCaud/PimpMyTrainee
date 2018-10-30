@@ -8,4 +8,4 @@ INSERT INTO
 		("Python"),
 		("Communication professionnelle"),
 		("Gestion de projets"),
-		("Mathématiques")
+		("Mathématiques");
