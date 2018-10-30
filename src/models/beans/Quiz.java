@@ -11,7 +11,7 @@ public class Quiz implements Serializable {
 	private Boolean isActive;
 	private ArrayList<Question> questions;
 	private Theme theme;
-	private User administrator;
+	private User creator;
 	private Timestamp creationDate;
 
 	public Quiz() {
@@ -20,7 +20,7 @@ public class Quiz implements Serializable {
 		this.isActive = true;
 		this.questions = new ArrayList<Question>();
 		this.theme = new Theme("Default");
-		this.administrator = null;
+		this.creator = null;
 		this.creationDate = new Timestamp(System.currentTimeMillis());
 	}
 
@@ -29,7 +29,7 @@ public class Quiz implements Serializable {
 		this.isActive = true;
 		this.questions = new ArrayList<Question>();
 		this.theme = theme;
-		this.administrator = administrator;
+		this.creator = administrator;
 		this.creationDate = new Timestamp(System.currentTimeMillis());
 	}
 
@@ -39,7 +39,7 @@ public class Quiz implements Serializable {
 		this.isActive = q.getIsActive();
 		this.questions = q.getQuestions();
 		this.theme = q.getTheme();
-		this.administrator = q.getAdministrator();
+		this.creator = q.getCreator();
 		this.creationDate = q.getCreationDate();
 	}
 
@@ -83,12 +83,12 @@ public class Quiz implements Serializable {
 		this.theme = theme;
 	}
 
-	public User getAdministrator() {
-		return this.administrator;
+	public User getCreator() {
+		return this.creator;
 	}
 
-	public void setAdministrator(User u) {
-		this.administrator = u;
+	public void setCreator(User u) {
+		this.creator = u;
 	}
 
 	public Timestamp getCreationDate() {
@@ -105,7 +105,7 @@ public class Quiz implements Serializable {
 		sb.append("title = "+this.title+"\n");
 		sb.append("isActive = "+this.isActive+"\n");
 		sb.append("questions="+this.questions+"\n");
-		sb.append("administrator="+this.administrator.toString()+"\n");
+		sb.append("creator="+this.creator.toString()+"\n");
 		sb.append("creationDate = "+this.creationDate+"\n");
 		return sb.toString();
 	}
