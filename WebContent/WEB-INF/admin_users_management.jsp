@@ -30,7 +30,7 @@
 	
 	<hr>
 	
-	<c:if test = "${search != null && search != ''}"><h5 class="inline-block">Results for the search "${search}" <a href="<c:url value = "/users"/>" class="btn btn-danger btn-sm"><i class="fa fa-times"></i></a></h5></c:if>
+	<c:if test = "${search != null && search != ''}"><h5 class="inline-block">Results for the search "${search}" <a href="<c:url value = "/${applicationScope.URL_USERS}"/>" class="btn btn-danger btn-sm"><i class="fa fa-times"></i></a></h5></c:if>
 	
 	<table class="table table-responsive-sm table-sm table-bordered">
 		<thead class="thead-dark">
