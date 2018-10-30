@@ -5,6 +5,7 @@ import java.sql.Timestamp;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.mail.EmailException;
+import org.apache.log4j.Logger;
 
 import common.GmailEmailSendor;
 import common.RandomStringGenerator;
@@ -13,6 +14,8 @@ import models.beans.E_Role;
 import models.beans.User;
 
 public class RegisterUserForm extends AbstractForm {
+	private static Logger logger = Logger.getLogger(RegisterUserForm.class);
+	
 	// Variables that represents each field of the form
 		private static final String FIELD_FIRSTNAME = "firstname";
 		private static final String FIELD_LASTNAME = "lastname";
@@ -110,14 +113,12 @@ public class RegisterUserForm extends AbstractForm {
 				
 				userDAO.createUser(user);
 
-				/*GmailEmailSendor.getInstance().sendSimpleEmail(
+				GmailEmailSendor.getInstance().sendSimpleEmail(
 					"Your password for PimpMyTrainee",
 					"Thanks for subscribing! Your password is " + password,
 					user.getEmail()
-				);*/
-				
-				System.out.println("Password = "+password);
-				
+				);
+				logger.info("Generated password : " + password);
 				return user;
 			}
 			return user;
