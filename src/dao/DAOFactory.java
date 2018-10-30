@@ -8,7 +8,9 @@ import java.sql.SQLException;
 import java.util.Properties;
 
 import dao.exceptions.DAOConfigurationException;
+import dao.interfaces.QuizDAO;
 import dao.interfaces.UserDAO;
+import dao.managers.QuizDAOImpl;
 import dao.managers.UserDAOImpl;
 
 public class DAOFactory {
@@ -70,5 +72,9 @@ public class DAOFactory {
 	
 	public UserDAO getUserDAO() {
         return new UserDAOImpl( this );
+    }
+	
+	public QuizDAO getQuizDAO() {
+        return new QuizDAOImpl( this );
     }
 }
