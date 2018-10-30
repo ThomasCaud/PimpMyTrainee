@@ -7,6 +7,6 @@ CREATE TABLE `quizzes` (
   	`isActive` tinyint(1) NOT NULL,
   	
 	PRIMARY KEY (`id`),
-	FOREIGN KEY (theme) REFERENCES Themes(id) ON DELETE CASCADE,
+	FOREIGN KEY (theme) REFERENCES Themes(id),
 	FOREIGN KEY (creator) REFERENCES Users(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
