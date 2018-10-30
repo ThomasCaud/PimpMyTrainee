@@ -62,7 +62,7 @@ public class PossibleAnswerDAOImpl implements PossibleAnswerDAO {
                 pa.getIsCorrect(),
                 pa.getIsActive(),
                 pa.getPosition(),
-                pa.getPosition.getId()
+                pa.getQuestion().getId()
 			);
 			int status = preparedStatement.executeUpdate();
 

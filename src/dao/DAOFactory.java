@@ -9,9 +9,11 @@ import java.util.Properties;
 
 import dao.exceptions.DAOConfigurationException;
 import dao.interfaces.PossibleAnswerDAO;
+import dao.interfaces.QuestionDAO;
 import dao.interfaces.QuizDAO;
 import dao.interfaces.ThemeDAO;
 import dao.interfaces.UserDAO;
+import dao.managers.PossibleAnswerDAOImpl;
 import dao.managers.QuestionDAOImpl;
 import dao.managers.QuizDAOImpl;
 import dao.managers.ThemeDAOImpl;
@@ -87,7 +89,7 @@ public class DAOFactory {
     }
 
     public PossibleAnswerDAO getPossibleAnswerDAO() {
-        return new PossibleAnswerDAO( this );
+        return new PossibleAnswerDAOImpl( this );
     }
 
     public QuestionDAO getQuestionDAO() {
