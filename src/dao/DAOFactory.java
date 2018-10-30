@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.util.Properties;
 
 import dao.exceptions.DAOConfigurationException;
+import dao.interfaces.PossibleAnswerDAO;
 import dao.interfaces.QuizDAO;
 import dao.interfaces.ThemeDAO;
 import dao.interfaces.UserDAO;
@@ -82,5 +83,9 @@ public class DAOFactory {
 
 	public ThemeDAO getThemeDAO() {
 		 return new ThemeDAOImpl( this );
-	}
+    }
+    
+    public PossibleAnswerDAO getPossibleAnswerDAO() {
+        return new PossibleAnswerDAO( this );
+    }
 }
