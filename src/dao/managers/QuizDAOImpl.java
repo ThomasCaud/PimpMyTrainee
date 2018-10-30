@@ -56,7 +56,7 @@ public class QuizDAOImpl implements QuizDAO {
 				true,
 				quiz.getTitle(),
 				quiz.getTheme().getId(),
-				quiz.getAdministrator().getId(),
+				quiz.getCreator().getId(),
 				quiz.getIsActive()
 			);
 			int status = preparedStatement.executeUpdate();
@@ -93,7 +93,7 @@ public class QuizDAOImpl implements QuizDAO {
 				quiz.getTitle(),
 				quiz.getTheme().getId(),
 				quiz.getIsActive(),
-				quiz.getAdministrator().getId()
+				quiz.getCreator().getId()
 			);
 			preparedStatement.executeUpdate();
 		} catch ( SQLException e ) {
