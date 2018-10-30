@@ -12,7 +12,9 @@ import javax.servlet.http.HttpSession;
 
 import common.Config;
 import dao.DAOFactory;
+import dao.interfaces.QuizDAO;
 import models.beans.E_Role;
+import models.beans.Quiz;
 import models.beans.User;
 
 @WebServlet( "/"+Config.URL_QUIZZES )
@@ -24,12 +26,10 @@ public class QuizzesController extends HttpServlet {
 	private static final String ATT_QUIZZES = "quizzes";
 	private static final String ATT_PAGINATION_ACTIVE = "paginationActive";
 	private static final String ATT_PAGINATION_TOTAL = "paginationTotal";
-	// TODO
-	// private QuizDAO quizDAO;
+	private QuizDAO quizDAO;
 
 	public void init() throws ServletException {
-        // TODO
-		// this.quizDAO = ( (DAOFactory) getServletContext().getAttribute( Config.CONF_DAO_FACTORY ) ).getQuizDAO();
+		this.quizDAO = ( (DAOFactory) getServletContext().getAttribute( Config.CONF_DAO_FACTORY ) ).getQuizDAO();
 	}
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response)	throws ServletException, IOException {
@@ -42,8 +42,7 @@ public class QuizzesController extends HttpServlet {
 			return;
 		}
   
-		// TO DO
-		// ArrayList<Quiz> quizzes = null;
+		ArrayList<Quiz> quizzes = null;
 
 		Integer offset = 1;
 		String offsetUrl = request.getParameter("p");
@@ -59,8 +58,7 @@ public class QuizzesController extends HttpServlet {
 			}
 		}
 		
-		// TODO
-		/* Integer nbAllQuizzes = quizDAO.countAllQuizzes();
+		Integer nbAllQuizzes = quizDAO.countAllQuizzes();
 		Integer nbQuizzesPerPage = Config.NB_QUIZZES_PER_PAGE;
 		
 		Integer res = nbAllQuizzes % nbQuizzesPerPage;
@@ -69,15 +67,15 @@ public class QuizzesController extends HttpServlet {
     
 		String search = request.getParameter(ATT_SEARCH);
     	if(search != null) {
-    		quizzes = quizDAO.findQuizzesByTRUCMUCHE(search);
+    		quizzes = quizDAO.findQuizzesByTitleOrTheme(search);
 		} else {
-			quizzes = quizDAO.findAllQuizzes((offset-1)*Config.NB_USERS_PER_PAGE,nbUsersPerPage);
+			quizzes = quizDAO.findAllQuizzes((offset-1)*Config.NB_QUIZZES_PER_PAGE,nbQuizzesPerPage);
 		}
 		
 		request.setAttribute(ATT_QUIZZES, quizzes);
 		request.setAttribute(ATT_SEARCH, search);
 		request.setAttribute(ATT_PAGINATION_ACTIVE, offset);
-		request.setAttribute(ATT_PAGINATION_TOTAL, nbNeededPages);*/
+		request.setAttribute(ATT_PAGINATION_TOTAL, nbNeededPages);
 		
 		this.getServletContext().getRequestDispatcher( VIEW ).forward( request, response );
 	}
