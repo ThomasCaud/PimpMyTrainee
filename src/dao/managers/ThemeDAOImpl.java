@@ -18,6 +18,8 @@ public class ThemeDAOImpl implements ThemeDAO {
 
 	private static final String SQL_SELECT_PAR_ID = "SELECT * FROM Themes WHERE id = ?";
 	private static final String SQL_SELECT_ALL = "SELECT * FROM Themes";
+	private static final String SQL_SELECT_PAR_LABEL = "SELECT * FROM Themes WHERE label = ?";
+	private static final String SQL_INSERT_THEME = "INSERT INTO Themes (label) VALUES (?)";
 
 	private DAOFactory daoFactory;
 
@@ -85,5 +87,63 @@ public class ThemeDAOImpl implements ThemeDAO {
 		}
 
 		return themes;
+	}
+	
+	@Override
+	public Theme findThemeByLabel(String label) throws DAOException {
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+	    Theme theme = null;
+
+		try {
+			/* Récupération d'une connexion depuis la Factory */
+			connection = daoFactory.getConnection();
+			preparedStatement = initPreparedStatement( connection, SQL_SELECT_PAR_LABEL, false, label );
+			resultSet = preparedStatement.executeQuery();
+
+			/* Parcours de la ligne de données de l'éventuel ResulSet retourné */
+			if ( resultSet.next() ) {
+				theme = map( resultSet );
+			}
+		} catch ( SQLException e ) {
+			throw new DAOException( e );
+		} finally {
+			silentClose( resultSet, preparedStatement, connection );
+		}
+
+		return theme;
+	}
+	
+	@Override
+	public void createTheme(Theme theme) throws DAOException {
+		
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+	    
+	    try {
+			/* Récupération d'une connexion depuis la Factory */
+			connection = daoFactory.getConnection();
+			preparedStatement = initPreparedStatement( connection, SQL_INSERT_THEME, true, theme.getLabel() );
+			int status = preparedStatement.executeUpdate();
+			
+			if( status == 0 ) {
+				throw new DAOException( "Échec de la création du thème, aucune ligne ajoutée dans la table." );
+			}
+			
+			resultSet = preparedStatement.getGeneratedKeys();
+			
+			if ( resultSet.next() ) {
+				theme.setId( resultSet.getInt( 1 ) );
+	        } else {
+	            throw new DAOException( "Échec de la création du thème en base, aucun ID auto-généré retourné." );
+	        }
+
+		} catch ( SQLException e ) {
+			throw new DAOException( e );
+		} finally {
+			silentClose( resultSet, preparedStatement, connection );
+		}
 	}
 }
