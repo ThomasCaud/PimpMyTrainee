@@ -23,7 +23,7 @@ public class QuizDAOImpl implements QuizDAO {
 	private static final String SQL_SELECT_PAR_ID = "SELECT * FROM Quizzes WHERE id = ?";
 	private static final String SQL_SELECT_ALL = "SELECT * FROM Quizzes";
     private static final String SQL_SELECT_ALL_WITH_OFFSET_LIMIT = "SELECT * FROM Quizzes LIMIT ?,?";
-    private static final String SQL_SELECTED_BY_TITLE_OR_THEME = "SELECT * FROM Quizzes JOIN Themes ON Quizzes.theme = Themes.id WHERE Quizzes.title like ?";
+    private static final String SQL_SELECTED_BY_TITLE_OR_THEME = "SELECT * FROM Quizzes JOIN Themes ON Quizzes.theme = Themes.id WHERE Quizzes.title like ? OR Themes.label like ?";
 
 	private static final String SQL_COUNT_ALL = "SELECT count(*) as count FROM Quizzes";
 	private static final String SQL_INSERT_QUIZ = "INSERT INTO Quizzes (title, theme, creator, creationDate, isActive) VALUES (?,?,?,NOW(),?)";
