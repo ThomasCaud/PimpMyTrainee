@@ -1,5 +1,7 @@
 package common;
 
+import java.lang.reflect.Field;
+
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
@@ -27,13 +29,21 @@ public class InitServletContext implements ServletContextListener {
         /* Enregistrement dans un attribut ayant pour portée toute l'application */
         servletContext.setAttribute( ATT_DAO_FACTORY, this.daoFactory );
         
-        servletContext.setAttribute( "URL_LOGIN", Config.URL_LOGIN);
-        servletContext.setAttribute( "URL_LOGOUT", Config.URL_LOGOUT);
-        servletContext.setAttribute( "URL_ROOT", Config.URL_ROOT);
-        servletContext.setAttribute( "URL_USERS", Config.URL_USERS);
-        servletContext.setAttribute( "URL_QUIZZES", Config.URL_QUIZZES);
-        servletContext.setAttribute( "URL_VIEW_USER", Config.URL_VIEW_USER);
-        servletContext.setAttribute( "URL_REGISTER_USER", Config.URL_REGISTER_USER);
+        // Chargement dans l'application des URLs de l'appli
+        for(Field field : Config.class.getDeclaredFields() ) {
+        	String fieldName = field.getName();
+        	if( fieldName.startsWith("URL_") ) {
+        		try {
+					servletContext.setAttribute( fieldName, field.get(fieldName) );
+				} catch (SecurityException e) {
+					e.printStackTrace();
+				} catch (IllegalArgumentException e) {
+					e.printStackTrace();
+				} catch (IllegalAccessException e) {
+					e.printStackTrace();
+				}
+        	}
+        }
 	}
 
 }
