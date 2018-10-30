@@ -10,7 +10,7 @@
 			<h1>Users Management</h1>
 		</div>
 		<div class="col-12 col-sm-4 col-md-2">
-			<a href="<c:url value = "/registerUser"/>" class="btn btn-info"><i class="fa fa-plus"></i> Register an user</a>
+			<a href="<c:url value = "/${applicationScope.URL_REGISTER_USER}"/>" class="btn btn-info"><i class="fa fa-plus"></i> Register an user</a>
 		</div>
 		
 	</div>
@@ -30,7 +30,7 @@
 	
 	<hr>
 	
-	<c:if test = "${search != null && search != ''}"><h5 class="inline-block">Results for the search "${search}" <a href="<c:url value = "/users"/>" class="btn btn-danger btn-sm"><i class="fa fa-times"></i></a></h5></c:if>
+	<c:if test = "${search != null && search != ''}"><h5 class="inline-block">Results for the search "${search}" <a href="<c:url value = "/${applicationScope.URL_USERS}"/>" class="btn btn-danger btn-sm"><i class="fa fa-times"></i></a></h5></c:if>
 	
 	<table class="table table-responsive-sm table-sm table-bordered">
 		<thead class="thead-dark">
@@ -70,7 +70,7 @@
 						<c:otherwise><span class="badge badge-pill badge-danger">Deleted</span></c:otherwise>
 					</c:choose>
 				</td>
-				<td class="text-center"><a href="<c:url value = "/viewUser/${user.id}"/>" class="btn btn-link"><i class="fa fa-eye"></i></a></td>
+				<td class="text-center"><a href="<c:url value = "/${applicationScope.URL_VIEW_USER}/${user.id}"/>" class="btn btn-link"><i class="fa fa-eye"></i></a></td>
 			</tr>
 			</c:forEach>
 		</tbody>
@@ -80,17 +80,17 @@
 	<div class="row justify-content-center">
 		<ul class="pagination">
 			<li class="page-item <c:if test = "${paginationActive == 1}">disabled</c:if>">
-		    		<a class="page-link" href="<c:url value = "/users?p="/>${paginationActive-1}">&laquo;</a>
+		    		<a class="page-link" href="<c:url value = "/${applicationScope.URL_USERS}?p="/>${paginationActive-1}">&laquo;</a>
 			</li>
 		  	
 			<c:forEach var="i" begin="1" end="${paginationTotal}">
 				<li class="page-item <c:if test = "${paginationActive == i}">active</c:if>">
-					<a class="page-link" href="<c:url value = "/users?p="/>${i}">${i}</a>
+					<a class="page-link" href="<c:url value = "/${applicationScope.URL_USERS}?p="/>${i}">${i}</a>
 		    		</li>
 		  	</c:forEach>
 		  	
 			<li class="page-item <c:if test = "${paginationActive == paginationTotal}">disabled</c:if>">
-				<a class="page-link" href="<c:url value = "/users?p="/>${paginationActive+1}">&raquo;</a>
+				<a class="page-link" href="<c:url value = "/${applicationScope.URL_USERS}?p="/>${paginationActive+1}">&raquo;</a>
 			</li>
 		</ul>
 	</div>
