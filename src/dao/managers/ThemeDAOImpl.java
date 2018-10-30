@@ -29,8 +29,8 @@ public class ThemeDAOImpl implements ThemeDAO {
 	private static Theme map( ResultSet resultSet ) throws SQLException {
 		Theme theme = new Theme();
 
-		Theme.setId( resultSet.getInt( "id" ) );
-		Theme.setLabel( resultSet.getLabel( "label" ) );
+		theme.setId( resultSet.getInt( "id" ) );
+		theme.setLabel( resultSet.getString( "label" ) );
 		
 		return theme;
 	}
