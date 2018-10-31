@@ -54,7 +54,7 @@ public class CreateQuizController extends HttpServlet {
 			return;
 		}
 		
-		ArrayList<Theme> themes = themeDAO.findAllThemes();
+		ArrayList<Theme> themes = themeDAO.findAll();
 		
 		request.setAttribute(ATT_THEMES, themes);
 		
@@ -83,7 +83,7 @@ public class CreateQuizController extends HttpServlet {
 				break;
 		}
 		
-		ArrayList<Theme> themes = themeDAO.findAllThemes();
+		ArrayList<Theme> themes = themeDAO.findAll();
 		
 		request.setAttribute(ATT_THEMES, themes);
 		request.setAttribute(ATT_FORM, createQuizForm);

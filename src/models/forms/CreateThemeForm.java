@@ -42,7 +42,7 @@ public class CreateThemeForm extends AbstractForm {
 			processLabelValidation(label,theme);
 			
 			if( this.getErrors().isEmpty() ) {
-				Theme existingTheme = themeDAO.findThemeByLabel(label);
+				Theme existingTheme = themeDAO.find("label", label);
 				
 				if( existingTheme != null ) {
 					setError(FIELD_LABEL, "This theme already exists.");

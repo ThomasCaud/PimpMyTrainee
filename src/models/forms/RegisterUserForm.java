@@ -98,7 +98,7 @@ public class RegisterUserForm extends AbstractForm {
 			processRoleValidation(role,user);
 			
 			if( this.getErrors().isEmpty() ) {
-				User existingUser = userDAO.findActiveUserByEmail(email);
+				User existingUser = userDAO.findActive("email", email);
 				
 				if( existingUser != null ) {
 					setError(FIELD_EMAIL, "This email address is already taken.");

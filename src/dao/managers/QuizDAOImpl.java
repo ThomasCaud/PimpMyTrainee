@@ -18,29 +18,24 @@ import models.beans.Quiz;
 import models.beans.Theme;
 import models.beans.User;
 
-public class QuizDAOImpl implements QuizDAO {
-
-	private static final String SQL_SELECT_PAR_ID = "SELECT * FROM Quizzes WHERE id = ?";
-	private static final String SQL_SELECT_ALL = "SELECT * FROM Quizzes";
-    private static final String SQL_SELECT_ALL_WITH_OFFSET_LIMIT = "SELECT * FROM Quizzes LIMIT ?,?";
+public class QuizDAOImpl extends AbstractDAOImpl<Quiz> implements QuizDAO {
+	private static final String tableName = "Quizzes";
     private static final String SQL_SELECT_BY_MANAGER_WITH_OSSET_LIMIT = "SELECT * FROM Quizzes WHERE creator = ? LIMIT ?,?";
     private static final String SQL_SELECTED_BY_TITLE_OR_THEME = "SELECT * FROM Quizzes JOIN Themes ON Quizzes.theme = Themes.id WHERE Quizzes.title like ? OR Themes.label like ?";
 
-	private static final String SQL_COUNT_ALL = "SELECT count(*) as count FROM Quizzes";
 	private static final String SQL_INSERT_QUIZ = "INSERT INTO Quizzes (title, theme, creator, creationDate, isActive) VALUES (?,?,?,NOW(),?)";
 
 	private static final String SQL_UPDATE_QUIZ = "UPDATE Quizzes set title = ?, theme = ?, isActive = ? WHERE id = ?";
 
-	private DAOFactory daoFactory;
-
 	public QuizDAOImpl() {
+		super(null, tableName);
 	}
 
 	public QuizDAOImpl( DAOFactory daoFactory ) {
-        	this.daoFactory = daoFactory;
+		super(daoFactory, tableName);
     }
 
-	private static Quiz map( ResultSet resultSet ) throws SQLException {
+	protected Quiz map( ResultSet resultSet ) throws SQLException {
 		Quiz quiz = new Quiz();
 
 		quiz.setId( resultSet.getInt( "id" ) );
@@ -53,7 +48,7 @@ public class QuizDAOImpl implements QuizDAO {
 		quiz.setCreator(user);
 
 		ThemeDAO themeDAO = DAOFactory.getInstance().getThemeDAO();
-		Theme theme = themeDAO.findThemeByID( resultSet.getInt("theme") );
+		Theme theme = themeDAO.find( resultSet.getInt("theme") );
 		quiz.setTheme(theme);
 
 		return quiz;
@@ -119,107 +114,6 @@ public class QuizDAOImpl implements QuizDAO {
 			silentClose( null, preparedStatement, connection );
 		}
 	}
-
-	@Override
-	public Quiz findQuizByID(Integer id) throws DAOException {
-		Connection connection = null;
-		PreparedStatement preparedStatement = null;
-		ResultSet resultSet = null;
-	    Quiz quiz = null;
-
-		try {
-			/* Récupération d'une connexion depuis la Factory */
-			connection = daoFactory.getConnection();
-			preparedStatement = initPreparedStatement( connection, SQL_SELECT_PAR_ID, false, id );
-			resultSet = preparedStatement.executeQuery();
-
-			/* Parcours de la ligne de données de l'éventuel ResulSet retourné */
-			if ( resultSet.next() ) {
-				quiz = map( resultSet );
-			}
-		} catch ( SQLException e ) {
-			throw new DAOException( e );
-		} finally {
-			silentClose( resultSet, preparedStatement, connection );
-		}
-
-		return quiz;
-	}
-
-	@Override
-	public ArrayList<Quiz> findAllQuizzes() throws DAOException {
-		Connection connection = null;
-		PreparedStatement preparedStatement = null;
-		ResultSet resultSet = null;
-		ArrayList<Quiz> quizzes = new ArrayList<Quiz>();
-
-		try {
-			connection = daoFactory.getConnection();
-			preparedStatement = initPreparedStatement( connection, SQL_SELECT_ALL, false);
-			resultSet = preparedStatement.executeQuery();
-
-			while ( resultSet.next() ) {
-				Quiz quiz = map( resultSet );
-				quizzes.add(quiz);
-			}
-
-		} catch (SQLException e) {
-			throw new DAOException( e );
-		} finally {
-			silentClose( resultSet, preparedStatement, connection );
-		}
-
-		return quizzes;
-	}
-
-	@Override
-	public ArrayList<Quiz> findAllQuizzes(Integer offset, Integer limit) throws DAOException {
-		Connection connection = null;
-		PreparedStatement preparedStatement = null;
-		ResultSet resultSet = null;
-		ArrayList<Quiz> quizzes = new ArrayList<Quiz>();
-
-		try {
-			connection = daoFactory.getConnection();
-			preparedStatement = initPreparedStatement( connection, SQL_SELECT_ALL_WITH_OFFSET_LIMIT, false, offset, limit);
-			resultSet = preparedStatement.executeQuery();
-
-			while ( resultSet.next() ) {
-				Quiz quiz = map( resultSet );
-				quizzes.add(quiz);
-			}
-		} catch (SQLException e) {
-			throw new DAOException( e );
-		} finally {
-			silentClose( resultSet, preparedStatement, connection );
-		}
-
-		return quizzes;
-	}
-
-	@Override
-	public Integer countAllQuizzes() throws DAOException {
-		Connection connection = null;
-		PreparedStatement preparedStatement = null;
-		ResultSet resultSet = null;
-		Integer result = 0;
-
-		try {
-			connection = daoFactory.getConnection();
-			preparedStatement = initPreparedStatement( connection, SQL_COUNT_ALL, false);
-			resultSet = preparedStatement.executeQuery();
-
-			while ( resultSet.next() ) {
-				result = resultSet.getInt("count");
-			}
-		} catch (SQLException e) {
-			throw new DAOException( e );
-		} finally {
-			silentClose( resultSet, preparedStatement, connection );
-		}
-
-		return result;
-    }
 
     @Override
     public ArrayList<Quiz> findQuizzesByTitleOrTheme(String filter) throws DAOException {

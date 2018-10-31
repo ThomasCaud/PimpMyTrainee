@@ -56,7 +56,7 @@ public class CreateQuizForm extends AbstractForm {
 			return;
 		}
 		
-		Theme theme = themeDAO.findThemeByID(themeId);
+		Theme theme = themeDAO.find(themeId);
 		if( theme == null ) {
 			setError(FIELD_THEME, "The theme is incorrect.");
 			return;

@@ -15,21 +15,19 @@ import dao.interfaces.QuestionDAO;
 import models.beans.Question;
 import models.beans.Quiz;
 
-public class QuestionDAOImpl implements QuestionDAO {
-
-	private static final String SQL_INSERT = "INSERT INTO Question (label, isActive, position, quiz) VALUES (?,?,?,?)";
-	private static final String SQL_SELECT_BY_ID = "SELECT * FROM questions WHERE id = ?";
-
-	private DAOFactory daoFactory;
+public class QuestionDAOImpl extends AbstractDAOImpl<Question> implements QuestionDAO {
+	private static final String tableName = "Questions";
+	private static final String SQL_INSERT = "INSERT INTO Questions (label, isActive, position, quiz) VALUES (?,?,?,?)";
 
 	public QuestionDAOImpl() {
+		super(null, tableName);
 	}
 
 	public QuestionDAOImpl( DAOFactory daoFactory ) {
-        	this.daoFactory = daoFactory;
+		super(daoFactory, tableName);
     }
 
-	private static Question map( ResultSet resultSet ) throws SQLException {
+	protected Question map( ResultSet resultSet ) throws SQLException {
 		Question question = new Question();
 
 		question.setId( resultSet.getInt( "id" ) );
@@ -38,7 +36,7 @@ public class QuestionDAOImpl implements QuestionDAO {
         question.setPosition( resultSet.getInt( "position" ));
         
         PossibleAnswerDAO paDAO = DAOFactory.getInstance().getPossibleAnswerDAO();
-        question.setPossibleAnswers(paDAO.findByQuizId( resultSet.getInt( "id" )));
+        question.setPossibleAnswers(paDAO.findBy("question", resultSet.getInt( "id" )));
 
 		return question;
 	}
@@ -80,29 +78,5 @@ public class QuestionDAOImpl implements QuestionDAO {
 		} finally {
 			silentClose( resultSet, preparedStatement, connection );
 		}
-	}
-
-	@Override
-	public Question findByID(Integer id) throws DAOException {
-		Connection connection = null;
-		PreparedStatement preparedStatement = null;
-		ResultSet resultSet = null;
-	    Question question = null;
-
-		try {
-			connection = daoFactory.getConnection();
-			preparedStatement = initPreparedStatement( connection, SQL_SELECT_BY_ID, false, id );
-			resultSet = preparedStatement.executeQuery();
-
-			if ( resultSet.next() ) {
-				question = map( resultSet );
-			}
-		} catch ( SQLException e ) {
-			throw new DAOException( e );
-		} finally {
-			silentClose( resultSet, preparedStatement, connection );
-		}
-
-		return question;
 	}
 }

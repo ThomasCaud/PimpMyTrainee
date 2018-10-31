@@ -15,23 +15,20 @@ import dao.interfaces.PossibleAnswerDAO;
 import models.beans.PossibleAnswer;
 import models.beans.Question;
 
-public class PossibleAnswerDAOImpl implements PossibleAnswerDAO {
-
-    private static final String SQL_SELECT_BY_ID = "SELECT * FROM possibleanswers WHERE id = ?";
-    private static final String SQL_SELECT_BY_QUIZ_ID = "SELECT * from possibleanswers WHERE question = ?";
+public class PossibleAnswerDAOImpl extends AbstractDAOImpl<PossibleAnswer>  implements PossibleAnswerDAO {
+	private static final String tableName = "possibleanswers";
     private static final String SQL_INSERT = "INSERT INTO possibleanswers (label, isCorrect, isActive, position, question) VALUES (?,?,?,?,?)";
 	private static final String SQL_UPDATE = "UPDATE possibleanswers set label = ?, isCorrect = ?, isActive = ?, position = ?, question = ? WHERE id = ?";
 
-	private DAOFactory daoFactory;
-
 	public PossibleAnswerDAOImpl() {
+		super(null, tableName);
 	}
 
 	public PossibleAnswerDAOImpl( DAOFactory daoFactory ) {
-        	this.daoFactory = daoFactory;
+		super(daoFactory, tableName);
     }
 
-	private static PossibleAnswer map( ResultSet resultSet ) throws SQLException {
+	protected PossibleAnswer map( ResultSet resultSet ) throws SQLException {
         PossibleAnswer pa = new PossibleAnswer();
 
         pa.setId( resultSet.getInt( "id" ) );
@@ -105,59 +102,4 @@ public class PossibleAnswerDAOImpl implements PossibleAnswerDAO {
 			silentClose( null, preparedStatement, connection );
 		}
 	}
-
-	@Override
-	public PossibleAnswer findByID(Integer id) throws DAOException {
-		Connection connection = null;
-		PreparedStatement preparedStatement = null;
-		ResultSet resultSet = null;
-	    PossibleAnswer pa = null;
-
-		try {
-			connection = daoFactory.getConnection();
-			preparedStatement = initPreparedStatement( connection, SQL_SELECT_BY_ID, false, id );
-			resultSet = preparedStatement.executeQuery();
-
-			if ( resultSet.next() ) {
-				pa = map( resultSet );
-			}
-		} catch ( SQLException e ) {
-			throw new DAOException( e );
-		} finally {
-			silentClose( resultSet, preparedStatement, connection );
-		}
-
-		return pa;
-    }
-
-    @Override
-    public ArrayList<PossibleAnswer> findByQuizId(int quizId) throws DAOException {
-		Connection connection = null;
-		PreparedStatement preparedStatement = null;
-		ResultSet resultSet = null;
-		ArrayList<PossibleAnswer> possibleAnswers = new ArrayList<PossibleAnswer>();
-
-		try {
-			connection = daoFactory.getConnection();
-			preparedStatement = initPreparedStatement(
-                connection,
-                SQL_SELECT_BY_QUIZ_ID,
-                false,
-                quizId
-            );
-			resultSet = preparedStatement.executeQuery();
-
-			while ( resultSet.next() ) {
-				PossibleAnswer pa = map( resultSet );
-				possibleAnswers.add(pa);
-			}
-
-		} catch (SQLException e) {
-			throw new DAOException( e );
-		} finally {
-			silentClose( resultSet, preparedStatement, connection );
-		}
-
-		return possibleAnswers;
-    }
 }
