@@ -266,4 +266,56 @@ public class CreateQuizForm extends AbstractForm {
 		
 		return quiz;
 	}
+	
+	public Quiz moveUpAnswerFromQuestion(HttpServletRequest request) {
+		String title = getFieldValue(request,FIELD_TITLE);
+		String theme = getFieldValue(request,FIELD_THEME);
+		String indexesStrRaw = getFieldValue(request,FIELD_SUBMIT).replace("moveUpAnswer_", "").replace("fromQuestion_", "");
+		String[] indexesStr = indexesStrRaw.split("_");
+
+		Integer answerIndex = Integer.parseInt(indexesStr[0]);
+		Integer questionIndex = Integer.parseInt(indexesStr[1]);
+		
+		Quiz quiz = new Quiz();
+		
+		processThemeValidation(theme,quiz);
+		
+		quiz.setTitle(title);
+		quiz.setQuestions(getQuestionsFromRequest(request));
+		
+		ArrayList<PossibleAnswer> possibleAnswers = quiz.getQuestions().get(questionIndex-1).getPossibleAnswers();
+		if(answerIndex > 0 && answerIndex <= possibleAnswers.size() ) {
+			if( answerIndex != 1 ) {
+				Collections.swap(possibleAnswers, answerIndex-1, answerIndex-2);
+			}
+		}
+		
+		return quiz;
+	}
+	
+	public Quiz moveDownAnswerFromQuestion(HttpServletRequest request) {
+		String title = getFieldValue(request,FIELD_TITLE);
+		String theme = getFieldValue(request,FIELD_THEME);
+		String indexesStrRaw = getFieldValue(request,FIELD_SUBMIT).replace("moveDownAnswer_", "").replace("fromQuestion_", "");
+		String[] indexesStr = indexesStrRaw.split("_");
+
+		Integer answerIndex = Integer.parseInt(indexesStr[0]);
+		Integer questionIndex = Integer.parseInt(indexesStr[1]);
+		
+		Quiz quiz = new Quiz();
+		
+		processThemeValidation(theme,quiz);
+		
+		quiz.setTitle(title);
+		quiz.setQuestions(getQuestionsFromRequest(request));
+		
+		ArrayList<PossibleAnswer> possibleAnswers = quiz.getQuestions().get(questionIndex-1).getPossibleAnswers();
+		if(answerIndex > 0 && answerIndex <= possibleAnswers.size() ) {
+			if( answerIndex != possibleAnswers.size() ) {
+				Collections.swap(possibleAnswers, answerIndex-1, answerIndex);
+			}
+		}
+		
+		return quiz;
+	}
 }

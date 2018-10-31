@@ -61,7 +61,7 @@
 							</h3>
 						</div>	
 						<div class="col-12">
-							<input type="text" class="form-control" name="question_${statusQ.count}_label" value="${question.label}" placeholder="Enter question label">
+							<input type="text" class="form-control form-question-label" name="question_${statusQ.count}_label" value="${question.label}" placeholder="Enter question label">
 						</div>
 						<div class="col-12 mt-3">
 							<h5>
@@ -71,15 +71,17 @@
 						</div>
 						<div class="col-12">
 							<c:forEach items="${question.possibleAnswers}" var="possibleAnswer" varStatus="statusP">
-							<div class="row mt-1 py-1 possibleAnswerRow">
+							<div class="row mt-1 py-1 possibleAnswerRow align-items-center">
 						        	<div class="col-2 col-sm-1 align-self-center text-center">
 						        		<input type="radio" name="question_${statusQ.count}_radio" value="${statusP.count}" <c:if test="${possibleAnswer.isCorrect}">checked</c:if>>
 						        	</div>
-						          	<div class="col-9 col-sm-10">
-						          		<input type="text" class="form-control form-input-transparent" name="question_${statusQ.count}_possibleAnswer_${statusP.count}_label" value="${possibleAnswer.label}">
+						          	<div class="col-8 col-sm-9">
+						          		<input type="text" class="form-control form-input-transparent form-answer-label" name="question_${statusQ.count}_possibleAnswer_${statusP.count}_label" value="${possibleAnswer.label}">
 						          	</div>
-						          	<div class="col-1 pl-0">
-						          		<button class="btn btn-danger form-control" name="submit" value="deleteAnswer_${statusP.count}_fromQuestion_${statusQ.count}"><i class="fa fa-times"></i></button>
+						          	<div class="col-2">
+						          		<button <c:if test="${statusP.index == 0}">disabled</c:if> type="submit" class="btn btn-info btn-sm" name="submit" value="moveUpAnswer_${statusP.count}_fromQuestion_${statusQ.count}" data-toggle="tooltip" title="" data-placement="top" data-original-title="Move up this question"><i class="fa fa-caret-up"></i></button>
+										<button <c:if test="${fn:length(question.possibleAnswers) eq statusP.count}">disabled</c:if> type="submit" class="btn btn-info btn-sm" name="submit" value="moveDownAnswer_${statusP.count}_fromQuestion_${statusQ.count}" data-toggle="tooltip" title="" data-placement="top" data-original-title="Move down this question"><i class="fa fa-caret-down"></i></button>
+						          		<button class="btn btn-danger btn-sm" name="submit" value="deleteAnswer_${statusP.count}_fromQuestion_${statusQ.count}"><i class="fa fa-times"></i></button>
 						          	</div>
 							</div>
 							</c:forEach>
