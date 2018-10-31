@@ -135,8 +135,9 @@ public class CreateQuizForm extends AbstractForm {
 		
 		Quiz quiz = new Quiz();
 		
-		processTitleValidation(title,quiz);
 		processThemeValidation(theme,quiz);
+		
+		quiz.setTitle(title);
 		
 		quiz.setQuestions(getQuestionsFromRequest(request));
 		
@@ -158,9 +159,9 @@ public class CreateQuizForm extends AbstractForm {
 		
 		Quiz quiz = new Quiz();
 		
-		processTitleValidation(title,quiz);
 		processThemeValidation(theme,quiz);
 		
+		quiz.setTitle(title);
 		quiz.setQuestions(getQuestionsFromRequest(request));
 		
 		PossibleAnswer p = new PossibleAnswer();

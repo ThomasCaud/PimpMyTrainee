@@ -14,13 +14,13 @@
 			
 			<hr>
 			
-			<h3>Quiz Configuration</h3>
+			
 			
 			<div class="row">
 				<div class="col-12 col-sm-8 offset-sm-2">
 					<fieldset>
 						<div class="form-group">
-					      	<label>Theme</label>
+					      	<label><h5>Theme</h5></label>
 					      	<div class="row no-gutters">
 					      		<div class="col-12 col-sm-8">
 							      <select class="form-control" name="theme">
@@ -36,7 +36,7 @@
 					      	</div>  	
 					    </div>
 						<div class="form-group">
-					      	<label>Title</label>
+					      	<label><h5>Title</h5></label>
 					      	<input type="text" name="title" class="form-control" placeholder="Enter quiz title" value="<c:out value="${quiz.title}"/>">
 					      	<div class="form-error">${form.errors['title']}</div>
 					    </div>
@@ -46,7 +46,6 @@
 			
 			<hr>
 			
-			<h3>Questions</h3>
 			
 			<div class="row">
 				<div id="quizQuestions" class="col-12 col-sm-8 offset-sm-2">
@@ -54,10 +53,10 @@
 					<hr>
 					<div class="row">
 						<div class="col-12">
-							<h5>Question ${statusQ.count}</h5>
+							<h3>Question ${statusQ.count} <button type="submit" class="btn btn-danger btn-sm" name="submit" value="deleteQuestion_${statusQ.count}"><i class="fa fa-times"></i></button></h3>
 						</div>	
 						<div class="col-12">
-							<input type="text" class="form-control" name="question_${statusQ.count}_label" value="${question.label}">
+							<input type="text" class="form-control" name="question_${statusQ.count}_label" value="${question.label}" placeholder="Enter question label">
 						</div>
 						<div class="col-12 mt-3">
 							<h5>Answers <button type="submit" class="btn btn-info btn-sm" name="submit" value="newAnswer_${statusQ.count}"><i class="fa fa-plus"></i></button></h5>
