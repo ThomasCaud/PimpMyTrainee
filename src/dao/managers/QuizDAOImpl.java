@@ -53,7 +53,7 @@ public class QuizDAOImpl implements QuizDAO {
 		quiz.setCreator(user);
 
 		ThemeDAO themeDAO = DAOFactory.getInstance().getThemeDAO();
-		Theme theme = themeDAO.findThemeByID( resultSet.getInt("theme") );
+		Theme theme = themeDAO.find( resultSet.getInt("theme") );
 		quiz.setTheme(theme);
 
 		return quiz;

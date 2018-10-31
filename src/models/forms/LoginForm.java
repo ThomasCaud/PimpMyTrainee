@@ -43,7 +43,7 @@ public class LoginForm extends AbstractForm {
 		processPasswordValidation(password,user);
 		
 		if( this.getErrors().isEmpty() ) {
-			User existingUser = userDAO.findActiveUserByEmail(email);
+			User existingUser = userDAO.findActive("email", email);
 			
 			if( existingUser == null ) {
 				setError(FIELD_EMAIL, "The credentials don't match.");

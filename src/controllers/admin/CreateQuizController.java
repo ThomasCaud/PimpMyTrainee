@@ -50,7 +50,7 @@ public class CreateQuizController extends HttpServlet {
 			return;
 		}
 		
-		ArrayList<Theme> themes = themeDAO.findAllThemes();
+		ArrayList<Theme> themes = themeDAO.findAll();
 		
 		/*Quiz quiz = new Quiz();
 		quiz.setTitle("L'histoire des Etats-Unis");
@@ -115,7 +115,7 @@ public class CreateQuizController extends HttpServlet {
 				quiz = createQuizForm.newQuestion(request);
 		}
 		
-		ArrayList<Theme> themes = themeDAO.findAllThemes();
+		ArrayList<Theme> themes = themeDAO.findAll();
 		
 		request.setAttribute(ATT_THEMES, themes);
 		request.setAttribute(ATT_FORM, createQuizForm);

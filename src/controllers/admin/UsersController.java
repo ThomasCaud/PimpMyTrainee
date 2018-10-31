@@ -57,7 +57,7 @@ public class UsersController extends HttpServlet {
 			}
 		}
 		
-		Integer nbAllUsers = userDAO.countAllUsers();
+		Integer nbAllUsers = userDAO.count();
 		Integer nbUsersPerPage = Config.NB_USERS_PER_PAGE;
 		
 		Integer res = nbAllUsers % nbUsersPerPage;
@@ -68,7 +68,7 @@ public class UsersController extends HttpServlet {
     	if(search != null) {
 			users = userDAO.findUsersByNameOrLastnameOrCompany(search);
 		} else {
-			users = userDAO.findAllUsers((offset-1)*Config.NB_USERS_PER_PAGE,nbUsersPerPage);
+			users = userDAO.findAll((offset-1)*Config.NB_USERS_PER_PAGE, nbUsersPerPage);
 		}
 		
 		request.setAttribute(ATT_USERS, users);
