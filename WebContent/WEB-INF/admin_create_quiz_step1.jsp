@@ -50,26 +50,26 @@
 			
 			<div class="row">
 				<div id="quizQuestions" class="col-12 col-sm-8 offset-sm-2">
-					<c:forEach items="${quiz.questions}" var="question" varStatus="status">
+					<c:forEach items="${quiz.questions}" var="question" varStatus="statusQ">
 					<hr>
 					<div class="row">
 						<div class="col-12">
-							<h5>Question ${status.count}</h5>
+							<h5>Question ${statusQ.count}</h5>
 						</div>	
 						<div class="col-12">
-							<input type="text" class="form-control" name="question_${status.count}_label" value="${question.label}">
+							<input type="text" class="form-control" name="question_${statusQ.count}_label" value="${question.label}">
 						</div>
 						<div class="col-12 mt-3">
-							<h5>Answers</h5>
+							<h5>Answers <button type="submit" class="btn btn-info btn-sm" name="submit" value="newAnswer_${statusQ.count}"><i class="fa fa-plus"></i></button></h5>
 						</div>
 						<div class="col-12">
-							<c:forEach items="${question.possibleAnswers}" var="possibleAnswer">
+							<c:forEach items="${question.possibleAnswers}" var="possibleAnswer" varStatus="statusP">
 							<div class="row mt-1 py-1 possibleAnswerRow">
 						        	<div class="col-2 col-sm-1 align-self-center text-center">
-						        		<input type="radio" name="question_${question.id}_possibleAnswer_${possibleAnswer.id}_radio" <c:if test="${possibleAnswer.isCorrect}">checked</c:if>>
+						        		<input type="radio" name="question_${statusQ.count}_radio" value="${statusP.count}" <c:if test="${possibleAnswer.isCorrect}">checked</c:if>>
 						        	</div>
 						          	<div class="col-9 col-sm-10">
-						          		<input type="text" class="form-control form-input-transparent" name="question_${question.id}_possibleAnswer_${possibleAnswer.id}_label" value="${possibleAnswer.label}">
+						          		<input type="text" class="form-control form-input-transparent" name="question_${statusQ.count}_possibleAnswer_${statusP.count}_label" value="${possibleAnswer.label}">
 						          	</div>
 						          	<div class="col-1 pl-0">
 						          		<button class="btn btn-danger form-control"><i class="fa fa-times"></i></button>
