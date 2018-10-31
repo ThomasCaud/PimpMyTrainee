@@ -35,7 +35,7 @@ public class CreateQuizController extends HttpServlet {
 	private static final String ATT_THEMES = "themes";
 	private static final String FIELD_SUBMIT = "submit";
 	private static final String VIEW_STEP1 = "/WEB-INF/admin_create_quiz_step1.jsp";
-	private static final String[] ALLOWED_SUBMIT_PATTERNS = {"newQuestion","newAnswer_([0-9]+)"};
+	private static final String[] ALLOWED_SUBMIT_PATTERNS = {"newQuestion","newAnswer_([0-9]+)","deleteQuestion_([0-9]+)","deleteAnswer_([0-9]+)_fromQuestion_([0-9]+)"};
 	private ThemeDAO themeDAO;
 	private QuizDAO quizDAO;
 	
@@ -80,6 +80,12 @@ public class CreateQuizController extends HttpServlet {
 				break;
 			case "newAnswer_([0-9]+)" :
 				quiz = createQuizForm.newAnswer(request);
+				break;
+			case "deleteQuestion_([0-9]+)" :
+				quiz = createQuizForm.deleteQuestion(request);
+				break;
+			case "deleteAnswer_([0-9]+)_fromQuestion_([0-9]+)" :
+				quiz = createQuizForm.deleteAnswerFromQuestion(request);
 				break;
 		}
 		

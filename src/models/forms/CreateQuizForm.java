@@ -177,4 +177,47 @@ public class CreateQuizForm extends AbstractForm {
 		
 		return quiz;
 	}
+	
+	public Quiz deleteQuestion(HttpServletRequest request) {
+		String title = getFieldValue(request,FIELD_TITLE);
+		String theme = getFieldValue(request,FIELD_THEME);
+		String questionIndexStr = getFieldValue(request,FIELD_SUBMIT);
+		Integer questionIndex = Integer.parseInt(questionIndexStr.replace("deleteQuestion_",""));
+		
+		Quiz quiz = new Quiz();
+		
+		processThemeValidation(theme,quiz);
+		
+		quiz.setTitle(title);
+		quiz.setQuestions(getQuestionsFromRequest(request));
+		
+		quiz.getQuestions().remove(questionIndex-1);
+		
+		return quiz;
+	}
+	
+	public Quiz deleteAnswerFromQuestion(HttpServletRequest request) {
+		String title = getFieldValue(request,FIELD_TITLE);
+		String theme = getFieldValue(request,FIELD_THEME);
+		String indexesStrRaw = getFieldValue(request,FIELD_SUBMIT).replace("deleteAnswer_", "").replace("fromQuestion_", "");
+		String[] indexesStr = indexesStrRaw.split("_");
+
+		Integer answerIndex = Integer.parseInt(indexesStr[0]);
+		Integer questionIndex = Integer.parseInt(indexesStr[1]);
+		
+		Quiz quiz = new Quiz();
+		
+		processThemeValidation(theme,quiz);
+		
+		quiz.setTitle(title);
+		quiz.setQuestions(getQuestionsFromRequest(request));
+		
+		ArrayList<PossibleAnswer> possibleAnswers = quiz.getQuestions().get(questionIndex-1).getPossibleAnswers();
+		possibleAnswers.remove(answerIndex-1);
+		
+		if( possibleAnswers.size() == 1 )
+			possibleAnswers.get(0).setIsCorrect(true);
+		
+		return quiz;
+	}
 }

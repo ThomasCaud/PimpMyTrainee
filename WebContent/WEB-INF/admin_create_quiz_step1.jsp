@@ -71,7 +71,7 @@
 						          		<input type="text" class="form-control form-input-transparent" name="question_${statusQ.count}_possibleAnswer_${statusP.count}_label" value="${possibleAnswer.label}">
 						          	</div>
 						          	<div class="col-1 pl-0">
-						          		<button class="btn btn-danger form-control"><i class="fa fa-times"></i></button>
+						          		<button class="btn btn-danger form-control" name="submit" value="deleteAnswer_${statusP.count}_fromQuestion_${statusQ.count}"><i class="fa fa-times"></i></button>
 						          	</div>
 							</div>
 							</c:forEach>
