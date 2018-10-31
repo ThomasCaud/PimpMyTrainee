@@ -58,7 +58,7 @@ public class QuizzesController extends HttpServlet {
 			}
 		}
 		
-		Integer nbAllQuizzes = quizDAO.countAllQuizzes();
+		Integer nbAllQuizzes = quizDAO.count();
 		Integer nbQuizzesPerPage = Config.NB_QUIZZES_PER_PAGE;
 		
 		Integer res = nbAllQuizzes % nbQuizzesPerPage;
@@ -70,7 +70,7 @@ public class QuizzesController extends HttpServlet {
     	if(search != null) {
     		quizzes = quizDAO.findQuizzesByTitleOrTheme(search);
 		} else {
-			quizzes = quizDAO.findAllQuizzes((offset-1)*Config.NB_QUIZZES_PER_PAGE,nbQuizzesPerPage);
+			quizzes = quizDAO.findAll((offset-1)*Config.NB_QUIZZES_PER_PAGE,nbQuizzesPerPage);
 		}
 		
 		request.setAttribute(ATT_QUIZZES, quizzes);

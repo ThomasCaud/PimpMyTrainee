@@ -1,7 +1,5 @@
 package dao.interfaces;
 
-import java.util.ArrayList;
-
 import dao.exceptions.DAOException;
 import models.beans.Theme;
 

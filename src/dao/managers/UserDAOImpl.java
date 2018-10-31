@@ -14,7 +14,7 @@ import dao.interfaces.UserDAO;
 import models.beans.E_Role;
 import models.beans.User;
 
-public class UserDAOImpl extends AbstractDAOImpl<User> implements UserDAO{
+public class UserDAOImpl extends AbstractDAOImpl<User> implements UserDAO {
 	private static final String tableName = "Users";
 	private static final String SQL_SELECTED_BY_NAME_OR_LASTNAME_OR_COMPANY = "SELECT * FROM Users WHERE firstname like ? or lastname like ? or company like ?";
 	private static final String SQL_INSERT_USER = "INSERT INTO Users (firstname, lastname, email, password, company, phone, creationDate, isActive, role, managerId) VALUES (?,?,?,?,?,?,NOW(),?,?,?)";
