@@ -23,7 +23,7 @@ public class UserDAOImpl implements UserDAO {
 	private static final String SQL_SELECTED_BY_NAME_OR_LASTNAME_OR_COMPANY = "SELECT * FROM Users WHERE firstname like ? or lastname like ? or company like ?";
 	private static final String SQL_SELECT_ALL_WITH_OFFSET_LIMIT = "SELECT * FROM Users LIMIT ?,?";
 	private static final String SQL_COUNT_ALL = "SELECT count(*) as count FROM Users";
-	private static final String SQL_INSERT_USER = "INSERT INTO Users (firstname, lastname, email, password, company, phone, creationDate, isActive, role, createdBy) VALUES (?,?,?,?,?,?,NOW(),?,?,?)";
+	private static final String SQL_INSERT_USER = "INSERT INTO Users (firstname, lastname, email, password, company, phone, creationDate, isActive, role, managerId) VALUES (?,?,?,?,?,?,NOW(),?,?,?)";
 	private static final String SQL_UPDATE_USER = "UPDATE Users set firstname = ?, lastname = ?, email = ?, company = ?, phone = ?, isActive = ?, role = ? WHERE id = ?";
 
 	private DAOFactory daoFactory;
@@ -50,8 +50,8 @@ public class UserDAOImpl implements UserDAO {
 		user.setRole( E_Role.valueOf(resultSet.getString( "role" ).toUpperCase() ) );
 		
 		UserDAO userDAO = DAOFactory.getInstance().getUserDAO();
-		User creator = userDAO.findUserByID( resultSet.getInt("createdBy") );
-		user.setCreatedBy(creator);
+		User manager = userDAO.findUserByID( resultSet.getInt("managerId") );
+		user.setManager(manager);
 
 		return user;
 	}

@@ -15,7 +15,7 @@ public class User implements Serializable {
 	private Timestamp creationDate;
 	private Boolean isActive;
 	private models.beans.E_Role role;
-	private User createdBy;
+	private User manager;
 	
 	public User() {
 		this.id = -1;
@@ -28,7 +28,7 @@ public class User implements Serializable {
 		this.creationDate = new Timestamp(System.currentTimeMillis());
 		this.isActive = true;
 		this.role = E_Role.TRAINEE;
-		this.createdBy = null;
+		this.manager = null;
 	}
 
 	public User(User u) {
@@ -42,7 +42,7 @@ public class User implements Serializable {
 		this.creationDate = u.getCreationDate();
 		this.isActive = u.getIsActive();
 		this.role = u.getRole();
-		this.setCreatedBy(u.getCreatedBy());
+		this.setManager(u.getManager());
 	}
 
 	public int getId() {
@@ -140,11 +140,11 @@ public class User implements Serializable {
 		return sb.toString();
 	}
 
-	public User getCreatedBy() {
-		return createdBy;
+	public User getManager() {
+		return manager;
 	}
 
-	public void setCreatedBy(User createdBy) {
-		this.createdBy = createdBy;
+	public void setManager(User manager) {
+		this.manager = manager;
 	}
 }
