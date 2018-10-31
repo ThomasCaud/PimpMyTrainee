@@ -3,6 +3,7 @@ package dao.interfaces;
 import java.util.ArrayList;
 
 import dao.exceptions.DAOException;
+import models.beans.PossibleAnswer;
 
 public interface CommonDAO<T> {
 	Integer count() throws DAOException;
@@ -11,5 +12,7 @@ public interface CommonDAO<T> {
 	T findActive(String field, Object value) throws DAOException;
 	ArrayList<T> findAll() throws DAOException;
 	ArrayList<T> findAll(Integer offset, Integer limit) throws DAOException;
+    ArrayList<T> findBy(String field, Object value) throws DAOException;
+
 	void delete(Integer id) throws DAOException;
 }

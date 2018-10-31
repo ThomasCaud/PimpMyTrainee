@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import dao.DAOFactory;
 import dao.exceptions.DAOException;
 import dao.interfaces.CommonDAO;
+import models.beans.PossibleAnswer;
 
 public abstract class AbstractDAOImpl<T> implements CommonDAO<T> {
 	protected abstract T map( ResultSet resultSet ) throws SQLException;
@@ -201,6 +202,37 @@ public abstract class AbstractDAOImpl<T> implements CommonDAO<T> {
 
 		return tList;
 	}
+
+	@Override
+    public ArrayList<T> findBy(String field, Object value) throws DAOException {
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+		ArrayList<T> tList = new ArrayList<T>();
+
+		try {
+			connection = daoFactory.getConnection();
+			preparedStatement = initPreparedStatement(
+                connection,
+                getSelectQuery(field),
+                false,
+                value
+            );
+			resultSet = preparedStatement.executeQuery();
+
+			while ( resultSet.next() ) {
+				T pa = map( resultSet );
+				tList.add(pa);
+			}
+
+		} catch (SQLException e) {
+			throw new DAOException( e );
+		} finally {
+			silentClose( resultSet, preparedStatement, connection );
+		}
+
+		return tList;
+    }
 
 	public void delete(Integer id) throws DAOException {
 		Connection connection = null;

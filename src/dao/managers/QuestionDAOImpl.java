@@ -36,7 +36,7 @@ public class QuestionDAOImpl extends AbstractDAOImpl<Question> implements Questi
         question.setPosition( resultSet.getInt( "position" ));
         
         PossibleAnswerDAO paDAO = DAOFactory.getInstance().getPossibleAnswerDAO();
-        question.setPossibleAnswers(paDAO.findByQuizId( resultSet.getInt( "id" )));
+        question.setPossibleAnswers(paDAO.findBy("question", resultSet.getInt( "id" )));
 
 		return question;
 	}

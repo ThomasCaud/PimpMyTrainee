@@ -17,7 +17,6 @@ import models.beans.Question;
 
 public class PossibleAnswerDAOImpl extends AbstractDAOImpl<PossibleAnswer>  implements PossibleAnswerDAO {
 	private static final String tableName = "possibleanswers";
-    private static final String SQL_SELECT_BY_QUIZ_ID = "SELECT * from possibleanswers WHERE question = ?";
     private static final String SQL_INSERT = "INSERT INTO possibleanswers (label, isCorrect, isActive, position, question) VALUES (?,?,?,?,?)";
 	private static final String SQL_UPDATE = "UPDATE possibleanswers set label = ?, isCorrect = ?, isActive = ?, position = ?, question = ? WHERE id = ?";
 
@@ -103,35 +102,4 @@ public class PossibleAnswerDAOImpl extends AbstractDAOImpl<PossibleAnswer>  impl
 			silentClose( null, preparedStatement, connection );
 		}
 	}
-
-    @Override
-    public ArrayList<PossibleAnswer> findByQuizId(int quizId) throws DAOException {
-		Connection connection = null;
-		PreparedStatement preparedStatement = null;
-		ResultSet resultSet = null;
-		ArrayList<PossibleAnswer> possibleAnswers = new ArrayList<PossibleAnswer>();
-
-		try {
-			connection = daoFactory.getConnection();
-			preparedStatement = initPreparedStatement(
-                connection,
-                SQL_SELECT_BY_QUIZ_ID,
-                false,
-                quizId
-            );
-			resultSet = preparedStatement.executeQuery();
-
-			while ( resultSet.next() ) {
-				PossibleAnswer pa = map( resultSet );
-				possibleAnswers.add(pa);
-			}
-
-		} catch (SQLException e) {
-			throw new DAOException( e );
-		} finally {
-			silentClose( resultSet, preparedStatement, connection );
-		}
-
-		return possibleAnswers;
-    }
 }
