@@ -14,8 +14,6 @@
 			
 			<hr>
 			
-			
-			
 			<div class="row">
 				<div class="col-12 col-sm-8 offset-sm-2">
 					<fieldset>
@@ -45,7 +43,6 @@
 			</div>
 			
 			<hr>
-			
 			
 			<div class="row">
 				<div id="quizQuestions" class="col-12 col-sm-8 offset-sm-2">

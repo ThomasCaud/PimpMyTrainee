@@ -47,6 +47,16 @@
 				</div>
 			</div>
 			
+			<hr>
+			
+			<div class="row mb-3">
+				<div class="col-12 col-sm-8 offset-sm-2">
+				<form method="POST" action="">
+					<button type="submit" class="btn btn-success btn-block" name="submit" value="confirmQuiz">Confirm</button>
+				</form>
+				</div>
+			</div>
+			
 		</div>
 	</div>
 </div>

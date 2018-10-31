@@ -356,7 +356,7 @@ public class CreateQuizForm extends AbstractForm {
 		return quiz;
 	}
 
-	public Quiz createQuiz(HttpServletRequest request) {
+	public Quiz prepareQuiz(HttpServletRequest request) {
 		String title = getFieldValue(request,FIELD_TITLE);
 		String theme = getFieldValue(request,FIELD_THEME);
 		
@@ -370,5 +370,9 @@ public class CreateQuizForm extends AbstractForm {
 		quiz.setQuestions(questions);
 		
 		return quiz;
+	}
+	
+	public void createQuiz(Quiz quiz) {
+		quizDAO.createQuiz(quiz);
 	}
 }
