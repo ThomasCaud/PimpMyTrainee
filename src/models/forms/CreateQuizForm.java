@@ -65,6 +65,41 @@ public class CreateQuizForm extends AbstractForm {
 		quiz.setTheme(theme);
 	}
 	
+	public void processQuestionsValidation( ArrayList<Question> questions, Quiz quiz ) {
+		if( questions.isEmpty() ) {
+			setError("questions", "The quiz must contain at least 1 question.");
+		} else {
+			int questionIndex = 1;
+			for(Question question : questions) {
+				if( isNullOrEmpty(question.getLabel()) ) {
+					setError("question_"+questionIndex+"_label","The label cannot be empty.");
+				}
+				
+				ArrayList<PossibleAnswer> possibleAnswers = question.getPossibleAnswers();
+				if(possibleAnswers == null || possibleAnswers.isEmpty()) {
+					setError("question_"+questionIndex+"_answers","There must be at least 1 answer.");
+				} else {
+					int answerIndex = 1;
+					boolean oneIsCorrect = false;
+					for(PossibleAnswer possibleAnswer : possibleAnswers) {
+						if( isNullOrEmpty(possibleAnswer.getLabel()) )
+							setError("question_"+questionIndex+"_answer_"+answerIndex,"The label cannot be empty.");
+							
+						if( possibleAnswer.getIsCorrect() )
+							oneIsCorrect = true;
+						
+						answerIndex++;
+					}
+						
+					if( !oneIsCorrect )
+						setError("question_"+questionIndex+"_answers","There must be 1 correct answer selected.");
+				}
+				
+				questionIndex++;
+			}
+		}
+	}
+	
 	public ArrayList<Question> getQuestionsFromRequest(HttpServletRequest request) {
 		
 		ArrayList<Question> questions = new ArrayList<Question>();
@@ -315,6 +350,22 @@ public class CreateQuizForm extends AbstractForm {
 				Collections.swap(possibleAnswers, answerIndex-1, answerIndex);
 			}
 		}
+		
+		return quiz;
+	}
+
+	public Quiz createQuiz(HttpServletRequest request) {
+		String title = getFieldValue(request,FIELD_TITLE);
+		String theme = getFieldValue(request,FIELD_THEME);
+		
+		Quiz quiz = new Quiz();
+		ArrayList<Question> questions = getQuestionsFromRequest(request);
+		
+		processThemeValidation(theme,quiz);
+		processTitleValidation(title,quiz);
+		processQuestionsValidation(questions,quiz);
+		
+		quiz.setQuestions(questions);
 		
 		return quiz;
 	}

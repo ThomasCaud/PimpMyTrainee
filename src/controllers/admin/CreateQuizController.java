@@ -35,7 +35,8 @@ public class CreateQuizController extends HttpServlet {
 	private static final String ATT_THEMES = "themes";
 	private static final String FIELD_SUBMIT = "submit";
 	private static final String VIEW_STEP1 = "/WEB-INF/admin_create_quiz_step1.jsp";
-	private static final String[] ALLOWED_SUBMIT_PATTERNS = {"newQuestion","newAnswer_([0-9]+)","deleteQuestion_([0-9]+)","deleteAnswer_([0-9]+)_fromQuestion_([0-9]+)","moveUpQuestion_([0-9]+)","moveDownQuestion_([0-9]+)","moveUpAnswer_([0-9]+)_fromQuestion_([0-9]+)","moveDownAnswer_([0-9]+)_fromQuestion_([0-9]+)"};
+	private static final String VIEW_STEP2 = "/WEB-INF/admin_create_quiz_step2.jsp";
+	private static final String[] ALLOWED_SUBMIT_PATTERNS = {"newQuestion","newAnswer_([0-9]+)","deleteQuestion_([0-9]+)","deleteAnswer_([0-9]+)_fromQuestion_([0-9]+)","moveUpQuestion_([0-9]+)","moveDownQuestion_([0-9]+)","moveUpAnswer_([0-9]+)_fromQuestion_([0-9]+)","moveDownAnswer_([0-9]+)_fromQuestion_([0-9]+)","createQuiz"};
 	private ThemeDAO themeDAO;
 	private QuizDAO quizDAO;
 	
@@ -99,6 +100,9 @@ public class CreateQuizController extends HttpServlet {
 			case "moveDownAnswer_([0-9]+)_fromQuestion_([0-9]+)" :
 				quiz = createQuizForm.moveDownAnswerFromQuestion(request);
 				break;
+			case "createQuiz" :
+				quiz = createQuizForm.createQuiz(request);
+				break;
 		}
 		
 		ArrayList<Theme> themes = themeDAO.findAll();
@@ -107,7 +111,9 @@ public class CreateQuizController extends HttpServlet {
 		request.setAttribute(ATT_FORM, createQuizForm);
 		request.setAttribute(ATT_QUIZ, quiz);
 		
-		this.getServletContext().getRequestDispatcher( VIEW_STEP1 ).forward( request, response );
-		return;
+		if( submitPattern.equals("createQuiz") && createQuizForm.getErrors().isEmpty() )
+			this.getServletContext().getRequestDispatcher( VIEW_STEP2 ).forward( request, response );
+		else
+			this.getServletContext().getRequestDispatcher( VIEW_STEP1 ).forward( request, response );
 	}
 }
