@@ -25,6 +25,10 @@ public abstract class AbstractDAOImpl<T> implements CommonDAO<T> {
 		return "SELECT * FROM " + tableName + " WHERE id = ?";
 	}
 	
+	private String getDeletedByIdQuery() {
+		return "DELETE FROM " + tableName + " WHERE id = ?";
+	}
+
 	protected abstract T map( ResultSet resultSet ) throws SQLException;
 
 	@Override
@@ -54,5 +58,30 @@ public abstract class AbstractDAOImpl<T> implements CommonDAO<T> {
 		}
 
 		return t;
+	}
+
+	public void delete(Integer id) throws DAOException {
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+
+	    try {
+			connection = daoFactory.getConnection();
+			preparedStatement = initPreparedStatement(
+				connection,
+				getDeletedByIdQuery(),
+				true,
+				id
+			);
+			resultSet = preparedStatement.executeQuery();
+
+			if(!resultSet.rowDeleted()) {
+				throw new DAOException("Echec de la suppression [[table:" + tableName + "],[id:" + id+"]]");
+			}
+		} catch ( SQLException e ) {
+			throw new DAOException( e );
+		} finally {
+			silentClose( resultSet, preparedStatement, connection );
+		}
 	}
 }
