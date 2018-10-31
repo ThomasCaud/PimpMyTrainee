@@ -88,6 +88,7 @@ public class CreateQuizForm extends AbstractForm {
 						if( possibleAnswer.getIsCorrect() )
 							oneIsCorrect = true;
 						
+						possibleAnswer.setPosition(answerIndex);
 						answerIndex++;
 					}
 						
@@ -95,6 +96,7 @@ public class CreateQuizForm extends AbstractForm {
 						setError("question_"+questionIndex+"_answers","There must be 1 correct answer selected.");
 				}
 				
+				question.setPosition(questionIndex);
 				questionIndex++;
 			}
 		}
