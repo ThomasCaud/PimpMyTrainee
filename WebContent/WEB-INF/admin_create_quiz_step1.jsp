@@ -20,11 +20,6 @@
 				<div class="col-12 col-sm-8 offset-sm-2">
 					<fieldset>
 						<div class="form-group">
-					      	<label>Title</label>
-					      	<input type="text" name="title" class="form-control" placeholder="Enter quiz title" value="<c:out value="${quiz.title}"/>">
-					      	<div class="form-error">${form.errors['title']}</div>
-					    </div>
-					    <div class="form-group">
 					      	<label>Theme</label>
 					      	<div class="row no-gutters">
 					      		<div class="col-12 col-sm-8">
@@ -39,6 +34,11 @@
 								</div>
 								<div class="form-error">${form.errors['theme']}</div>
 					      	</div>  	
+					    </div>
+						<div class="form-group">
+					      	<label>Title</label>
+					      	<input type="text" name="title" class="form-control" placeholder="Enter quiz title" value="<c:out value="${quiz.title}"/>">
+					      	<div class="form-error">${form.errors['title']}</div>
 					    </div>
 					</fieldset>
 				</div>
