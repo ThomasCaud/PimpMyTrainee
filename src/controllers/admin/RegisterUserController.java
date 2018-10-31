@@ -49,8 +49,11 @@ public class RegisterUserController extends HttpServlet {
 		RegisterUserForm registerUserForm = new RegisterUserForm(userDAO);
 		
 		User user = null;
+		HttpSession session = request.getSession();
+		User creator = (User) session.getAttribute(Config.ATT_SESSION_USER);
+
 		try {
-			user = registerUserForm.registerUser(request);
+			user = registerUserForm.registerUser(request, creator);
 		} catch (EmailException e) {
 			e.printStackTrace();
 		}

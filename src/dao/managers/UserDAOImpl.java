@@ -23,7 +23,7 @@ public class UserDAOImpl implements UserDAO {
 	private static final String SQL_SELECTED_BY_NAME_OR_LASTNAME_OR_COMPANY = "SELECT * FROM Users WHERE firstname like ? or lastname like ? or company like ?";
 	private static final String SQL_SELECT_ALL_WITH_OFFSET_LIMIT = "SELECT * FROM Users LIMIT ?,?";
 	private static final String SQL_COUNT_ALL = "SELECT count(*) as count FROM Users";
-	private static final String SQL_INSERT_USER = "INSERT INTO Users (firstname, lastname, email, password, company, phone, creationDate, isActive, role) VALUES (?,?,?,?,?,?,NOW(),?,?)";
+	private static final String SQL_INSERT_USER = "INSERT INTO Users (firstname, lastname, email, password, company, phone, creationDate, isActive, role, createdBy) VALUES (?,?,?,?,?,?,NOW(),?,?,?)";
 	private static final String SQL_UPDATE_USER = "UPDATE Users set firstname = ?, lastname = ?, email = ?, company = ?, phone = ?, isActive = ?, role = ? WHERE id = ?";
 
 	private DAOFactory daoFactory;
@@ -49,20 +49,35 @@ public class UserDAOImpl implements UserDAO {
 		user.setIsActive( resultSet.getInt( "isActive" ) == 1 ? true : false );
 		user.setRole( E_Role.valueOf(resultSet.getString( "role" ).toUpperCase() ) );
 		
+		UserDAO userDAO = DAOFactory.getInstance().getUserDAO();
+		User creator = userDAO.findUserByID( resultSet.getInt("createdBy") );
+		user.setCreatedBy(creator);
+
 		return user;
 	}
 
 	@Override
-	public void createUser(User user) throws DAOException {
+	public void createUser(User user, User creator) throws DAOException {
 		
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
 	    
 	    try {
-			/* Récupération d'une connexion depuis la Factory */
 			connection = daoFactory.getConnection();
-			preparedStatement = initPreparedStatement( connection, SQL_INSERT_USER, true, user.getFirstname(), user.getLastname(), user.getEmail(), user.getPassword(), user.getCompany(), user.getPhone(), (user.getIsActive() ? 1 : 0), user.getRole().toString().toLowerCase() );
+			preparedStatement = initPreparedStatement(
+				connection,
+				SQL_INSERT_USER,
+				true,
+				user.getFirstname(),
+				user.getLastname(),
+				user.getEmail(),
+				user.getPassword(),
+				user.getCompany(),
+				user.getPhone(),
+				(user.getIsActive() ? 1 : 0), user.getRole().toString().toLowerCase(),
+				creator.getId()
+			);
 			int status = preparedStatement.executeUpdate();
 			
 			if( status == 0 ) {

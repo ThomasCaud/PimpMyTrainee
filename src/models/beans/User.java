@@ -15,6 +15,7 @@ public class User implements Serializable {
 	private Timestamp creationDate;
 	private Boolean isActive;
 	private models.beans.E_Role role;
+	private User createdBy;
 	
 	public User() {
 		this.id = -1;
@@ -26,7 +27,8 @@ public class User implements Serializable {
 		this.phone = "noPhone";
 		this.creationDate = new Timestamp(System.currentTimeMillis());
 		this.isActive = true;
-		this.role = E_Role.TRAINEE; 
+		this.role = E_Role.TRAINEE;
+		this.createdBy = null;
 	}
 
 	public User(User u) {
@@ -40,6 +42,7 @@ public class User implements Serializable {
 		this.creationDate = u.getCreationDate();
 		this.isActive = u.getIsActive();
 		this.role = u.getRole();
+		this.setCreatedBy(u.getCreatedBy());
 	}
 
 	public int getId() {
@@ -135,5 +138,13 @@ public class User implements Serializable {
 		sb.append("isActive = "+this.isActive+"\n");
 		sb.append("role = "+this.role);
 		return sb.toString();
+	}
+
+	public User getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(User createdBy) {
+		this.createdBy = createdBy;
 	}
 }

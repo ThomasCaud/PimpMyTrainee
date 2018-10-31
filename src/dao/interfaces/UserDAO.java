@@ -7,7 +7,7 @@ import models.beans.User;
 
 public interface UserDAO {
 	
-	void createUser(User user) throws DAOException;
+	void createUser(User user, User creator) throws DAOException;
 	void updateUser(User user) throws DAOException;
 	User findActiveUserByEmail(String email) throws DAOException;
 	User findUserByEmail(String email) throws DAOException;
