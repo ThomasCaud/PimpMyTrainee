@@ -11,4 +11,8 @@ $(document).ready(function(){
 	$("input[type='radio']").click(function(){
 		colorPossibleAnswers();
 	})
+	
+	$("#btnNewQuestion").click(function(e){
+		e.preventDefault();
+	});
 });

@@ -46,10 +46,6 @@
 	color: red;
 }
 
-.possibleAnswerRow {
-	cursor:pointer;
-}
-
 .possibleAnswerRow-correct {
 	/*background-color : #56CC9D;*/
 	background-color: rgba(86,204,157,0.7);
