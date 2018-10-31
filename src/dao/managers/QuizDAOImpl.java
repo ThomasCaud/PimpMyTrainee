@@ -49,7 +49,7 @@ public class QuizDAOImpl implements QuizDAO {
 		quiz.setCreationDate( resultSet.getTimestamp( "creationDate" ) );
 
 		UserDAO userDAO = DAOFactory.getInstance().getUserDAO();
-		User user = userDAO.findUserByID( resultSet.getInt("creator") );
+		User user = userDAO.find( resultSet.getInt("creator") );
 		quiz.setCreator(user);
 
 		ThemeDAO themeDAO = DAOFactory.getInstance().getThemeDAO();

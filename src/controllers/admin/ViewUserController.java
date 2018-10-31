@@ -56,8 +56,7 @@ public class ViewUserController extends HttpServlet {
 			response.sendError(HttpServletResponse.SC_BAD_REQUEST);
 			return;
 		}
-		
-		User user = userDAO.findUserByID(id);
+		User user = userDAO.find(id);
 		
 		if( user == null ) {
 			response.sendError(HttpServletResponse.SC_BAD_REQUEST);

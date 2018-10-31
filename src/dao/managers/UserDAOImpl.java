@@ -14,11 +14,10 @@ import dao.interfaces.UserDAO;
 import models.beans.E_Role;
 import models.beans.User;
 
-public class UserDAOImpl implements UserDAO {
-	
+public class UserDAOImpl extends AbstractDAOImpl<User> implements UserDAO{
+	private static final String tableName = "Users";
 	private static final String SQL_SELECT_PAR_EMAIL_ACTIF = "SELECT * FROM Users WHERE email = ? AND isActive = 1";
 	private static final String SQL_SELECT_PAR_EMAIL = "SELECT * FROM Users WHERE email = ?";
-	private static final String SQL_SELECT_PAR_ID = "SELECT * FROM Users WHERE id = ?";
 	private static final String SQL_SELECT_ALL = "SELECT * FROM Users";
 	private static final String SQL_SELECTED_BY_NAME_OR_LASTNAME_OR_COMPANY = "SELECT * FROM Users WHERE firstname like ? or lastname like ? or company like ?";
 	private static final String SQL_SELECT_ALL_WITH_OFFSET_LIMIT = "SELECT * FROM Users LIMIT ?,?";
@@ -26,16 +25,15 @@ public class UserDAOImpl implements UserDAO {
 	private static final String SQL_INSERT_USER = "INSERT INTO Users (firstname, lastname, email, password, company, phone, creationDate, isActive, role, managerId) VALUES (?,?,?,?,?,?,NOW(),?,?,?)";
 	private static final String SQL_UPDATE_USER = "UPDATE Users set firstname = ?, lastname = ?, email = ?, company = ?, phone = ?, isActive = ?, role = ? WHERE id = ?";
 
-	private DAOFactory daoFactory;
-
 	public UserDAOImpl() {
+		super(null, tableName);
 	}
 	
 	public UserDAOImpl( DAOFactory daoFactory ) {
-        	this.daoFactory = daoFactory;
+		super(daoFactory, tableName);
     }
 	
-	private static User map( ResultSet resultSet ) throws SQLException {
+	protected User map( ResultSet resultSet ) throws SQLException {
 		User user = new User();
 
 		user.setId( resultSet.getInt( "id" ) );
@@ -50,8 +48,10 @@ public class UserDAOImpl implements UserDAO {
 		user.setRole( E_Role.valueOf(resultSet.getString( "role" ).toUpperCase() ) );
 		
 		UserDAO userDAO = DAOFactory.getInstance().getUserDAO();
-		User manager = userDAO.findUserByID( resultSet.getInt("managerId") );
-		user.setManager(manager);
+		if(user.getRole() == E_Role.TRAINEE) {
+			User manager = userDAO.find( resultSet.getInt("managerId") );
+			user.setManager(manager);
+		}
 
 		return user;
 	}
@@ -164,32 +164,6 @@ public class UserDAOImpl implements UserDAO {
 			/* Récupération d'une connexion depuis la Factory */
 			connection = daoFactory.getConnection();
 			preparedStatement = initPreparedStatement( connection, SQL_SELECT_PAR_EMAIL, false, email );
-			resultSet = preparedStatement.executeQuery();
-
-			/* Parcours de la ligne de données de l'éventuel ResulSet retourné */
-			if ( resultSet.next() ) {
-				user = map( resultSet );
-			}
-		} catch ( SQLException e ) {
-			throw new DAOException( e );
-		} finally {
-			silentClose( resultSet, preparedStatement, connection );
-		}
-
-		return user;
-	}
-	
-	@Override
-	public User findUserByID(Integer id) throws DAOException {
-		Connection connection = null;
-		PreparedStatement preparedStatement = null;
-		ResultSet resultSet = null;
-	    User user = null;
-
-		try {
-			/* Récupération d'une connexion depuis la Factory */
-			connection = daoFactory.getConnection();
-			preparedStatement = initPreparedStatement( connection, SQL_SELECT_PAR_ID, false, id );
 			resultSet = preparedStatement.executeQuery();
 
 			/* Parcours de la ligne de données de l'éventuel ResulSet retourné */
