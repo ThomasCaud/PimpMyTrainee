@@ -53,13 +53,21 @@
 					<hr>
 					<div class="row">
 						<div class="col-12">
-							<h3>Question ${statusQ.count} <button type="submit" class="btn btn-danger btn-sm" name="submit" value="deleteQuestion_${statusQ.count}"><i class="fa fa-times"></i></button></h3>
+							<h3>
+								Question ${statusQ.count}
+								<button <c:if test="${statusQ.index == 0}">disabled</c:if> type="submit" class="btn btn-info btn-sm" name="submit" value="moveUpQuestion_${statusQ.count}" data-toggle="tooltip" title="" data-placement="top" data-original-title="Move up this question"><i class="fa fa-caret-up"></i></button>
+								<button <c:if test="${fn:length(quiz.questions) eq statusQ.count}">disabled</c:if> type="submit" class="btn btn-info btn-sm" name="submit" value="moveDownQuestion_${statusQ.count}" data-toggle="tooltip" title="" data-placement="top" data-original-title="Move down this question"><i class="fa fa-caret-down"></i></button>
+								<button type="submit" class="btn btn-danger btn-sm" name="submit" value="deleteQuestion_${statusQ.count}" data-toggle="tooltip" title="" data-placement="top" data-original-title="Delete this question"><i class="fa fa-times"></i></button>
+							</h3>
 						</div>	
 						<div class="col-12">
 							<input type="text" class="form-control" name="question_${statusQ.count}_label" value="${question.label}" placeholder="Enter question label">
 						</div>
 						<div class="col-12 mt-3">
-							<h5>Answers <button type="submit" class="btn btn-info btn-sm" name="submit" value="newAnswer_${statusQ.count}"><i class="fa fa-plus"></i></button></h5>
+							<h5>
+								Answers
+								<button type="submit" class="btn btn-info btn-sm" name="submit" value="newAnswer_${statusQ.count}" data-toggle="tooltip" title="" data-placement="top" data-original-title="Add a possible answer"><i class="fa fa-plus"></i></button>
+							</h5>
 						</div>
 						<div class="col-12">
 							<c:forEach items="${question.possibleAnswers}" var="possibleAnswer" varStatus="statusP">

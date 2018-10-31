@@ -220,4 +220,50 @@ public class CreateQuizForm extends AbstractForm {
 		
 		return quiz;
 	}
+	
+	public Quiz moveUpQuestion(HttpServletRequest request) {
+		String title = getFieldValue(request,FIELD_TITLE);
+		String theme = getFieldValue(request,FIELD_THEME);
+		String indexQuestionStr = getFieldValue(request,FIELD_SUBMIT).replace("moveUpQuestion_", "");
+		Integer indexQuestion = Integer.parseInt(indexQuestionStr);
+		
+		Quiz quiz = new Quiz();
+		
+		processThemeValidation(theme,quiz);
+		
+		quiz.setTitle(title);
+		quiz.setQuestions(getQuestionsFromRequest(request));
+		
+		ArrayList<Question> questions = quiz.getQuestions();
+		if(indexQuestion > 0 && indexQuestion <= questions.size() ) {
+			if( indexQuestion != 1 ) {
+				Collections.swap(questions, indexQuestion-1, indexQuestion-2);
+			}
+		}
+		
+		return quiz;
+	}
+	
+	public Quiz moveDownQuestion(HttpServletRequest request) {
+		String title = getFieldValue(request,FIELD_TITLE);
+		String theme = getFieldValue(request,FIELD_THEME);
+		String indexQuestionStr = getFieldValue(request,FIELD_SUBMIT).replace("moveDownQuestion_", "");
+		Integer indexQuestion = Integer.parseInt(indexQuestionStr);
+		
+		Quiz quiz = new Quiz();
+		
+		processThemeValidation(theme,quiz);
+		
+		quiz.setTitle(title);
+		quiz.setQuestions(getQuestionsFromRequest(request));
+		
+		ArrayList<Question> questions = quiz.getQuestions();
+		if(indexQuestion > 0 && indexQuestion <= questions.size() ) {
+			if( indexQuestion != questions.size() ) {
+				Collections.swap(questions, indexQuestion-1, indexQuestion);
+			}
+		}
+		
+		return quiz;
+	}
 }
