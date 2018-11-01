@@ -15,6 +15,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import common.Config;
+import dao.interfaces.PossibleAnswerDAO;
+import dao.interfaces.QuestionDAO;
 import dao.interfaces.QuizDAO;
 import dao.interfaces.ThemeDAO;
 import dao.DAOFactory;
@@ -39,10 +41,14 @@ public class CreateQuizController extends HttpServlet {
 	private static final String[] ALLOWED_SUBMIT_PATTERNS = {"newQuestion","newAnswer_([0-9]+)","deleteQuestion_([0-9]+)","deleteAnswer_([0-9]+)_fromQuestion_([0-9]+)","moveUpQuestion_([0-9]+)","moveDownQuestion_([0-9]+)","moveUpAnswer_([0-9]+)_fromQuestion_([0-9]+)","moveDownAnswer_([0-9]+)_fromQuestion_([0-9]+)","createQuiz","confirmQuiz"};
 	private ThemeDAO themeDAO;
 	private QuizDAO quizDAO;
+	private QuestionDAO questionDAO;
+	private PossibleAnswerDAO possibleAnswerDAO;
 	
 	public void init() throws ServletException {
         this.themeDAO = ( (DAOFactory) getServletContext().getAttribute( Config.CONF_DAO_FACTORY ) ).getThemeDAO();
         this.quizDAO = ( (DAOFactory) getServletContext().getAttribute( Config.CONF_DAO_FACTORY ) ).getQuizDAO();
+        this.questionDAO = ( (DAOFactory) getServletContext().getAttribute( Config.CONF_DAO_FACTORY ) ).getQuestionDAO();
+        this.possibleAnswerDAO = ( (DAOFactory) getServletContext().getAttribute( Config.CONF_DAO_FACTORY ) ).getPossibleAnswerDAO();
 	}
 	
 	public void doGet( HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException {
@@ -73,7 +79,7 @@ public class CreateQuizController extends HttpServlet {
 		}
 		String submitPattern = tmp.get(0);
 
-		CreateQuizForm createQuizForm = new CreateQuizForm(quizDAO,themeDAO);
+		CreateQuizForm createQuizForm = new CreateQuizForm(quizDAO,themeDAO,questionDAO,possibleAnswerDAO);
 		Quiz quiz = null;
 		
 		switch( submitPattern ) {
@@ -121,8 +127,10 @@ public class CreateQuizController extends HttpServlet {
 		if( submitPattern.equals("createQuiz") && createQuizForm.getErrors().isEmpty() ) {
 	        session.setAttribute(Config.ATT_SESSION_QUIZ, quiz);
 			this.getServletContext().getRequestDispatcher( VIEW_STEP2 ).forward( request, response );
-		}
+			return;
+		} 
 		
-		this.getServletContext().getRequestDispatcher( VIEW_STEP1 ).forward( request, response );
+		this.getServletContext().getRequestDispatcher( VIEW_STEP1 ).forward( request, response );	
+		
 	}
 }

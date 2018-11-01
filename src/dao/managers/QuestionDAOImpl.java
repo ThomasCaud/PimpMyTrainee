@@ -68,7 +68,7 @@ public class QuestionDAOImpl extends AbstractDAOImpl<Question> implements Questi
 			resultSet = preparedStatement.getGeneratedKeys();
 
 			if ( resultSet.next() ) {
-	            quiz.setId( resultSet.getInt( 1 ) );
+	            question.setId( resultSet.getInt( 1 ) );
 	        } else {
 	            throw new DAOException( "Echec de la creation de la question en base, aucun ID auto-genere retourne." );
 	        }

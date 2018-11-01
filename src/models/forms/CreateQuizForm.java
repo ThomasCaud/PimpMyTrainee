@@ -14,6 +14,8 @@ import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import dao.interfaces.PossibleAnswerDAO;
+import dao.interfaces.QuestionDAO;
 import dao.interfaces.QuizDAO;
 import dao.interfaces.ThemeDAO;
 import models.beans.PossibleAnswer;
@@ -28,11 +30,15 @@ public class CreateQuizForm extends AbstractForm {
 	private static final String FIELD_SUBMIT = "submit";
 	private QuizDAO quizDAO;
 	private ThemeDAO themeDAO;
+	private QuestionDAO questionDAO;
+	private PossibleAnswerDAO possibleAnswerDAO;
 	
-	public CreateQuizForm( QuizDAO quizDAO, ThemeDAO themeDAO ) {
+	public CreateQuizForm( QuizDAO quizDAO, ThemeDAO themeDAO, QuestionDAO questionDAO, PossibleAnswerDAO possibleAnswerDAO) {
 		super();
 		this.quizDAO = quizDAO;
 		this.themeDAO = themeDAO;
+		this.questionDAO = questionDAO;
+		this.possibleAnswerDAO = possibleAnswerDAO;
 	}
 	
 	public void processTitleValidation( String title, Quiz quiz ) {
@@ -374,5 +380,15 @@ public class CreateQuizForm extends AbstractForm {
 	
 	public void createQuiz(Quiz quiz) {
 		quizDAO.createQuiz(quiz);
+		
+		ArrayList<Question> questions = quiz.getQuestions();
+		for( Question question : questions ) {
+			questionDAO.create(quiz, question);
+			
+			ArrayList<PossibleAnswer> possibleAnswers = question.getPossibleAnswers();
+			for( PossibleAnswer answer : possibleAnswers ) {
+				possibleAnswerDAO.create(question, answer);
+			}
+		}
 	}
 }
