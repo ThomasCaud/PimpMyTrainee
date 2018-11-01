@@ -128,9 +128,13 @@ public class CreateQuizController extends HttpServlet {
 	        session.setAttribute(Config.ATT_SESSION_QUIZ, quiz);
 			this.getServletContext().getRequestDispatcher( VIEW_STEP2 ).forward( request, response );
 			return;
-		} 
+		}
 		
+		if( submitPattern.equals("confirmQuiz") && createQuizForm.getErrors().isEmpty() ) {
+			response.sendRedirect(request.getServletContext().getContextPath()+"/"+Config.URL_QUIZZES);
+			return;
+		}
+			
 		this.getServletContext().getRequestDispatcher( VIEW_STEP1 ).forward( request, response );	
-		
 	}
 }
