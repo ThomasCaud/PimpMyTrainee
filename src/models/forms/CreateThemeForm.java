@@ -1,19 +1,9 @@
 package models.forms;
 
-import java.sql.Timestamp;
-
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.mail.EmailException;
-import org.apache.log4j.Logger;
-
-import common.GmailEmailSendor;
-import common.RandomStringGenerator;
 import dao.interfaces.ThemeDAO;
-import dao.interfaces.UserDAO;
-import models.beans.E_Role;
 import models.beans.Theme;
-import models.beans.User;
 
 public class CreateThemeForm extends AbstractForm {
 	

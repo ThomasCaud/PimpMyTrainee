@@ -10,11 +10,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import common.Config;
-import dao.DAOFactory;
 import dao.interfaces.UserDAO;
 import models.beans.E_Role;
 import models.beans.User;
-import models.forms.UpdateUserForm;
 
 @WebServlet( "/"+Config.URL_VIEW_QUIZ+"/*" )
 public class ViewQuizController extends HttpServlet {

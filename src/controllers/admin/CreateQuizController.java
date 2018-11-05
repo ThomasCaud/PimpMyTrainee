@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -21,8 +20,6 @@ import dao.interfaces.QuizDAO;
 import dao.interfaces.ThemeDAO;
 import dao.DAOFactory;
 import models.beans.E_Role;
-import models.beans.PossibleAnswer;
-import models.beans.Question;
 import models.beans.Quiz;
 import models.beans.Theme;
 import models.beans.User;

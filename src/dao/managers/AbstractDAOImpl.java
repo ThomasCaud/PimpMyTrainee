@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import dao.DAOFactory;
 import dao.exceptions.DAOException;
 import dao.interfaces.CommonDAO;
-import models.beans.PossibleAnswer;
 
 public abstract class AbstractDAOImpl<T> implements CommonDAO<T> {
 	protected abstract T map( ResultSet resultSet ) throws SQLException;
