@@ -57,8 +57,21 @@ public class UsersController extends HttpServlet {
 			}
 		}
 		
-		Integer nbAllUsers = userDAO.count();
 		Integer nbUsersPerPage = Config.NB_USERS_PER_PAGE;
+		String nbUsersPerPageUrl = request.getParameter("n");
+		
+		if( nbUsersPerPageUrl != null) {
+			try {
+				nbUsersPerPage = Integer.parseInt(nbUsersPerPageUrl);
+				
+				if( nbUsersPerPage <= 0 ) throw new NumberFormatException();
+			} catch(NumberFormatException e) {
+				response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+				return;
+			}
+		}
+		
+		Integer nbAllUsers = userDAO.count();
 		
 		Integer res = nbAllUsers % nbUsersPerPage;
 		Integer nbNeededPages = (int) nbAllUsers / nbUsersPerPage;
@@ -68,7 +81,7 @@ public class UsersController extends HttpServlet {
     	if(search != null) {
 			users = userDAO.findUsersByNameOrLastnameOrCompany(search);
 		} else {
-			users = userDAO.findAll((offset-1)*Config.NB_USERS_PER_PAGE, nbUsersPerPage);
+			users = userDAO.findAll((offset-1)*nbUsersPerPage, nbUsersPerPage);
 		}
 		
 		request.setAttribute(ATT_USERS, users);
