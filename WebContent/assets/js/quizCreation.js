@@ -15,4 +15,6 @@ $(document).ready(function(){
 	$("#btnNewQuestion").click(function(e){
 		e.preventDefault();
 	});
+	
+	$('[data-toggle="tooltip"]').tooltip()
 });

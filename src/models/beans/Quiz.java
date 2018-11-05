@@ -4,6 +4,9 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 public class Quiz implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private int id;
@@ -100,13 +103,13 @@ public class Quiz implements Serializable {
 	}
 	
 	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append("id = "+this.id+"\n");
-		sb.append("title = "+this.title+"\n");
-		sb.append("isActive = "+this.isActive+"\n");
-		sb.append("questions="+this.questions+"\n");
-		sb.append("creator="+this.creator.toString()+"\n");
-		sb.append("creationDate = "+this.creationDate+"\n");
-		return sb.toString();
+		String str = "";
+		ObjectMapper mapper = new ObjectMapper();
+		try {
+			str = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(this);
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+		}
+		return str;
 	}
 }

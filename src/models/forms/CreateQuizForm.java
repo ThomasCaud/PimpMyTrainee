@@ -14,6 +14,8 @@ import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import dao.interfaces.PossibleAnswerDAO;
+import dao.interfaces.QuestionDAO;
 import dao.interfaces.QuizDAO;
 import dao.interfaces.ThemeDAO;
 import models.beans.PossibleAnswer;
@@ -28,11 +30,15 @@ public class CreateQuizForm extends AbstractForm {
 	private static final String FIELD_SUBMIT = "submit";
 	private QuizDAO quizDAO;
 	private ThemeDAO themeDAO;
+	private QuestionDAO questionDAO;
+	private PossibleAnswerDAO possibleAnswerDAO;
 	
-	public CreateQuizForm( QuizDAO quizDAO, ThemeDAO themeDAO ) {
+	public CreateQuizForm( QuizDAO quizDAO, ThemeDAO themeDAO, QuestionDAO questionDAO, PossibleAnswerDAO possibleAnswerDAO) {
 		super();
 		this.quizDAO = quizDAO;
 		this.themeDAO = themeDAO;
+		this.questionDAO = questionDAO;
+		this.possibleAnswerDAO = possibleAnswerDAO;
 	}
 	
 	public void processTitleValidation( String title, Quiz quiz ) {
@@ -63,6 +69,43 @@ public class CreateQuizForm extends AbstractForm {
 		}
 		
 		quiz.setTheme(theme);
+	}
+	
+	public void processQuestionsValidation( ArrayList<Question> questions, Quiz quiz ) {
+		if( questions.isEmpty() ) {
+			setError("questions", "The quiz must contain at least 1 question.");
+		} else {
+			int questionIndex = 1;
+			for(Question question : questions) {
+				if( isNullOrEmpty(question.getLabel()) ) {
+					setError("question_"+questionIndex+"_label","The label cannot be empty.");
+				}
+				
+				ArrayList<PossibleAnswer> possibleAnswers = question.getPossibleAnswers();
+				if(possibleAnswers == null || possibleAnswers.isEmpty()) {
+					setError("question_"+questionIndex+"_answers","There must be at least 1 answer.");
+				} else {
+					int answerIndex = 1;
+					boolean oneIsCorrect = false;
+					for(PossibleAnswer possibleAnswer : possibleAnswers) {
+						if( isNullOrEmpty(possibleAnswer.getLabel()) )
+							setError("question_"+questionIndex+"_answer_"+answerIndex,"The label cannot be empty.");
+							
+						if( possibleAnswer.getIsCorrect() )
+							oneIsCorrect = true;
+						
+						possibleAnswer.setPosition(answerIndex);
+						answerIndex++;
+					}
+						
+					if( !oneIsCorrect )
+						setError("question_"+questionIndex+"_answers","There must be 1 correct answer selected.");
+				}
+				
+				question.setPosition(questionIndex);
+				questionIndex++;
+			}
+		}
 	}
 	
 	public ArrayList<Question> getQuestionsFromRequest(HttpServletRequest request) {
@@ -135,8 +178,9 @@ public class CreateQuizForm extends AbstractForm {
 		
 		Quiz quiz = new Quiz();
 		
-		processTitleValidation(title,quiz);
 		processThemeValidation(theme,quiz);
+		
+		quiz.setTitle(title);
 		
 		quiz.setQuestions(getQuestionsFromRequest(request));
 		
@@ -158,9 +202,9 @@ public class CreateQuizForm extends AbstractForm {
 		
 		Quiz quiz = new Quiz();
 		
-		processTitleValidation(title,quiz);
 		processThemeValidation(theme,quiz);
 		
+		quiz.setTitle(title);
 		quiz.setQuestions(getQuestionsFromRequest(request));
 		
 		PossibleAnswer p = new PossibleAnswer();
@@ -175,5 +219,176 @@ public class CreateQuizForm extends AbstractForm {
 		possibleAnswers.add(p);
 		
 		return quiz;
+	}
+	
+	public Quiz deleteQuestion(HttpServletRequest request) {
+		String title = getFieldValue(request,FIELD_TITLE);
+		String theme = getFieldValue(request,FIELD_THEME);
+		String questionIndexStr = getFieldValue(request,FIELD_SUBMIT);
+		Integer questionIndex = Integer.parseInt(questionIndexStr.replace("deleteQuestion_",""));
+		
+		Quiz quiz = new Quiz();
+		
+		processThemeValidation(theme,quiz);
+		
+		quiz.setTitle(title);
+		quiz.setQuestions(getQuestionsFromRequest(request));
+		
+		quiz.getQuestions().remove(questionIndex-1);
+		
+		return quiz;
+	}
+	
+	public Quiz deleteAnswerFromQuestion(HttpServletRequest request) {
+		String title = getFieldValue(request,FIELD_TITLE);
+		String theme = getFieldValue(request,FIELD_THEME);
+		String indexesStrRaw = getFieldValue(request,FIELD_SUBMIT).replace("deleteAnswer_", "").replace("fromQuestion_", "");
+		String[] indexesStr = indexesStrRaw.split("_");
+
+		Integer answerIndex = Integer.parseInt(indexesStr[0]);
+		Integer questionIndex = Integer.parseInt(indexesStr[1]);
+		
+		Quiz quiz = new Quiz();
+		
+		processThemeValidation(theme,quiz);
+		
+		quiz.setTitle(title);
+		quiz.setQuestions(getQuestionsFromRequest(request));
+		
+		ArrayList<PossibleAnswer> possibleAnswers = quiz.getQuestions().get(questionIndex-1).getPossibleAnswers();
+		possibleAnswers.remove(answerIndex-1);
+		
+		if( possibleAnswers.size() == 1 )
+			possibleAnswers.get(0).setIsCorrect(true);
+		
+		return quiz;
+	}
+	
+	public Quiz moveUpQuestion(HttpServletRequest request) {
+		String title = getFieldValue(request,FIELD_TITLE);
+		String theme = getFieldValue(request,FIELD_THEME);
+		String indexQuestionStr = getFieldValue(request,FIELD_SUBMIT).replace("moveUpQuestion_", "");
+		Integer indexQuestion = Integer.parseInt(indexQuestionStr);
+		
+		Quiz quiz = new Quiz();
+		
+		processThemeValidation(theme,quiz);
+		
+		quiz.setTitle(title);
+		quiz.setQuestions(getQuestionsFromRequest(request));
+		
+		ArrayList<Question> questions = quiz.getQuestions();
+		if(indexQuestion > 0 && indexQuestion <= questions.size() ) {
+			if( indexQuestion != 1 ) {
+				Collections.swap(questions, indexQuestion-1, indexQuestion-2);
+			}
+		}
+		
+		return quiz;
+	}
+	
+	public Quiz moveDownQuestion(HttpServletRequest request) {
+		String title = getFieldValue(request,FIELD_TITLE);
+		String theme = getFieldValue(request,FIELD_THEME);
+		String indexQuestionStr = getFieldValue(request,FIELD_SUBMIT).replace("moveDownQuestion_", "");
+		Integer indexQuestion = Integer.parseInt(indexQuestionStr);
+		
+		Quiz quiz = new Quiz();
+		
+		processThemeValidation(theme,quiz);
+		
+		quiz.setTitle(title);
+		quiz.setQuestions(getQuestionsFromRequest(request));
+		
+		ArrayList<Question> questions = quiz.getQuestions();
+		if(indexQuestion > 0 && indexQuestion <= questions.size() ) {
+			if( indexQuestion != questions.size() ) {
+				Collections.swap(questions, indexQuestion-1, indexQuestion);
+			}
+		}
+		
+		return quiz;
+	}
+	
+	public Quiz moveUpAnswerFromQuestion(HttpServletRequest request) {
+		String title = getFieldValue(request,FIELD_TITLE);
+		String theme = getFieldValue(request,FIELD_THEME);
+		String indexesStrRaw = getFieldValue(request,FIELD_SUBMIT).replace("moveUpAnswer_", "").replace("fromQuestion_", "");
+		String[] indexesStr = indexesStrRaw.split("_");
+
+		Integer answerIndex = Integer.parseInt(indexesStr[0]);
+		Integer questionIndex = Integer.parseInt(indexesStr[1]);
+		
+		Quiz quiz = new Quiz();
+		
+		processThemeValidation(theme,quiz);
+		
+		quiz.setTitle(title);
+		quiz.setQuestions(getQuestionsFromRequest(request));
+		
+		ArrayList<PossibleAnswer> possibleAnswers = quiz.getQuestions().get(questionIndex-1).getPossibleAnswers();
+		if(answerIndex > 0 && answerIndex <= possibleAnswers.size() ) {
+			if( answerIndex != 1 ) {
+				Collections.swap(possibleAnswers, answerIndex-1, answerIndex-2);
+			}
+		}
+		
+		return quiz;
+	}
+	
+	public Quiz moveDownAnswerFromQuestion(HttpServletRequest request) {
+		String title = getFieldValue(request,FIELD_TITLE);
+		String theme = getFieldValue(request,FIELD_THEME);
+		String indexesStrRaw = getFieldValue(request,FIELD_SUBMIT).replace("moveDownAnswer_", "").replace("fromQuestion_", "");
+		String[] indexesStr = indexesStrRaw.split("_");
+
+		Integer answerIndex = Integer.parseInt(indexesStr[0]);
+		Integer questionIndex = Integer.parseInt(indexesStr[1]);
+		
+		Quiz quiz = new Quiz();
+		
+		processThemeValidation(theme,quiz);
+		
+		quiz.setTitle(title);
+		quiz.setQuestions(getQuestionsFromRequest(request));
+		
+		ArrayList<PossibleAnswer> possibleAnswers = quiz.getQuestions().get(questionIndex-1).getPossibleAnswers();
+		if(answerIndex > 0 && answerIndex <= possibleAnswers.size() ) {
+			if( answerIndex != possibleAnswers.size() ) {
+				Collections.swap(possibleAnswers, answerIndex-1, answerIndex);
+			}
+		}
+		
+		return quiz;
+	}
+
+	public Quiz prepareQuiz(HttpServletRequest request) {
+		String title = getFieldValue(request,FIELD_TITLE);
+		String theme = getFieldValue(request,FIELD_THEME);
+		
+		Quiz quiz = new Quiz();
+		ArrayList<Question> questions = getQuestionsFromRequest(request);
+		
+		processThemeValidation(theme,quiz);
+		processTitleValidation(title,quiz);
+		processQuestionsValidation(questions,quiz);
+		
+		quiz.setQuestions(questions);
+		
+		return quiz;
+	}
+	
+	public void createQuiz(Quiz quiz) {
+		quizDAO.createQuiz(quiz);
+		
+		ArrayList<Question> questions = quiz.getQuestions();
+		for( Question question : questions ) {
+			questionDAO.create(quiz, question);
+			
+			ArrayList<PossibleAnswer> possibleAnswers = question.getPossibleAnswers();
+			for( PossibleAnswer answer : possibleAnswers ) {
+				possibleAnswerDAO.create(question, answer);
+			}
+		}
 	}
 }

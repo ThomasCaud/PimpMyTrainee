@@ -15,6 +15,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import common.Config;
+import dao.interfaces.PossibleAnswerDAO;
+import dao.interfaces.QuestionDAO;
 import dao.interfaces.QuizDAO;
 import dao.interfaces.ThemeDAO;
 import dao.DAOFactory;
@@ -35,13 +37,18 @@ public class CreateQuizController extends HttpServlet {
 	private static final String ATT_THEMES = "themes";
 	private static final String FIELD_SUBMIT = "submit";
 	private static final String VIEW_STEP1 = "/WEB-INF/admin_create_quiz_step1.jsp";
-	private static final String[] ALLOWED_SUBMIT_PATTERNS = {"newQuestion","newAnswer_([0-9]+)"};
+	private static final String VIEW_STEP2 = "/WEB-INF/admin_create_quiz_step2.jsp";
+	private static final String[] ALLOWED_SUBMIT_PATTERNS = {"newQuestion","newAnswer_([0-9]+)","deleteQuestion_([0-9]+)","deleteAnswer_([0-9]+)_fromQuestion_([0-9]+)","moveUpQuestion_([0-9]+)","moveDownQuestion_([0-9]+)","moveUpAnswer_([0-9]+)_fromQuestion_([0-9]+)","moveDownAnswer_([0-9]+)_fromQuestion_([0-9]+)","createQuiz","confirmQuiz"};
 	private ThemeDAO themeDAO;
 	private QuizDAO quizDAO;
+	private QuestionDAO questionDAO;
+	private PossibleAnswerDAO possibleAnswerDAO;
 	
 	public void init() throws ServletException {
         this.themeDAO = ( (DAOFactory) getServletContext().getAttribute( Config.CONF_DAO_FACTORY ) ).getThemeDAO();
         this.quizDAO = ( (DAOFactory) getServletContext().getAttribute( Config.CONF_DAO_FACTORY ) ).getQuizDAO();
+        this.questionDAO = ( (DAOFactory) getServletContext().getAttribute( Config.CONF_DAO_FACTORY ) ).getQuestionDAO();
+        this.possibleAnswerDAO = ( (DAOFactory) getServletContext().getAttribute( Config.CONF_DAO_FACTORY ) ).getPossibleAnswerDAO();
 	}
 	
 	public void doGet( HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException {
@@ -62,6 +69,7 @@ public class CreateQuizController extends HttpServlet {
 	}
 	
 	public void doPost( HttpServletRequest request, HttpServletResponse response )	throws ServletException, IOException {
+		HttpSession session = request.getSession();
 		String submitAction = request.getParameter(FIELD_SUBMIT);
 		
 		List<String> tmp = Arrays.asList(ALLOWED_SUBMIT_PATTERNS).stream().filter(s -> Pattern.matches(s, submitAction)).collect(Collectors.toList());
@@ -71,7 +79,7 @@ public class CreateQuizController extends HttpServlet {
 		}
 		String submitPattern = tmp.get(0);
 
-		CreateQuizForm createQuizForm = new CreateQuizForm(quizDAO,themeDAO);
+		CreateQuizForm createQuizForm = new CreateQuizForm(quizDAO,themeDAO,questionDAO,possibleAnswerDAO);
 		Quiz quiz = null;
 		
 		switch( submitPattern ) {
@@ -81,6 +89,33 @@ public class CreateQuizController extends HttpServlet {
 			case "newAnswer_([0-9]+)" :
 				quiz = createQuizForm.newAnswer(request);
 				break;
+			case "deleteQuestion_([0-9]+)" :
+				quiz = createQuizForm.deleteQuestion(request);
+				break;
+			case "deleteAnswer_([0-9]+)_fromQuestion_([0-9]+)" :
+				quiz = createQuizForm.deleteAnswerFromQuestion(request);
+				break;
+			case "moveUpQuestion_([0-9]+)" :
+				quiz = createQuizForm.moveUpQuestion(request);
+				break;
+			case "moveDownQuestion_([0-9]+)" :
+				quiz = createQuizForm.moveDownQuestion(request);
+				break;
+			case "moveUpAnswer_([0-9]+)_fromQuestion_([0-9]+)" :
+				quiz = createQuizForm.moveUpAnswerFromQuestion(request);
+				break;
+			case "moveDownAnswer_([0-9]+)_fromQuestion_([0-9]+)" :
+				quiz = createQuizForm.moveDownAnswerFromQuestion(request);
+				break;
+			case "createQuiz" :
+				quiz = createQuizForm.prepareQuiz(request);
+				break;
+			case "confirmQuiz" :
+				User sessionUser = (User) session.getAttribute(Config.ATT_SESSION_USER);
+				quiz = (Quiz) session.getAttribute(Config.ATT_SESSION_QUIZ);
+				quiz.setCreator(sessionUser);
+				createQuizForm.createQuiz(quiz);
+				break;
 		}
 		
 		ArrayList<Theme> themes = themeDAO.findAll();
@@ -89,7 +124,17 @@ public class CreateQuizController extends HttpServlet {
 		request.setAttribute(ATT_FORM, createQuizForm);
 		request.setAttribute(ATT_QUIZ, quiz);
 		
-		this.getServletContext().getRequestDispatcher( VIEW_STEP1 ).forward( request, response );
-		return;
+		if( submitPattern.equals("createQuiz") && createQuizForm.getErrors().isEmpty() ) {
+	        session.setAttribute(Config.ATT_SESSION_QUIZ, quiz);
+			this.getServletContext().getRequestDispatcher( VIEW_STEP2 ).forward( request, response );
+			return;
+		}
+		
+		if( submitPattern.equals("confirmQuiz") && createQuizForm.getErrors().isEmpty() ) {
+			response.sendRedirect(request.getServletContext().getContextPath()+"/"+Config.URL_QUIZZES);
+			return;
+		}
+			
+		this.getServletContext().getRequestDispatcher( VIEW_STEP1 ).forward( request, response );	
 	}
 }
