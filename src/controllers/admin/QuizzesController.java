@@ -17,79 +17,82 @@ import models.beans.E_Role;
 import models.beans.Quiz;
 import models.beans.User;
 
-@WebServlet( "/"+Config.URL_QUIZZES )
+@WebServlet("/" + Config.URL_QUIZZES)
 public class QuizzesController extends HttpServlet {
 
-	private static final long serialVersionUID = 1L;
-	private static final String VIEW = "/WEB-INF/admin_quizzes_management.jsp";
-	private static final String ATT_SEARCH = "search";
-	private static final String ATT_QUIZZES = "quizzes";
-	private static final String ATT_PAGINATION_ACTIVE = "paginationActive";
-	private static final String ATT_PAGINATION_TOTAL = "paginationTotal";
-	private QuizDAO quizDAO;
+    private static final long serialVersionUID = 1L;
+    private static final String VIEW = "/WEB-INF/admin_quizzes_management.jsp";
+    private static final String ATT_SEARCH = "search";
+    private static final String ATT_QUIZZES = "quizzes";
+    private static final String ATT_PAGINATION_ACTIVE = "paginationActive";
+    private static final String ATT_PAGINATION_TOTAL = "paginationTotal";
+    private QuizDAO quizDAO;
 
-	public void init() throws ServletException {
-		this.quizDAO = ( (DAOFactory) getServletContext().getAttribute( Config.CONF_DAO_FACTORY ) ).getQuizDAO();
+    public void init() throws ServletException {
+	this.quizDAO = ((DAOFactory) getServletContext().getAttribute(Config.CONF_DAO_FACTORY)).getQuizDAO();
+    }
+
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	HttpSession session = request.getSession();
+
+	User sessionUser = (User) session.getAttribute(Config.ATT_SESSION_USER);
+
+	if (sessionUser == null || sessionUser.getRole() != E_Role.ADMIN) {
+	    response.sendError(HttpServletResponse.SC_FORBIDDEN);
+	    return;
 	}
 
-	public void doGet(HttpServletRequest request, HttpServletResponse response)	throws ServletException, IOException {
-		HttpSession session = request.getSession();
+	ArrayList<Quiz> quizzes = null;
 
-		User sessionUser = (User) session.getAttribute(Config.ATT_SESSION_USER);
-		
-		if(sessionUser == null || sessionUser.getRole() != E_Role.ADMIN ) {
-			response.sendError(HttpServletResponse.SC_FORBIDDEN);	
-			return;
-		}
-  
-		ArrayList<Quiz> quizzes = null;
+	Integer offset = 1;
+	String offsetUrl = request.getParameter("p");
 
-		Integer offset = 1;
-		String offsetUrl = request.getParameter("p");
-		
-		if( offsetUrl != null) {
-			try {
-				offset = Integer.parseInt(offsetUrl);
-				
-				if( offset <= 0 ) throw new NumberFormatException();
-			} catch(NumberFormatException e) {
-				response.sendError(HttpServletResponse.SC_BAD_REQUEST);
-				return;
-			}
-		}
-		
-		Integer nbAllQuizzes = quizDAO.count();
-		Integer nbQuizzesPerPage = Config.NB_QUIZZES_PER_PAGE;
-		String nbQuizzesPerPageUrl = request.getParameter("n");
-		
-		if( nbQuizzesPerPageUrl != null) {
-			try {
-				nbQuizzesPerPage = Integer.parseInt(nbQuizzesPerPageUrl);
-				
-				if( nbQuizzesPerPage <= 0 ) throw new NumberFormatException();
-			} catch(NumberFormatException e) {
-				response.sendError(HttpServletResponse.SC_BAD_REQUEST);
-				return;
-			}
-		}
-		
-		Integer res = nbAllQuizzes % nbQuizzesPerPage;
-		Integer nbNeededPages = (int) nbAllQuizzes / nbQuizzesPerPage;
-		if( res != 0 ) nbNeededPages++;
-    
-		String search = request.getParameter(ATT_SEARCH);
+	if (offsetUrl != null) {
+	    try {
+		offset = Integer.parseInt(offsetUrl);
 
-    	if(search != null) {
-    		quizzes = quizDAO.findQuizzesByTitleOrTheme(search);
-		} else {
-			quizzes = quizDAO.findAll((offset-1)*nbQuizzesPerPage,nbQuizzesPerPage);
-		}
-		
-		request.setAttribute(ATT_QUIZZES, quizzes);
-		request.setAttribute(ATT_SEARCH, search);
-		request.setAttribute(ATT_PAGINATION_ACTIVE, offset);
-		request.setAttribute(ATT_PAGINATION_TOTAL, nbNeededPages);
-		
-		this.getServletContext().getRequestDispatcher( VIEW ).forward( request, response );
+		if (offset <= 0)
+		    throw new NumberFormatException();
+	    } catch (NumberFormatException e) {
+		response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+		return;
+	    }
 	}
+
+	Integer nbAllQuizzes = quizDAO.count();
+	Integer nbQuizzesPerPage = Config.NB_QUIZZES_PER_PAGE;
+	String nbQuizzesPerPageUrl = request.getParameter("n");
+
+	if (nbQuizzesPerPageUrl != null) {
+	    try {
+		nbQuizzesPerPage = Integer.parseInt(nbQuizzesPerPageUrl);
+
+		if (nbQuizzesPerPage <= 0)
+		    throw new NumberFormatException();
+	    } catch (NumberFormatException e) {
+		response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+		return;
+	    }
+	}
+
+	Integer res = nbAllQuizzes % nbQuizzesPerPage;
+	Integer nbNeededPages = (int) nbAllQuizzes / nbQuizzesPerPage;
+	if (res != 0)
+	    nbNeededPages++;
+
+	String search = request.getParameter(ATT_SEARCH);
+
+	if (search != null) {
+	    quizzes = quizDAO.findQuizzesByTitleOrTheme(search);
+	} else {
+	    quizzes = quizDAO.findAll((offset - 1) * nbQuizzesPerPage, nbQuizzesPerPage);
+	}
+
+	request.setAttribute(ATT_QUIZZES, quizzes);
+	request.setAttribute(ATT_SEARCH, search);
+	request.setAttribute(ATT_PAGINATION_ACTIVE, offset);
+	request.setAttribute(ATT_PAGINATION_TOTAL, nbNeededPages);
+
+	this.getServletContext().getRequestDispatcher(VIEW).forward(request, response);
+    }
 }

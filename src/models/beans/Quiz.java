@@ -11,132 +11,132 @@ import models.iterator.Container;
 import models.iterator.Iterator;
 
 public class Quiz implements Serializable, Container {
-	private static final long serialVersionUID = 1L;
-	private int id;
-	private String title;
-	private Boolean isActive;
-	private ArrayList<Question> questions;
-	private Theme theme;
-	private User creator;
-	private Timestamp creationDate;
+    private static final long serialVersionUID = 1L;
+    private int id;
+    private String title;
+    private Boolean isActive;
+    private ArrayList<Question> questions;
+    private Theme theme;
+    private User creator;
+    private Timestamp creationDate;
 
-	public Quiz() {
-		this.id = -1;
-		this.title = "notitle";
-		this.isActive = true;
-		this.questions = new ArrayList<Question>();
-		this.theme = new Theme("Default");
-		this.creator = null;
-		this.creationDate = new Timestamp(System.currentTimeMillis());
-	}
+    public Quiz() {
+	this.id = -1;
+	this.title = "notitle";
+	this.isActive = true;
+	this.questions = new ArrayList<Question>();
+	this.theme = new Theme("Default");
+	this.creator = null;
+	this.creationDate = new Timestamp(System.currentTimeMillis());
+    }
 
-	public Quiz(String title, Theme theme, User administrator) {
-		this.title = title;
-		this.isActive = true;
-		this.questions = new ArrayList<Question>();
-		this.theme = theme;
-		this.creator = administrator;
-		this.creationDate = new Timestamp(System.currentTimeMillis());
-	}
+    public Quiz(String title, Theme theme, User administrator) {
+	this.title = title;
+	this.isActive = true;
+	this.questions = new ArrayList<Question>();
+	this.theme = theme;
+	this.creator = administrator;
+	this.creationDate = new Timestamp(System.currentTimeMillis());
+    }
 
-	public Quiz(Quiz q) {
-		this.id = q.getId();
-		this.title = q.getTitle();
-		this.isActive = q.getIsActive();
-		this.questions = q.getQuestions();
-		this.theme = q.getTheme();
-		this.creator = q.getCreator();
-		this.creationDate = q.getCreationDate();
-	}
+    public Quiz(Quiz q) {
+	this.id = q.getId();
+	this.title = q.getTitle();
+	this.isActive = q.getIsActive();
+	this.questions = q.getQuestions();
+	this.theme = q.getTheme();
+	this.creator = q.getCreator();
+	this.creationDate = q.getCreationDate();
+    }
 
-	public int getId() {
-		return id;
-	}
+    public int getId() {
+	return id;
+    }
 
-	public void setId(int id) {
-		this.id = id;
-	}
+    public void setId(int id) {
+	this.id = id;
+    }
 
-	public String getTitle() {
-		return title;
-	}
+    public String getTitle() {
+	return title;
+    }
 
-	public void setTitle(String title) {
-		this.title = title;
-	}
-	
-	public Boolean getIsActive() {
-		return isActive;
-	}
-	
-	public void setIsActive(Boolean isActive) {
-		this.isActive = isActive;
-	}
+    public void setTitle(String title) {
+	this.title = title;
+    }
 
-	public ArrayList<Question> getQuestions() {
-		return this.questions;
-	}
+    public Boolean getIsActive() {
+	return isActive;
+    }
 
-	public void setQuestions(ArrayList<Question> questions) {
-		this.questions = questions;
-	}
+    public void setIsActive(Boolean isActive) {
+	this.isActive = isActive;
+    }
 
-	public Theme getTheme() {
-		return theme;
-	}
+    public ArrayList<Question> getQuestions() {
+	return this.questions;
+    }
 
-	public void setTheme(Theme theme) {
-		this.theme = theme;
-	}
+    public void setQuestions(ArrayList<Question> questions) {
+	this.questions = questions;
+    }
 
-	public User getCreator() {
-		return this.creator;
-	}
+    public Theme getTheme() {
+	return theme;
+    }
 
-	public void setCreator(User u) {
-		this.creator = u;
-	}
+    public void setTheme(Theme theme) {
+	this.theme = theme;
+    }
 
-	public Timestamp getCreationDate() {
-		return creationDate;
+    public User getCreator() {
+	return this.creator;
+    }
+
+    public void setCreator(User u) {
+	this.creator = u;
+    }
+
+    public Timestamp getCreationDate() {
+	return creationDate;
+    }
+
+    public void setCreationDate(Timestamp creationDate) {
+	this.creationDate = creationDate;
+    }
+
+    public String toString() {
+	String str = "";
+	ObjectMapper mapper = new ObjectMapper();
+	try {
+	    str = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(this);
+	} catch (JsonProcessingException e) {
+	    e.printStackTrace();
 	}
-	
-	public void setCreationDate(Timestamp creationDate) {
-		this.creationDate = creationDate;
-	}
-	
-	public String toString() {
-		String str = "";
-		ObjectMapper mapper = new ObjectMapper();
-		try {
-			str = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(this);
-		} catch (JsonProcessingException e) {
-			e.printStackTrace();
-		}
-		return str;
+	return str;
+    }
+
+    @Override
+    public Iterator getIterator() {
+	return new QuestionIterator();
+    }
+
+    private class QuestionIterator implements Iterator {
+
+	int index;
+
+	@Override
+	public boolean hasNext() {
+	    return index < questions.size();
 	}
 
 	@Override
-	public Iterator getIterator() {
-		return new QuestionIterator();
+	public Object next() {
+	    if (this.hasNext()) {
+		return questions.get(index++);
+	    }
+	    return null;
 	}
-	
-	private class QuestionIterator implements Iterator {
 
-		int index;
-		
-		@Override
-		public boolean hasNext() {
-			return index < questions.size();
-		}
-
-		@Override
-		public Object next() {
-			if(this.hasNext()){
-	            return questions.get(index++);
-			}
-			return null;
-		}
-		
-	}
+    }
 }

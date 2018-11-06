@@ -20,79 +20,79 @@ import dao.managers.ThemeDAOImpl;
 import dao.managers.UserDAOImpl;
 
 public class DAOFactory {
-	
-	private static final String PROPERTIES_FILE = "/common/common.properties";
-	private static final String PROP_URL = "url";
-	private static final String PROP_DRIVER = "driver";
-	private static final String PROP_USER = "user";
-	private static final String PROP_PASSWORD = "password";
-	
-	private String url;
-	private String user;
-	private String password;
-	
-	public DAOFactory( String url, String user, String password) {
-		this.url = url;
-		this.user = user;
-		this.password = password;
-	}
-	
-	public static DAOFactory getInstance() {
-		Properties properties = new Properties();
-		String url;
-		String driver;
-		String user;
-		String password;
-		
-		ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-        InputStream propertiesFile = classLoader.getResourceAsStream( PROPERTIES_FILE );
-		
-        if ( propertiesFile == null ) {
-            throw new DAOConfigurationException( "Le fichier properties " + PROPERTIES_FILE + " est introuvable." );
-        }
-        
-        try {
-            properties.load( propertiesFile );
-            url = properties.getProperty( PROP_URL );
-            driver = properties.getProperty( PROP_DRIVER );
-            user = properties.getProperty( PROP_USER );
-            password = properties.getProperty( PROP_PASSWORD );
-        } catch ( IOException e ) {
-            throw new DAOConfigurationException( "Impossible de charger le fichier properties " + PROPERTIES_FILE, e );
-        }
-        
-        try {
-            Class.forName( driver );
-        } catch ( ClassNotFoundException e ) {
-            throw new DAOConfigurationException( "Le driver est introuvable dans le classpath.", e );
-        }
-        
-        DAOFactory instance = new DAOFactory( url, user, password );
-        return instance;
-		
-	}
-	
-	public Connection getConnection() throws SQLException {
-		return DriverManager.getConnection( url, user, password );
-	}
 
-	public UserDAO getUserDAO() {
-        return new UserDAOImpl( this );
+    private static final String PROPERTIES_FILE = "/common/common.properties";
+    private static final String PROP_URL = "url";
+    private static final String PROP_DRIVER = "driver";
+    private static final String PROP_USER = "user";
+    private static final String PROP_PASSWORD = "password";
+
+    private String url;
+    private String user;
+    private String password;
+
+    public DAOFactory(String url, String user, String password) {
+	this.url = url;
+	this.user = user;
+	this.password = password;
     }
 
-	public QuizDAO getQuizDAO() {
-        return new QuizDAOImpl( this );
+    public static DAOFactory getInstance() {
+	Properties properties = new Properties();
+	String url;
+	String driver;
+	String user;
+	String password;
+
+	ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+	InputStream propertiesFile = classLoader.getResourceAsStream(PROPERTIES_FILE);
+
+	if (propertiesFile == null) {
+	    throw new DAOConfigurationException("Le fichier properties " + PROPERTIES_FILE + " est introuvable.");
+	}
+
+	try {
+	    properties.load(propertiesFile);
+	    url = properties.getProperty(PROP_URL);
+	    driver = properties.getProperty(PROP_DRIVER);
+	    user = properties.getProperty(PROP_USER);
+	    password = properties.getProperty(PROP_PASSWORD);
+	} catch (IOException e) {
+	    throw new DAOConfigurationException("Impossible de charger le fichier properties " + PROPERTIES_FILE, e);
+	}
+
+	try {
+	    Class.forName(driver);
+	} catch (ClassNotFoundException e) {
+	    throw new DAOConfigurationException("Le driver est introuvable dans le classpath.", e);
+	}
+
+	DAOFactory instance = new DAOFactory(url, user, password);
+	return instance;
+
     }
 
-	public ThemeDAO getThemeDAO() {
-		 return new ThemeDAOImpl( this );
+    public Connection getConnection() throws SQLException {
+	return DriverManager.getConnection(url, user, password);
+    }
+
+    public UserDAO getUserDAO() {
+	return new UserDAOImpl(this);
+    }
+
+    public QuizDAO getQuizDAO() {
+	return new QuizDAOImpl(this);
+    }
+
+    public ThemeDAO getThemeDAO() {
+	return new ThemeDAOImpl(this);
     }
 
     public AnswerDAO getAnswerDAO() {
-        return new AnswerDAOImpl( this );
+	return new AnswerDAOImpl(this);
     }
 
     public QuestionDAO getQuestionDAO() {
-        return new QuestionDAOImpl( this );
+	return new QuestionDAOImpl(this);
     }
 }
