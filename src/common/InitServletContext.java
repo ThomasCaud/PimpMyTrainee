@@ -11,39 +11,39 @@ import dao.DAOFactory;
 
 @WebListener
 public class InitServletContext implements ServletContextListener {
-	
-	private static final String ATT_DAO_FACTORY = "daofactory";
-    private DAOFactory daoFactory;
-    
-	@Override
-	public void contextDestroyed(ServletContextEvent event) {
-		// RIEN A FAIRE
-	}
 
-	@Override
-	public void contextInitialized(ServletContextEvent event) {
-		/* Récupération du ServletContext lors du chargement de l'application */
-        ServletContext servletContext = event.getServletContext();
-        /* Instanciation de notre DAOFactory */
-        this.daoFactory = DAOFactory.getInstance();
-        /* Enregistrement dans un attribut ayant pour portée toute l'application */
-        servletContext.setAttribute( ATT_DAO_FACTORY, this.daoFactory );
-        
-        // Chargement dans l'application des URLs de l'appli
-        for(Field field : Config.class.getDeclaredFields() ) {
-        	String fieldName = field.getName();
-        	if( fieldName.startsWith("URL_") ) {
-        		try {
-					servletContext.setAttribute( fieldName, field.get(fieldName) );
-				} catch (SecurityException e) {
-					e.printStackTrace();
-				} catch (IllegalArgumentException e) {
-					e.printStackTrace();
-				} catch (IllegalAccessException e) {
-					e.printStackTrace();
-				}
-        	}
-        }
+    private static final String ATT_DAO_FACTORY = "daofactory";
+    private DAOFactory daoFactory;
+
+    @Override
+    public void contextDestroyed(ServletContextEvent event) {
+	// RIEN A FAIRE
+    }
+
+    @Override
+    public void contextInitialized(ServletContextEvent event) {
+	/* Récupération du ServletContext lors du chargement de l'application */
+	ServletContext servletContext = event.getServletContext();
+	/* Instanciation de notre DAOFactory */
+	this.daoFactory = DAOFactory.getInstance();
+	/* Enregistrement dans un attribut ayant pour portée toute l'application */
+	servletContext.setAttribute(ATT_DAO_FACTORY, this.daoFactory);
+
+	// Chargement dans l'application des URLs de l'appli
+	for (Field field : Config.class.getDeclaredFields()) {
+	    String fieldName = field.getName();
+	    if (fieldName.startsWith("URL_")) {
+		try {
+		    servletContext.setAttribute(fieldName, field.get(fieldName));
+		} catch (SecurityException e) {
+		    e.printStackTrace();
+		} catch (IllegalArgumentException e) {
+		    e.printStackTrace();
+		} catch (IllegalAccessException e) {
+		    e.printStackTrace();
+		}
+	    }
 	}
+    }
 
 }
