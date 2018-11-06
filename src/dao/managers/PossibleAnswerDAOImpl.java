@@ -7,13 +7,14 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
 import dao.DAOFactory;
 import dao.exceptions.DAOException;
 import dao.interfaces.PossibleAnswerDAO;
-import models.beans.PossibleAnswer;
+import models.beans.Answer;
 import models.beans.Question;
 
-public class PossibleAnswerDAOImpl extends AbstractDAOImpl<PossibleAnswer>  implements PossibleAnswerDAO {
+public class PossibleAnswerDAOImpl extends AbstractDAOImpl<Answer>  implements PossibleAnswerDAO {
 	private static final String tableName = "possibleanswers";
     private static final String SQL_INSERT = "INSERT INTO possibleanswers (label, isCorrect, isActive, position, question) VALUES (?,?,?,?,?)";
 	private static final String SQL_UPDATE = "UPDATE possibleanswers set label = ?, isCorrect = ?, isActive = ?, position = ?, question = ? WHERE id = ?";
@@ -26,8 +27,8 @@ public class PossibleAnswerDAOImpl extends AbstractDAOImpl<PossibleAnswer>  impl
 		super(daoFactory, tableName);
     }
 
-	protected PossibleAnswer map( ResultSet resultSet ) throws SQLException {
-        PossibleAnswer pa = new PossibleAnswer();
+	protected Answer map( ResultSet resultSet ) throws SQLException {
+        Answer pa = new Answer();
 
         pa.setId( resultSet.getInt( "id" ) );
         pa.setLabel( resultSet.getString( "label" ) );
@@ -38,7 +39,7 @@ public class PossibleAnswerDAOImpl extends AbstractDAOImpl<PossibleAnswer>  impl
         return pa;
 	}
 
-	public void create(Question qu, PossibleAnswer pa) throws DAOException {
+	public void create(Question qu, Answer pa) throws DAOException {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
@@ -76,7 +77,7 @@ public class PossibleAnswerDAOImpl extends AbstractDAOImpl<PossibleAnswer>  impl
 		}
 	}
 
-	public void update(Question qu, PossibleAnswer pa) throws DAOException {
+	public void update(Question qu, Answer pa) throws DAOException {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 

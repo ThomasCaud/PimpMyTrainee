@@ -12,7 +12,7 @@ import dao.interfaces.PossibleAnswerDAO;
 import dao.interfaces.QuestionDAO;
 import dao.interfaces.QuizDAO;
 import dao.interfaces.ThemeDAO;
-import models.beans.PossibleAnswer;
+import models.beans.Answer;
 import models.beans.Question;
 import models.beans.Quiz;
 import models.beans.Theme;
@@ -75,13 +75,13 @@ public class CreateQuizForm extends AbstractForm {
 					setError("question_"+questionIndex+"_label","The label cannot be empty.");
 				}
 				
-				ArrayList<PossibleAnswer> possibleAnswers = question.getPossibleAnswers();
+				ArrayList<Answer> possibleAnswers = question.getPossibleAnswers();
 				if(possibleAnswers == null || possibleAnswers.isEmpty()) {
 					setError("question_"+questionIndex+"_answers","There must be at least 1 answer.");
 				} else {
 					int answerIndex = 1;
 					boolean oneIsCorrect = false;
-					for(PossibleAnswer possibleAnswer : possibleAnswers) {
+					for(Answer possibleAnswer : possibleAnswers) {
 						if( isNullOrEmpty(possibleAnswer.getLabel()) )
 							setError("question_"+questionIndex+"_answer_"+answerIndex,"The label cannot be empty.");
 							
@@ -138,10 +138,10 @@ public class CreateQuizForm extends AbstractForm {
 			});
 			
 			// Récupération des labels des réponses pour initialiser les objets
-			ArrayList<PossibleAnswer> possibleAnswers = new ArrayList<PossibleAnswer>();
+			ArrayList<Answer> possibleAnswers = new ArrayList<Answer>();
 			for(String paramPossibleAnswer : listParamPossibleAnswers) {
 				String labelPossibleAnswer = request.getParameter(paramPossibleAnswer);
-				PossibleAnswer possibleAnswer = new PossibleAnswer();
+				Answer possibleAnswer = new Answer();
 				possibleAnswer.setLabel(labelPossibleAnswer);
 				possibleAnswer.setIsCorrect(false);
 				
@@ -201,11 +201,11 @@ public class CreateQuizForm extends AbstractForm {
 		quiz.setTitle(title);
 		quiz.setQuestions(getQuestionsFromRequest(request));
 		
-		PossibleAnswer p = new PossibleAnswer();
+		Answer p = new Answer();
 		p.setLabel("");
 		p.setIsCorrect(false);
 		
-		ArrayList<PossibleAnswer> possibleAnswers = quiz.getQuestions().get(questionIndex-1).getPossibleAnswers();
+		ArrayList<Answer> possibleAnswers = quiz.getQuestions().get(questionIndex-1).getPossibleAnswers();
 		
 		if( possibleAnswers.isEmpty() )
 			p.setIsCorrect(true);
@@ -249,7 +249,7 @@ public class CreateQuizForm extends AbstractForm {
 		quiz.setTitle(title);
 		quiz.setQuestions(getQuestionsFromRequest(request));
 		
-		ArrayList<PossibleAnswer> possibleAnswers = quiz.getQuestions().get(questionIndex-1).getPossibleAnswers();
+		ArrayList<Answer> possibleAnswers = quiz.getQuestions().get(questionIndex-1).getPossibleAnswers();
 		possibleAnswers.remove(answerIndex-1);
 		
 		if( possibleAnswers.size() == 1 )
@@ -320,7 +320,7 @@ public class CreateQuizForm extends AbstractForm {
 		quiz.setTitle(title);
 		quiz.setQuestions(getQuestionsFromRequest(request));
 		
-		ArrayList<PossibleAnswer> possibleAnswers = quiz.getQuestions().get(questionIndex-1).getPossibleAnswers();
+		ArrayList<Answer> possibleAnswers = quiz.getQuestions().get(questionIndex-1).getPossibleAnswers();
 		if(answerIndex > 0 && answerIndex <= possibleAnswers.size() ) {
 			if( answerIndex != 1 ) {
 				Collections.swap(possibleAnswers, answerIndex-1, answerIndex-2);
@@ -346,7 +346,7 @@ public class CreateQuizForm extends AbstractForm {
 		quiz.setTitle(title);
 		quiz.setQuestions(getQuestionsFromRequest(request));
 		
-		ArrayList<PossibleAnswer> possibleAnswers = quiz.getQuestions().get(questionIndex-1).getPossibleAnswers();
+		ArrayList<Answer> possibleAnswers = quiz.getQuestions().get(questionIndex-1).getPossibleAnswers();
 		if(answerIndex > 0 && answerIndex <= possibleAnswers.size() ) {
 			if( answerIndex != possibleAnswers.size() ) {
 				Collections.swap(possibleAnswers, answerIndex-1, answerIndex);
@@ -379,8 +379,8 @@ public class CreateQuizForm extends AbstractForm {
 		for( Question question : questions ) {
 			questionDAO.create(quiz, question);
 			
-			ArrayList<PossibleAnswer> possibleAnswers = question.getPossibleAnswers();
-			for( PossibleAnswer answer : possibleAnswers ) {
+			ArrayList<Answer> possibleAnswers = question.getPossibleAnswers();
+			for( Answer answer : possibleAnswers ) {
 				possibleAnswerDAO.create(question, answer);
 			}
 		}
