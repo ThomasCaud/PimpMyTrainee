@@ -40,14 +40,12 @@ public class QuestionDAOImpl extends AbstractDAOImpl<Question> implements Questi
         AnswerDAO paDAO = DAOFactory.getInstance().getAnswerDAO();
         
         ArrayList<Answer> answers = paDAO.findBy("question", resultSet.getInt( "id" ));
-        
+        question.setPossibleAnswers(answers);
+
         for(Answer answer : answers) {
         	if( answer.isCorrect() )
         		question.setCorrectAnswer(answer);
         }
-        
-        question.setPossibleAnswers(answers);
-
 		return question;
 	}
 	
