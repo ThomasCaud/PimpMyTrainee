@@ -88,7 +88,7 @@ public class DAOFactory {
 		 return new ThemeDAOImpl( this );
     }
 
-    public AnswerDAO getPossibleAnswerDAO() {
+    public AnswerDAO getAnswerDAO() {
         return new AnswerDAOImpl( this );
     }
 
