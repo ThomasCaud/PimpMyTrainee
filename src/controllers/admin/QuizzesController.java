@@ -60,6 +60,18 @@ public class QuizzesController extends HttpServlet {
 		
 		Integer nbAllQuizzes = quizDAO.count();
 		Integer nbQuizzesPerPage = Config.NB_QUIZZES_PER_PAGE;
+		String nbQuizzesPerPageUrl = request.getParameter("n");
+		
+		if( nbQuizzesPerPageUrl != null) {
+			try {
+				nbQuizzesPerPage = Integer.parseInt(nbQuizzesPerPageUrl);
+				
+				if( nbQuizzesPerPage <= 0 ) throw new NumberFormatException();
+			} catch(NumberFormatException e) {
+				response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+				return;
+			}
+		}
 		
 		Integer res = nbAllQuizzes % nbQuizzesPerPage;
 		Integer nbNeededPages = (int) nbAllQuizzes / nbQuizzesPerPage;
@@ -70,7 +82,7 @@ public class QuizzesController extends HttpServlet {
     	if(search != null) {
     		quizzes = quizDAO.findQuizzesByTitleOrTheme(search);
 		} else {
-			quizzes = quizDAO.findAll((offset-1)*Config.NB_QUIZZES_PER_PAGE,nbQuizzesPerPage);
+			quizzes = quizDAO.findAll((offset-1)*nbQuizzesPerPage,nbQuizzesPerPage);
 		}
 		
 		request.setAttribute(ATT_QUIZZES, quizzes);
