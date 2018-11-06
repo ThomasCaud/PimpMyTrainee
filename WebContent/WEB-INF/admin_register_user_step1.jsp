@@ -4,7 +4,7 @@
 
 <div class="container">
 	<div class="row ">
-		<div class="col-12 col-sm-8 offset-sm-2">
+		<div class="col-12">
 		
 			<div class="row align-items-center">
 				<div class="col-12 col-sm-6 col-md-7 col-lg-8"><h1>Register an user</h1></div>
@@ -12,6 +12,9 @@
 			</div>
 			
 			<hr>
+		</div>
+		
+		<div class="col-12 col-sm-8 offset-sm-2">
 			
 			<form method="post" action="">
 				<fieldset>

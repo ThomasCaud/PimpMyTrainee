@@ -29,6 +29,9 @@ public class ConnectedOnlyFilter implements Filter {
 		 /* Cast des objets request et response */
         HttpServletRequest request = (HttpServletRequest) req;
         HttpServletResponse response = (HttpServletResponse) res;
+        
+        /* Initialisation de l'encoding général */
+        req.setCharacterEncoding("UTF-8");
 
         /* Récupération de la session depuis la requête */
         HttpSession session = request.getSession();

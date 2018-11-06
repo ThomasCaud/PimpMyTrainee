@@ -80,7 +80,7 @@ public class RegisterUserForm extends AbstractForm {
 		}
 		
 		// Main method called by the servlet to process the registration
-		public User registerUser(HttpServletRequest request) throws EmailException {
+		public User registerUser(HttpServletRequest request, User creator) throws EmailException {
 			String firstname = getFieldValue(request,FIELD_FIRSTNAME);
 			String lastname = getFieldValue(request,FIELD_LASTNAME);
 			String email = getFieldValue(request,FIELD_EMAIL);
@@ -98,7 +98,7 @@ public class RegisterUserForm extends AbstractForm {
 			processRoleValidation(role,user);
 			
 			if( this.getErrors().isEmpty() ) {
-				User existingUser = userDAO.findActiveUserByEmail(email);
+				User existingUser = userDAO.findActive("email", email);
 				
 				if( existingUser != null ) {
 					setError(FIELD_EMAIL, "This email address is already taken.");
@@ -111,7 +111,7 @@ public class RegisterUserForm extends AbstractForm {
 				user.setIsActive(true);
 				user.setCreationDate(new Timestamp(System.currentTimeMillis()));
 				
-				userDAO.createUser(user);
+				userDAO.createUser(user, creator);
 
 				GmailEmailSendor.getInstance().sendSimpleEmail(
 					"Your password for PimpMyTrainee",

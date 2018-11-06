@@ -77,7 +77,7 @@ public class UpdateUserForm extends AbstractForm {
 		String phone = getFieldValue(request,FIELD_PHONE);
 		String isActive = getFieldValue(request,FIELD_IS_ACTIVE);
 
-		User previousUser = userDAO.findUserByID((int)request.getAttribute("id"));
+		User previousUser = userDAO.find((int)request.getAttribute("id"));
 		User user = new User(previousUser);
 		
 		if( !previousUser.getFirstname().equals(firstname) )

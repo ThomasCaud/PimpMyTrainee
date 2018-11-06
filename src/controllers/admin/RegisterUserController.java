@@ -18,7 +18,7 @@ import models.beans.E_Role;
 import models.beans.User;
 import models.forms.RegisterUserForm;
 
-@WebServlet( "/registerUser" )
+@WebServlet( "/"+Config.URL_REGISTER_USER )
 public class RegisterUserController extends HttpServlet {
 	
 	private static final long serialVersionUID = 1L;
@@ -49,8 +49,11 @@ public class RegisterUserController extends HttpServlet {
 		RegisterUserForm registerUserForm = new RegisterUserForm(userDAO);
 		
 		User user = null;
+		HttpSession session = request.getSession();
+		User creator = (User) session.getAttribute(Config.ATT_SESSION_USER);
+
 		try {
-			user = registerUserForm.registerUser(request);
+			user = registerUserForm.registerUser(request, creator);
 		} catch (EmailException e) {
 			e.printStackTrace();
 		}

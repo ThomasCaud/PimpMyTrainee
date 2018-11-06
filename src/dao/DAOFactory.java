@@ -8,7 +8,15 @@ import java.sql.SQLException;
 import java.util.Properties;
 
 import dao.exceptions.DAOConfigurationException;
+import dao.interfaces.PossibleAnswerDAO;
+import dao.interfaces.QuestionDAO;
+import dao.interfaces.QuizDAO;
+import dao.interfaces.ThemeDAO;
 import dao.interfaces.UserDAO;
+import dao.managers.PossibleAnswerDAOImpl;
+import dao.managers.QuestionDAOImpl;
+import dao.managers.QuizDAOImpl;
+import dao.managers.ThemeDAOImpl;
 import dao.managers.UserDAOImpl;
 
 public class DAOFactory {
@@ -67,8 +75,24 @@ public class DAOFactory {
 	public Connection getConnection() throws SQLException {
 		return DriverManager.getConnection( url, user, password );
 	}
-	
+
 	public UserDAO getUserDAO() {
         return new UserDAOImpl( this );
+    }
+
+	public QuizDAO getQuizDAO() {
+        return new QuizDAOImpl( this );
+    }
+
+	public ThemeDAO getThemeDAO() {
+		 return new ThemeDAOImpl( this );
+    }
+
+    public PossibleAnswerDAO getPossibleAnswerDAO() {
+        return new PossibleAnswerDAOImpl( this );
+    }
+
+    public QuestionDAO getQuestionDAO() {
+        return new QuestionDAOImpl( this );
     }
 }
