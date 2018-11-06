@@ -10,7 +10,7 @@ import java.sql.SQLException;
 
 import dao.DAOFactory;
 import dao.exceptions.DAOException;
-import dao.interfaces.PossibleAnswerDAO;
+import dao.interfaces.AnswerDAO;
 import dao.interfaces.QuestionDAO;
 import models.beans.Question;
 import models.beans.Quiz;
@@ -35,7 +35,7 @@ public class QuestionDAOImpl extends AbstractDAOImpl<Question> implements Questi
         question.setIsActive( resultSet.getInt( "isActive" ) == 1 ? true : false );
         question.setPosition( resultSet.getInt( "position" ));
         
-        PossibleAnswerDAO paDAO = DAOFactory.getInstance().getPossibleAnswerDAO();
+        AnswerDAO paDAO = DAOFactory.getInstance().getPossibleAnswerDAO();
         question.setPossibleAnswers(paDAO.findBy("question", resultSet.getInt( "id" )));
 
 		return question;

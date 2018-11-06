@@ -10,20 +10,20 @@ import java.sql.SQLException;
 
 import dao.DAOFactory;
 import dao.exceptions.DAOException;
-import dao.interfaces.PossibleAnswerDAO;
+import dao.interfaces.AnswerDAO;
 import models.beans.Answer;
 import models.beans.Question;
 
-public class PossibleAnswerDAOImpl extends AbstractDAOImpl<Answer>  implements PossibleAnswerDAO {
-	private static final String tableName = "possibleanswers";
-    private static final String SQL_INSERT = "INSERT INTO possibleanswers (label, isCorrect, isActive, position, question) VALUES (?,?,?,?,?)";
-	private static final String SQL_UPDATE = "UPDATE possibleanswers set label = ?, isCorrect = ?, isActive = ?, position = ?, question = ? WHERE id = ?";
+public class AnswerDAOImpl extends AbstractDAOImpl<Answer>  implements AnswerDAO {
+	private static final String tableName = "answers";
+    private static final String SQL_INSERT = "INSERT INTO " + tableName + " (label, isCorrect, isActive, position, question) VALUES (?,?,?,?,?)";
+	private static final String SQL_UPDATE = "UPDATE " + tableName + " set label = ?, isCorrect = ?, isActive = ?, position = ?, question = ? WHERE id = ?";
 
-	public PossibleAnswerDAOImpl() {
+	public AnswerDAOImpl() {
 		super(null, tableName);
 	}
 
-	public PossibleAnswerDAOImpl( DAOFactory daoFactory ) {
+	public AnswerDAOImpl( DAOFactory daoFactory ) {
 		super(daoFactory, tableName);
     }
 

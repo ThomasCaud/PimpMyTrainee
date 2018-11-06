@@ -8,7 +8,7 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
-import dao.interfaces.PossibleAnswerDAO;
+import dao.interfaces.AnswerDAO;
 import dao.interfaces.QuestionDAO;
 import dao.interfaces.QuizDAO;
 import dao.interfaces.ThemeDAO;
@@ -25,9 +25,9 @@ public class CreateQuizForm extends AbstractForm {
 	private QuizDAO quizDAO;
 	private ThemeDAO themeDAO;
 	private QuestionDAO questionDAO;
-	private PossibleAnswerDAO possibleAnswerDAO;
+	private AnswerDAO possibleAnswerDAO;
 	
-	public CreateQuizForm( QuizDAO quizDAO, ThemeDAO themeDAO, QuestionDAO questionDAO, PossibleAnswerDAO possibleAnswerDAO) {
+	public CreateQuizForm( QuizDAO quizDAO, ThemeDAO themeDAO, QuestionDAO questionDAO, AnswerDAO possibleAnswerDAO) {
 		super();
 		this.quizDAO = quizDAO;
 		this.themeDAO = themeDAO;
