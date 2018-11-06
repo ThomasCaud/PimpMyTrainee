@@ -7,7 +7,10 @@ import java.util.ArrayList;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-public class Quiz implements Serializable {
+import models.iterator.Container;
+import models.iterator.Iterator;
+
+public class Quiz implements Serializable, Container {
 	private static final long serialVersionUID = 1L;
 	private int id;
 	private String title;
@@ -111,5 +114,29 @@ public class Quiz implements Serializable {
 			e.printStackTrace();
 		}
 		return str;
+	}
+
+	@Override
+	public Iterator getIterator() {
+		return new QuestionIterator();
+	}
+	
+	private class QuestionIterator implements Iterator {
+
+		int index;
+		
+		@Override
+		public boolean hasNext() {
+			return index < questions.size();
+		}
+
+		@Override
+		public Object next() {
+			if(this.hasNext()){
+	            return questions.get(index++);
+			}
+			return null;
+		}
+		
 	}
 }
