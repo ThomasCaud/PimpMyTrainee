@@ -7,11 +7,13 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import dao.DAOFactory;
 import dao.exceptions.DAOException;
 import dao.interfaces.AnswerDAO;
 import dao.interfaces.QuestionDAO;
+import models.beans.Answer;
 import models.beans.Question;
 import models.beans.Quiz;
 
@@ -36,8 +38,14 @@ public class QuestionDAOImpl extends AbstractDAOImpl<Question> implements Questi
         question.setPosition( resultSet.getInt( "position" ));
         
         AnswerDAO paDAO = DAOFactory.getInstance().getAnswerDAO();
-        question.setPossibleAnswers(paDAO.findBy("question", resultSet.getInt( "id" )));
+        
+        ArrayList<Answer> answers = paDAO.findBy("question", resultSet.getInt( "id" ));
+        question.setPossibleAnswers(answers);
 
+        for(Answer answer : answers) {
+        	if( answer.isCorrect() )
+        		question.setCorrectAnswer(answer);
+        }
 		return question;
 	}
 	

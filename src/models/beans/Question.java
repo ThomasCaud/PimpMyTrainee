@@ -13,13 +13,15 @@ public class Question implements Serializable, Container {
 	private Boolean isActive;
 	private int position;
 	private ArrayList<Answer> possibleAnswers;
-	
+	private Answer correctAnswer;
+
 	public Question() {
 		this.id = -1;
 		this.label = "nolabel";
 		this.isActive = true;
 		this.position = -1;
 		this.possibleAnswers = new ArrayList<Answer>();
+		this.correctAnswer = new Answer();
 	}
 
 	public Question(String label, int position, ArrayList<Answer> possibleAnswers) {
@@ -27,6 +29,12 @@ public class Question implements Serializable, Container {
 		this.isActive = true;
 		this.position = position;
 		this.possibleAnswers = possibleAnswers;
+
+		for(Answer possibleAnswer : possibleAnswers) {
+			if(possibleAnswer.isCorrect()) {
+				this.correctAnswer = possibleAnswer;
+			}
+		}
 	}
 
 	public Question(Question q) {
@@ -35,6 +43,7 @@ public class Question implements Serializable, Container {
 		this.isActive = q.getIsActive();
 		this.position = q.getPosition();
 		this.possibleAnswers = q.getPossibleAnswers();
+		this.correctAnswer = q.getCorrectAnswer();
 	}
 
 	public int getId() {
@@ -77,6 +86,14 @@ public class Question implements Serializable, Container {
 		this.possibleAnswers = pa;
 	}
 	
+	public Answer getCorrectAnswer() {
+		return correctAnswer;
+	}
+
+	public void setCorrectAnswer(Answer correctAnswer) {
+		this.correctAnswer = correctAnswer;
+	}
+
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		sb.append("id = "+this.id+"\n");

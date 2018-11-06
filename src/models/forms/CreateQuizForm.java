@@ -85,7 +85,7 @@ public class CreateQuizForm extends AbstractForm {
 						if( isNullOrEmpty(possibleAnswer.getLabel()) )
 							setError("question_"+questionIndex+"_answer_"+answerIndex,"The label cannot be empty.");
 							
-						if( possibleAnswer.getIsCorrect() )
+						if( possibleAnswer.isCorrect() )
 							oneIsCorrect = true;
 						
 						possibleAnswer.setPosition(answerIndex);
