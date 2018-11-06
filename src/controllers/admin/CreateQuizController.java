@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import common.Config;
-import dao.interfaces.PossibleAnswerDAO;
+import dao.interfaces.AnswerDAO;
 import dao.interfaces.QuestionDAO;
 import dao.interfaces.QuizDAO;
 import dao.interfaces.ThemeDAO;
@@ -39,13 +39,13 @@ public class CreateQuizController extends HttpServlet {
 	private ThemeDAO themeDAO;
 	private QuizDAO quizDAO;
 	private QuestionDAO questionDAO;
-	private PossibleAnswerDAO possibleAnswerDAO;
+	private AnswerDAO possibleAnswerDAO;
 	
 	public void init() throws ServletException {
         this.themeDAO = ( (DAOFactory) getServletContext().getAttribute( Config.CONF_DAO_FACTORY ) ).getThemeDAO();
         this.quizDAO = ( (DAOFactory) getServletContext().getAttribute( Config.CONF_DAO_FACTORY ) ).getQuizDAO();
         this.questionDAO = ( (DAOFactory) getServletContext().getAttribute( Config.CONF_DAO_FACTORY ) ).getQuestionDAO();
-        this.possibleAnswerDAO = ( (DAOFactory) getServletContext().getAttribute( Config.CONF_DAO_FACTORY ) ).getPossibleAnswerDAO();
+        this.possibleAnswerDAO = ( (DAOFactory) getServletContext().getAttribute( Config.CONF_DAO_FACTORY ) ).getAnswerDAO();
 	}
 	
 	public void doGet( HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException {

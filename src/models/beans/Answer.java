@@ -2,7 +2,7 @@ package models.beans;
 
 import java.io.Serializable;
 
-public class PossibleAnswer implements Serializable {
+public class Answer implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private int id;
 	private String label;
@@ -10,7 +10,7 @@ public class PossibleAnswer implements Serializable {
 	private Boolean isActive;
     private int position;
 
-	public PossibleAnswer() {
+	public Answer() {
 		this.id = -1;
 		this.label = "nolabel";
 		this.isActive = true;
@@ -18,14 +18,14 @@ public class PossibleAnswer implements Serializable {
         this.position = -1;
 	}
 
-	public PossibleAnswer(String label, Boolean isCorrect, int position, Question question) {
+	public Answer(String label, Boolean isCorrect, int position, Question question) {
 		this.label = label;
 		this.isActive = true;
 		this.isCorrect = isCorrect;
         this.position = position;
 	}
 
-	public PossibleAnswer(PossibleAnswer pa) {
+	public Answer(Answer pa) {
 		this.id = pa.getId();
 		this.label = pa.getLabel();
 		this.isActive = pa.getIsActive();

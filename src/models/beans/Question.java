@@ -9,17 +9,17 @@ public class Question implements Serializable {
 	private String label;
 	private Boolean isActive;
 	private int position;
-	private ArrayList<PossibleAnswer> possibleAnswers;
+	private ArrayList<Answer> possibleAnswers;
 	
 	public Question() {
 		this.id = -1;
 		this.label = "nolabel";
 		this.isActive = true;
 		this.position = -1;
-		this.possibleAnswers = new ArrayList<PossibleAnswer>();
+		this.possibleAnswers = new ArrayList<Answer>();
 	}
 
-	public Question(String label, int position, ArrayList<PossibleAnswer> possibleAnswers) {
+	public Question(String label, int position, ArrayList<Answer> possibleAnswers) {
 		this.label = label;
 		this.isActive = true;
 		this.position = position;
@@ -66,11 +66,11 @@ public class Question implements Serializable {
 		this.position = position;
 	}
 
-	public ArrayList<PossibleAnswer> getPossibleAnswers() {
+	public ArrayList<Answer> getPossibleAnswers() {
 		return this.possibleAnswers;
 	}
 
-	public void setPossibleAnswers(ArrayList<PossibleAnswer> pa) {
+	public void setPossibleAnswers(ArrayList<Answer> pa) {
 		this.possibleAnswers = pa;
 	}
 	
