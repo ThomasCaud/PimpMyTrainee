@@ -127,10 +127,7 @@ public class Quiz implements Serializable, Container {
 		
 		@Override
 		public boolean hasNext() {
-			if(index < questions.size()){
-				return true;
-			}
-			return false;
+			return index < questions.size();
 		}
 
 		@Override
