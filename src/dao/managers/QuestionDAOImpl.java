@@ -44,8 +44,9 @@ public class QuestionDAOImpl extends AbstractDAOImpl<Question> implements Questi
         for(Answer answer : answers) {
         	if( answer.isCorrect() )
         		question.setCorrectAnswer(answer);
-        	question.getPossibleAnswers().add(answer);
         }
+        
+        question.setPossibleAnswers(answers);
 
 		return question;
 	}
