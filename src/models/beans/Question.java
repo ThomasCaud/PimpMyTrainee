@@ -3,7 +3,10 @@ package models.beans;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Question implements Serializable {
+import models.iterator.Container;
+import models.iterator.Iterator;
+
+public class Question implements Serializable, Container {
 	private static final long serialVersionUID = 1L;
 	private int id;
 	private String label;
@@ -81,5 +84,29 @@ public class Question implements Serializable {
 		sb.append("isActive = "+this.isActive+"\n");
 		sb.append("position = "+this.position+"\n");
 		return sb.toString();
+	}
+
+	@Override
+	public Iterator getIterator() {
+		return new AnswerIterator();
+	}
+	
+	private class AnswerIterator implements Iterator {
+
+		int index;
+		
+		@Override
+		public boolean hasNext() {
+			return index < possibleAnswers.size();
+		}
+
+		@Override
+		public Object next() {
+			if(this.hasNext()){
+				return possibleAnswers.get(index++);
+			}
+			return null;
+		}
+		
 	}
 }
