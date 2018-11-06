@@ -1,4 +1,4 @@
-*,body {
+*, body {
 	margin: 0;
 	padding: 0;
 }
@@ -20,13 +20,13 @@
 	margin-top: 100px;
 	padding: 30 50 50 50;
 	position: relative;
-	width : 100%;
+	width: 100%;
 }
 
 #login-form-header {
-	display:block;
-	margin : 0;
-	margin-bottom : 10;
+	display: block;
+	margin: 0;
+	margin-bottom: 10;
 	position: relative;
 }
 
@@ -35,29 +35,29 @@
 	width: 100%;
 }
 
-#login-form-img > img {
-	display:block;
+#login-form-img>img {
+	display: block;
 	margin: 0 auto;
-	width: 300px!important;
+	width: 300px !important;
 }
 
 .form-error {
-	display:block;
+	display: block;
 	color: red;
 }
 
 .possibleAnswerRow-correct .form-input-transparent {
 	/*background-color : #56CC9D;*/
-	background-color: rgba(86,204,157,0.7);
+	background-color: rgba(86, 204, 157, 0.7);
 }
 
 .possibleAnswerRow-incorrect .form-input-transparent {
 	/*background-color : #FF7851;*/
-	background-color: rgba(255,120,81,0.7);
+	background-color: rgba(255, 120, 81, 0.7);
 }
 
 .form-input-transparent {
-	background-color : rgba(0,0,0,0);
+	background-color: rgba(0, 0, 0, 0);
 }
 
 .form-question-label, .form-answer-label {
@@ -65,8 +65,8 @@
 }
 
 .quizz-recap-question-header {
-	display:block;
-	border: 1px solid rgba(0,0,0,0.1);
+	display: block;
+	border: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 .quizz-recap-question-label {
@@ -74,7 +74,7 @@
 }
 
 .quizz-recap-answers {
-	font-style : italic;
+	font-style: italic;
 }
 
 .quizz-recap-answer {
@@ -82,10 +82,9 @@
 }
 
 .quizz-recap-answer-correct {
-	background-color: rgba(86,204,157,0.7);
+	background-color: rgba(86, 204, 157, 0.7);
 }
 
 .quizz-recap-answer-incorrect {
-	background-color: rgba(255,120,81,0.7);
+	background-color: rgba(255, 120, 81, 0.7);
 }
-
