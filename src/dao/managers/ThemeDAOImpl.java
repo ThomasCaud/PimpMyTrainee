@@ -15,7 +15,7 @@ import models.beans.Theme;
 
 public class ThemeDAOImpl extends AbstractDAOImpl<Theme> implements ThemeDAO {
     private static final String tableName = "Themes";
-    private static final String SQL_INSERT_THEME = "INSERT INTO Themes (label) VALUES (?)";
+    private static final String SQL_INSERT_THEME = "INSERT INTO " + tableName + " (label) VALUES (?)";
 
     public ThemeDAOImpl() {
 	super(null, tableName);

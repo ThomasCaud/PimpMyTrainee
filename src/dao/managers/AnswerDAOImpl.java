@@ -41,6 +41,16 @@ public class AnswerDAOImpl extends AbstractDAOImpl<Answer> implements AnswerDAO 
 	return pa;
     }
 
+    public Answer getAnswerFromResultSet(ResultSet resultSet) {
+	Answer answer = null;
+	try {
+	    answer = map(resultSet);
+	} catch (SQLException e) {
+	    e.printStackTrace();
+	}
+	return answer;
+    }
+
     public void create(Question qu, Answer pa) throws DAOException {
 	Connection connection = null;
 	PreparedStatement preparedStatement = null;
