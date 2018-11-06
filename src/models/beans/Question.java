@@ -28,7 +28,7 @@ public class Question implements Serializable {
 		this.possibleAnswers = possibleAnswers;
 
 		for(Answer possibleAnswer : possibleAnswers) {
-			if(possibleAnswer.getIsCorrect()) {
+			if(possibleAnswer.isCorrect()) {
 				this.correctAnswer = possibleAnswer;
 			}
 		}

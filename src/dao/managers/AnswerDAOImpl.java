@@ -51,8 +51,8 @@ public class AnswerDAOImpl extends AbstractDAOImpl<Answer>  implements AnswerDAO
 				SQL_INSERT,
                 true,
                 pa.getLabel(),
-                pa.getIsCorrect(),
-                pa.getIsActive(),
+                pa.isCorrect(),
+                pa.isActive(),
                 pa.getPosition(),
                 qu.getId()
 			);
@@ -88,8 +88,8 @@ public class AnswerDAOImpl extends AbstractDAOImpl<Answer>  implements AnswerDAO
 				SQL_UPDATE,
                 false,
                 pa.getLabel(),
-                pa.getIsCorrect(),
-                pa.getIsActive(),
+                pa.isCorrect(),
+                pa.isActive(),
                 pa.getPosition(),
                 qu.getId(),
                 pa.getId()

@@ -42,7 +42,7 @@ public class QuestionDAOImpl extends AbstractDAOImpl<Question> implements Questi
         ArrayList<Answer> answers = paDAO.findBy("question", resultSet.getInt( "id" ));
         
         for(Answer answer : answers) {
-        	if( answer.getIsCorrect() )
+        	if( answer.isCorrect() )
         		question.setCorrectAnswer(answer);
         	question.getPossibleAnswers().add(answer);
         }
