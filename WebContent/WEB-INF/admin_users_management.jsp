@@ -111,28 +111,27 @@
 			</c:forEach>
 		</tbody>
 	</table>
-
 	<c:if test="${search == null || search == ''}">
 		<div class="row justify-content-center">
 			<ul class="pagination">
 				<li
 					class="page-item <c:if test = "${paginationActive == 1}">disabled</c:if>">
 					<a class="page-link"
-					href="<c:url value = "/${applicationScope.URL_USERS}?p="/>${paginationActive-1}">&laquo;</a>
+					href="<c:url value = "/${applicationScope.URL_USERS}?p="/>${paginationActive-1}<c:if test="${param.n!=null}">&n=${param.n}</c:if>">&laquo;</a>
 				</li>
 
 				<c:forEach var="i" begin="1" end="${paginationTotal}">
 					<li
 						class="page-item <c:if test = "${paginationActive == i}">active</c:if>">
 						<a class="page-link"
-						href="<c:url value = "/${applicationScope.URL_USERS}?p="/>${i}">${i}</a>
+						href="<c:url value = "/${applicationScope.URL_USERS}?p="/>${i}<c:if test="${param.n!=null}">&n=${param.n}</c:if>">${i}</a>
 					</li>
 				</c:forEach>
 
 				<li
 					class="page-item <c:if test = "${paginationActive == paginationTotal}">disabled</c:if>">
 					<a class="page-link"
-					href="<c:url value = "/${applicationScope.URL_USERS}?p="/>${paginationActive+1}">&raquo;</a>
+					href="<c:url value = "/${applicationScope.URL_USERS}?p="/>${paginationActive+1}<c:if test="${param.n!=null}">&n=${param.n}</c:if>">&raquo;</a>
 				</li>
 			</ul>
 		</div>
