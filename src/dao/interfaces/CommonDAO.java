@@ -1,6 +1,7 @@
 package dao.interfaces;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import dao.exceptions.DAOException;
 
@@ -18,6 +19,8 @@ public interface CommonDAO<T> {
     ArrayList<T> findAll(Integer offset, Integer limit) throws DAOException;
 
     ArrayList<T> findBy(String field, Object value) throws DAOException;
+
+    ArrayList<T> findBy(HashMap<String, Object> filters) throws DAOException;
 
     void delete(Integer id) throws DAOException;
 }

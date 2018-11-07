@@ -8,6 +8,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map.Entry;
 
 import dao.DAOFactory;
 import dao.exceptions.DAOException;
@@ -30,6 +32,23 @@ public abstract class AbstractDAOImpl<T> implements CommonDAO<T> {
 
     private String getSelectQuery(String field) {
 	return "SELECT * FROM " + tableName + " WHERE " + field + "  = ?";
+    }
+
+    private String getSelectQuery(HashMap<String, Object> filters) {
+	String query = "SELECT * FROM " + tableName;
+	boolean isFirstClause = true;
+
+	for (Entry<String, Object> entry : filters.entrySet()) {
+	    String field = entry.getKey();
+	    if (isFirstClause) {
+		query += " WHERE " + field + " = ? ";
+		isFirstClause = false;
+	    } else {
+		query += " AND " + field + " = ? ";
+	    }
+	}
+
+	return query;
     }
 
     private String getSelectActiveFilterQuery(String field) {
@@ -188,6 +207,32 @@ public abstract class AbstractDAOImpl<T> implements CommonDAO<T> {
 	try {
 	    connection = daoFactory.getConnection();
 	    preparedStatement = initPreparedStatement(connection, getSelectQuery(field), false, value);
+	    resultSet = preparedStatement.executeQuery();
+
+	    while (resultSet.next()) {
+		T pa = map(resultSet);
+		tList.add(pa);
+	    }
+
+	} catch (SQLException e) {
+	    throw new DAOException(e);
+	} finally {
+	    silentClose(resultSet, preparedStatement, connection);
+	}
+
+	return tList;
+    }
+
+    @Override
+    public ArrayList<T> findBy(HashMap<String, Object> filters) throws DAOException {
+	Connection connection = null;
+	PreparedStatement preparedStatement = null;
+	ResultSet resultSet = null;
+	ArrayList<T> tList = new ArrayList<T>();
+
+	try {
+	    connection = daoFactory.getConnection();
+	    preparedStatement = initPreparedStatement(connection, getSelectQuery(filters), false, filters.values());
 	    resultSet = preparedStatement.executeQuery();
 
 	    while (resultSet.next()) {
