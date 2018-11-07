@@ -11,11 +11,15 @@ import dao.exceptions.DAOConfigurationException;
 import dao.interfaces.AnswerDAO;
 import dao.interfaces.QuestionDAO;
 import dao.interfaces.QuizDAO;
+import dao.interfaces.RecordAnswerDAO;
+import dao.interfaces.RecordDAO;
 import dao.interfaces.ThemeDAO;
 import dao.interfaces.UserDAO;
 import dao.managers.AnswerDAOImpl;
 import dao.managers.QuestionDAOImpl;
 import dao.managers.QuizDAOImpl;
+import dao.managers.RecordAnswerDAOImpl;
+import dao.managers.RecordDAOImpl;
 import dao.managers.ThemeDAOImpl;
 import dao.managers.UserDAOImpl;
 
@@ -94,5 +98,13 @@ public class DAOFactory {
 
     public QuestionDAO getQuestionDAO() {
 	return new QuestionDAOImpl(this);
+    }
+
+    public RecordDAO getRecordDAO() {
+	return new RecordDAOImpl(this);
+    }
+
+    public RecordAnswerDAO getRecordAnswerDAO() {
+	return new RecordAnswerDAOImpl(this);
     }
 }
