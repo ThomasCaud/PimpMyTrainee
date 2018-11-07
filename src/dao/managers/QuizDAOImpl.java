@@ -8,6 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import dao.DAOFactory;
 import dao.exceptions.DAOException;
@@ -54,7 +55,10 @@ public class QuizDAOImpl extends AbstractDAOImpl<Quiz> implements QuizDAO {
 	quiz.setTheme(theme);
 
 	QuestionDAO questionDAO = DAOFactory.getInstance().getQuestionDAO();
-	ArrayList<Question> questions = questionDAO.findBy("quiz", quiz.getId());
+	HashMap<String, Object> filters = new HashMap<String, Object>();
+	filters.put("quiz", quiz.getId());
+	filters.put("isActive", 1);
+	ArrayList<Question> questions = questionDAO.findBy(filters);
 	quiz.setQuestions(questions);
 
 	return quiz;

@@ -3,7 +3,6 @@ package controllers.admin;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -34,7 +33,6 @@ public class ViewQuizController extends HttpServlet {
     private static final String VIEW = "/WEB-INF/admin_view_quiz.jsp";
     private static final String ATT_QUIZ = "quiz";
     private static final String ATT_THEMES = "themes";
-    private static final String ATT_ID = "id";
     private static final String ATT_FORM = "form";
     private static final String FIELD_SUBMIT = "submit";
     private static final String[] ALLOWED_SUBMIT_PATTERNS = { "newQuestion", "newAnswer_([0-9]+)",
@@ -80,8 +78,7 @@ public class ViewQuizController extends HttpServlet {
 	    return;
 	}
 
-	HashMap<String, Object> filters = new HashMap<String, Object>();
-	Quiz quiz = quizDAO.findActive("id", 1);
+	Quiz quiz = quizDAO.find(id);
 
 	if (quiz == null) {
 	    response.sendError(HttpServletResponse.SC_BAD_REQUEST);

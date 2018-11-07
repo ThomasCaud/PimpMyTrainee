@@ -52,7 +52,7 @@ public abstract class AbstractDAOImpl<T> implements CommonDAO<T> {
     }
 
     private String getSelectActiveFilterQuery(String field) {
-	return "SELECT * FROM Users WHERE " + field + " = ? AND isActive = 1";
+	return "SELECT * FROM " + tableName + " WHERE " + field + " = ? AND isActive = 1";
     }
 
     private String getSelectAllQuery() {

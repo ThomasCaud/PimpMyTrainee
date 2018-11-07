@@ -8,6 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import dao.DAOFactory;
 import dao.exceptions.DAOException;
@@ -40,8 +41,10 @@ public class QuestionDAOImpl extends AbstractDAOImpl<Question> implements Questi
 	question.setPosition(resultSet.getInt("position"));
 
 	AnswerDAO paDAO = DAOFactory.getInstance().getAnswerDAO();
-
-	ArrayList<Answer> answers = paDAO.findBy("question", resultSet.getInt("id"));
+	HashMap<String, Object> filters = new HashMap<String, Object>();
+	filters.put("question", resultSet.getInt("id"));
+	filters.put("isActive", 1);
+	ArrayList<Answer> answers = paDAO.findBy(filters);
 	question.setPossibleAnswers(answers);
 
 	for (Answer answer : answers) {
