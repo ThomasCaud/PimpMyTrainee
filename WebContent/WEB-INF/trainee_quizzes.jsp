@@ -67,7 +67,7 @@
 					<td>${quiz.title}</td>
 					<td class="text-center"><a
 						href="<c:url value = "/${applicationScope.URL_START_QUIZ}/${quiz.id}"/>"
-						class="btn btn-link"><i class="fa fa-eye"></i></a></td>
+						class="btn btn-link"><i class="fa fa-play"></i></a></td>
 				</tr>
 			</c:forEach>
 		</tbody>
