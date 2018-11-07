@@ -23,7 +23,8 @@ import models.beans.User;
 public class QuizzesController extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
-    private static final String VIEW = "/WEB-INF/admin_quizzes_management.jsp";
+    private static final String VIEW_ADMIN = "/WEB-INF/admin_quizzes_management.jsp";
+    private static final String VIEW_TRAINEE = "/WEB-INF/trainee_quizzes.jsp";
     private static final String ATT_SEARCH = "search";
     private static final String ATT_QUIZZES = "quizzes";
     private static final String ATT_PAGINATION_ACTIVE = "paginationActive";
@@ -128,6 +129,8 @@ public class QuizzesController extends HttpServlet {
 	request.setAttribute(ATT_PAGINATION_ACTIVE, offset);
 	request.setAttribute(ATT_PAGINATION_TOTAL, nbNeededPages);
 
-	this.getServletContext().getRequestDispatcher(VIEW).forward(request, response);
+	String view = sessionUser.getRole() == E_Role.ADMIN ? VIEW_ADMIN : VIEW_TRAINEE;
+
+	this.getServletContext().getRequestDispatcher(view).forward(request, response);
     }
 }
