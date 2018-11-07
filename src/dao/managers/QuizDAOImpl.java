@@ -22,6 +22,7 @@ public class QuizDAOImpl extends AbstractDAOImpl<Quiz> implements QuizDAO {
     private static final String tableName = "Quizzes";
     private static final String SQL_SELECT_BY_MANAGER_WITH_OSSET_LIMIT = "SELECT * FROM Quizzes WHERE creator = ? LIMIT ?,?";
     private static final String SQL_SELECTED_BY_TITLE_OR_THEME = "SELECT * FROM Quizzes JOIN Themes ON Quizzes.theme = Themes.id WHERE Quizzes.title like ? OR Themes.label like ?";
+    private static final String SQL_SELECTED_BY_TITLE_OR_THEME_FOR_MANAGER_ID = "SELECT * FROM Quizzes JOIN Themes ON Quizzes.theme = Themes.id WHERE (Quizzes.title like ? OR Themes.label like ? ) and creator = ?";
 
     private static final String SQL_INSERT_QUIZ = "INSERT INTO Quizzes (title, theme, creator, creationDate, isActive) VALUES (?,?,?,NOW(),?)";
 
@@ -102,7 +103,7 @@ public class QuizDAOImpl extends AbstractDAOImpl<Quiz> implements QuizDAO {
     }
 
     @Override
-    public ArrayList<Quiz> findQuizzesByTitleOrTheme(String filter) throws DAOException {
+    public ArrayList<Quiz> searchQuizzes(String value) throws DAOException {
 	Connection connection = null;
 	PreparedStatement preparedStatement = null;
 	ResultSet resultSet = null;
@@ -111,7 +112,34 @@ public class QuizDAOImpl extends AbstractDAOImpl<Quiz> implements QuizDAO {
 	try {
 	    connection = daoFactory.getConnection();
 	    preparedStatement = initPreparedStatement(connection, SQL_SELECTED_BY_TITLE_OR_THEME, false,
-		    '%' + filter + '%', '%' + filter + '%');
+		    '%' + value + '%', '%' + value + '%');
+	    resultSet = preparedStatement.executeQuery();
+
+	    while (resultSet.next()) {
+		Quiz quiz = map(resultSet);
+		quizzes.add(quiz);
+	    }
+
+	} catch (SQLException e) {
+	    throw new DAOException(e);
+	} finally {
+	    silentClose(resultSet, preparedStatement, connection);
+	}
+
+	return quizzes;
+    }
+
+    @Override
+    public ArrayList<Quiz> searchQuizzes(Integer managerId, String value) throws DAOException {
+	Connection connection = null;
+	PreparedStatement preparedStatement = null;
+	ResultSet resultSet = null;
+	ArrayList<Quiz> quizzes = new ArrayList<Quiz>();
+
+	try {
+	    connection = daoFactory.getConnection();
+	    preparedStatement = initPreparedStatement(connection, SQL_SELECTED_BY_TITLE_OR_THEME_FOR_MANAGER_ID, false,
+		    '%' + value + '%', '%' + value + '%', managerId);
 	    resultSet = preparedStatement.executeQuery();
 
 	    while (resultSet.next()) {

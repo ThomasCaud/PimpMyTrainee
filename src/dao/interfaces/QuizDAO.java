@@ -12,5 +12,7 @@ public interface QuizDAO extends CommonDAO<Quiz> {
 
     ArrayList<Quiz> findByManagerId(Integer managerId, Integer offset, Integer limit) throws DAOException;
 
-    ArrayList<Quiz> findQuizzesByTitleOrTheme(String filter) throws DAOException;
+    ArrayList<Quiz> searchQuizzes(String value) throws DAOException;
+
+    ArrayList<Quiz> searchQuizzes(Integer managerId, String value) throws DAOException;
 }
