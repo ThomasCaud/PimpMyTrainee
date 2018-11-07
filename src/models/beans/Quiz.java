@@ -3,6 +3,7 @@ package models.beans;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Comparator;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -44,7 +45,7 @@ public class Quiz implements Serializable, Container {
 	this.id = q.getId();
 	this.title = q.getTitle();
 	this.isActive = q.getIsActive();
-	this.questions = q.getQuestions();
+	this.setQuestions(q.getQuestions());
 	this.theme = q.getTheme();
 	this.creator = q.getCreator();
 	this.creationDate = q.getCreationDate();
@@ -79,6 +80,8 @@ public class Quiz implements Serializable, Container {
     }
 
     public void setQuestions(ArrayList<Question> questions) {
+	questions.sort(Comparator.comparing(Question::getPosition));
+
 	this.questions = questions;
     }
 
