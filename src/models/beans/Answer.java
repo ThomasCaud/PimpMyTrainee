@@ -28,8 +28,8 @@ public class Answer implements Serializable {
     public Answer(Answer pa) {
 	this.id = pa.getId();
 	this.label = pa.getLabel();
-	this.isActive = pa.isActive();
-	this.isCorrect = pa.isCorrect();
+	this.isActive = pa.getIsActive();
+	this.isCorrect = pa.getIsCorrect();
 	this.position = pa.getPosition();
     }
 
@@ -49,7 +49,7 @@ public class Answer implements Serializable {
 	this.label = label;
     }
 
-    public Boolean isActive() {
+    public Boolean getIsActive() {
 	return isActive;
     }
 
@@ -57,7 +57,7 @@ public class Answer implements Serializable {
 	this.isActive = isActive;
     }
 
-    public Boolean isCorrect() {
+    public Boolean getIsCorrect() {
 	return isCorrect;
     }
 

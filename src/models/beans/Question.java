@@ -3,6 +3,8 @@ package models.beans;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import models.iterator.Container;
 import models.iterator.Iterator;
 
@@ -31,7 +33,7 @@ public class Question implements Serializable, Container {
 	this.possibleAnswers = possibleAnswers;
 
 	for (Answer possibleAnswer : possibleAnswers) {
-	    if (possibleAnswer.isCorrect()) {
+	    if (possibleAnswer.getIsCorrect()) {
 		this.correctAnswer = possibleAnswer;
 	    }
 	}
@@ -104,6 +106,7 @@ public class Question implements Serializable, Container {
     }
 
     @Override
+    @JsonIgnore
     public Iterator getIterator() {
 	return new AnswerIterator();
     }

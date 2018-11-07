@@ -3,11 +3,13 @@ package models.forms;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
+
 import dao.interfaces.AnswerDAO;
 import dao.interfaces.QuestionDAO;
 import dao.interfaces.QuizDAO;
@@ -17,22 +19,23 @@ import models.beans.Question;
 import models.beans.Quiz;
 import models.beans.Theme;
 
-public class CreateQuizForm extends AbstractForm {
+public class QuizForm extends AbstractForm {
     // Variables that represents each field of the form
     private static final String FIELD_TITLE = "title";
     private static final String FIELD_THEME = "theme";
+    private static final String FIELD_QUIZID = "quiz_id";
     private static final String FIELD_SUBMIT = "submit";
     private QuizDAO quizDAO;
     private ThemeDAO themeDAO;
     private QuestionDAO questionDAO;
-    private AnswerDAO possibleAnswerDAO;
+    private AnswerDAO answerDAO;
 
-    public CreateQuizForm(QuizDAO quizDAO, ThemeDAO themeDAO, QuestionDAO questionDAO, AnswerDAO possibleAnswerDAO) {
+    public QuizForm(QuizDAO quizDAO, ThemeDAO themeDAO, QuestionDAO questionDAO, AnswerDAO possibleAnswerDAO) {
 	super();
 	this.quizDAO = quizDAO;
 	this.themeDAO = themeDAO;
 	this.questionDAO = questionDAO;
-	this.possibleAnswerDAO = possibleAnswerDAO;
+	this.answerDAO = possibleAnswerDAO;
     }
 
     public void processTitleValidation(String title, Quiz quiz) {
@@ -86,7 +89,7 @@ public class CreateQuizForm extends AbstractForm {
 			    setError("question_" + questionIndex + "_answer_" + answerIndex,
 				    "The label cannot be empty.");
 
-			if (possibleAnswer.isCorrect())
+			if (possibleAnswer.getIsCorrect())
 			    oneIsCorrect = true;
 
 			possibleAnswer.setPosition(answerIndex);
@@ -130,6 +133,11 @@ public class CreateQuizForm extends AbstractForm {
 	    // Recherche des noms des parametres dans la variable POST qui correspondent aux
 	    // labels des réponses
 	    String questionIndex = paramQuestion.replace("question_", "").replace("_label", "");
+
+	    String questionIdStr = request.getParameter("question_" + questionIndex + "_id");
+	    Integer questionId = Integer.parseInt(questionIdStr);
+	    question.setId(questionId);
+
 	    String patternPossibleAnswerLabel = "(question_)" + questionIndex + "(_possibleAnswer_)([0-9]+)(_label)";
 	    List<String> listParamPossibleAnswers = request.getParameterMap().keySet().stream()
 		    .filter(s -> Pattern.matches(patternPossibleAnswerLabel, s)).collect(Collectors.toList());
@@ -152,6 +160,14 @@ public class CreateQuizForm extends AbstractForm {
 		possibleAnswer.setLabel(labelPossibleAnswer);
 		possibleAnswer.setIsCorrect(false);
 
+		String answerIndex = paramPossibleAnswer.replace("question_" + questionIndex + "_possibleAnswer_", "")
+			.replace("_label", "");
+
+		String answerIdStr = request
+			.getParameter("question_" + questionIndex + "_possibleAnswer_" + answerIndex + "_id");
+		Integer answerId = Integer.parseInt(answerIdStr);
+		possibleAnswer.setId(answerId);
+
 		possibleAnswers.add(possibleAnswer);
 	    }
 
@@ -162,10 +178,14 @@ public class CreateQuizForm extends AbstractForm {
 	    if (possibleAnswerIndexStr != null)
 		indexCorrectAnswer = Integer.parseInt(possibleAnswerIndexStr);
 
+	    Answer correctAnswer = new Answer();
 	    if (!possibleAnswers.isEmpty())
-		possibleAnswers.get(indexCorrectAnswer - 1).setIsCorrect(true);
+		correctAnswer = possibleAnswers.get(indexCorrectAnswer - 1);
+	    correctAnswer.setIsCorrect(true);
 
 	    question.setPossibleAnswers(possibleAnswers);
+	    question.setCorrectAnswer(correctAnswer);
+
 	    questions.add(question);
 	}
 
@@ -178,10 +198,13 @@ public class CreateQuizForm extends AbstractForm {
 
 	Quiz quiz = new Quiz();
 
+	String quizIdStr = getFieldValue(request, FIELD_QUIZID);
+	Integer quizId = Integer.parseInt(quizIdStr);
+	quiz.setId(quizId);
+
 	processThemeValidation(theme, quiz);
 
 	quiz.setTitle(title);
-
 	quiz.setQuestions(getQuestionsFromRequest(request));
 
 	Question q = new Question();
@@ -201,6 +224,10 @@ public class CreateQuizForm extends AbstractForm {
 	Integer questionIndex = Integer.parseInt(questionIndexStr.replace("newAnswer_", ""));
 
 	Quiz quiz = new Quiz();
+
+	String quizIdStr = getFieldValue(request, FIELD_QUIZID);
+	Integer quizId = Integer.parseInt(quizIdStr);
+	quiz.setId(quizId);
 
 	processThemeValidation(theme, quiz);
 
@@ -229,6 +256,10 @@ public class CreateQuizForm extends AbstractForm {
 
 	Quiz quiz = new Quiz();
 
+	String quizIdStr = getFieldValue(request, FIELD_QUIZID);
+	Integer quizId = Integer.parseInt(quizIdStr);
+	quiz.setId(quizId);
+
 	processThemeValidation(theme, quiz);
 
 	quiz.setTitle(title);
@@ -250,6 +281,10 @@ public class CreateQuizForm extends AbstractForm {
 	Integer questionIndex = Integer.parseInt(indexesStr[1]);
 
 	Quiz quiz = new Quiz();
+
+	String quizIdStr = getFieldValue(request, FIELD_QUIZID);
+	Integer quizId = Integer.parseInt(quizIdStr);
+	quiz.setId(quizId);
 
 	processThemeValidation(theme, quiz);
 
@@ -273,6 +308,10 @@ public class CreateQuizForm extends AbstractForm {
 
 	Quiz quiz = new Quiz();
 
+	String quizIdStr = getFieldValue(request, FIELD_QUIZID);
+	Integer quizId = Integer.parseInt(quizIdStr);
+	quiz.setId(quizId);
+
 	processThemeValidation(theme, quiz);
 
 	quiz.setTitle(title);
@@ -295,6 +334,10 @@ public class CreateQuizForm extends AbstractForm {
 	Integer indexQuestion = Integer.parseInt(indexQuestionStr);
 
 	Quiz quiz = new Quiz();
+
+	String quizIdStr = getFieldValue(request, FIELD_QUIZID);
+	Integer quizId = Integer.parseInt(quizIdStr);
+	quiz.setId(quizId);
 
 	processThemeValidation(theme, quiz);
 
@@ -323,6 +366,10 @@ public class CreateQuizForm extends AbstractForm {
 
 	Quiz quiz = new Quiz();
 
+	String quizIdStr = getFieldValue(request, FIELD_QUIZID);
+	Integer quizId = Integer.parseInt(quizIdStr);
+	quiz.setId(quizId);
+
 	processThemeValidation(theme, quiz);
 
 	quiz.setTitle(title);
@@ -350,6 +397,10 @@ public class CreateQuizForm extends AbstractForm {
 
 	Quiz quiz = new Quiz();
 
+	String quizIdStr = getFieldValue(request, FIELD_QUIZID);
+	Integer quizId = Integer.parseInt(quizIdStr);
+	quiz.setId(quizId);
+
 	processThemeValidation(theme, quiz);
 
 	quiz.setTitle(title);
@@ -370,6 +421,11 @@ public class CreateQuizForm extends AbstractForm {
 	String theme = getFieldValue(request, FIELD_THEME);
 
 	Quiz quiz = new Quiz();
+
+	String quizIdStr = getFieldValue(request, FIELD_QUIZID);
+	Integer quizId = Integer.parseInt(quizIdStr);
+	quiz.setId(quizId);
+
 	ArrayList<Question> questions = getQuestionsFromRequest(request);
 
 	processThemeValidation(theme, quiz);
@@ -390,8 +446,61 @@ public class CreateQuizForm extends AbstractForm {
 
 	    ArrayList<Answer> possibleAnswers = question.getPossibleAnswers();
 	    for (Answer answer : possibleAnswers) {
-		possibleAnswerDAO.create(question, answer);
+		answerDAO.create(question, answer);
 	    }
 	}
+    }
+
+    public Quiz updateQuiz(HttpServletRequest request) {
+	Quiz quiz = prepareQuiz(request);
+	Quiz previousQuiz = quizDAO.find(quiz.getId());
+
+	if (getErrors().isEmpty()) {
+	    quiz.setCreator(previousQuiz.getCreator());
+	    quiz.setCreationDate(previousQuiz.getCreationDate());
+	    quiz.setIsActive(true);
+
+	    quizDAO.updateQuiz(quiz);
+
+	    Collections.sort(previousQuiz.getQuestions(), new Comparator<Question>() {
+		@Override
+		public int compare(Question q1, Question q2) {
+		    Integer i1 = q1.getId();
+		    Integer i2 = q2.getId();
+		    return (i1 < i2 ? -1 : (i1 == i2 ? 0 : 1));
+		}
+	    });
+	    HashMap<Integer, Question> previousQuizQuestions = new HashMap<Integer, Question>();
+	    for (Question question : previousQuiz.getQuestions()) {
+		previousQuizQuestions.put(question.getId(), question);
+	    }
+
+	    for (Question question : quiz.getQuestions()) {
+		Integer questionId = question.getId();
+
+		if (questionId != -1) {
+		    questionDAO.updateQuestion(question);
+		    previousQuizQuestions.remove(questionId);
+		} else {
+		    questionDAO.create(quiz, question);
+
+		    ArrayList<Answer> possibleAnswers = question.getPossibleAnswers();
+		    for (Answer answer : possibleAnswers) {
+			answerDAO.create(question, answer);
+		    }
+		}
+	    }
+
+	    for (Question questionToDisable : previousQuizQuestions.values()) {
+		questionDAO.disable(questionToDisable);
+
+		ArrayList<Answer> possibleAnswers = questionToDisable.getPossibleAnswers();
+		for (Answer answer : possibleAnswers) {
+		    answerDAO.disable(answer);
+		}
+	    }
+	}
+
+	return quiz;
     }
 }

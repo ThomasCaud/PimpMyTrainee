@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -117,12 +118,14 @@ public class Quiz implements Serializable, Container {
     }
 
     @Override
+    @JsonIgnore
     public Iterator getIterator() {
 	return new QuestionIterator();
     }
 
-    private class QuestionIterator implements Iterator {
+    private class QuestionIterator implements Iterator, Serializable {
 
+	private static final long serialVersionUID = 1L;
 	int index;
 
 	@Override

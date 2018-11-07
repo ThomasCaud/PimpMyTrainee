@@ -11,9 +11,11 @@ import java.util.ArrayList;
 
 import dao.DAOFactory;
 import dao.exceptions.DAOException;
+import dao.interfaces.QuestionDAO;
 import dao.interfaces.QuizDAO;
 import dao.interfaces.ThemeDAO;
 import dao.interfaces.UserDAO;
+import models.beans.Question;
 import models.beans.Quiz;
 import models.beans.Theme;
 import models.beans.User;
@@ -50,6 +52,10 @@ public class QuizDAOImpl extends AbstractDAOImpl<Quiz> implements QuizDAO {
 	ThemeDAO themeDAO = DAOFactory.getInstance().getThemeDAO();
 	Theme theme = themeDAO.find(resultSet.getInt("theme"));
 	quiz.setTheme(theme);
+
+	QuestionDAO questionDAO = DAOFactory.getInstance().getQuestionDAO();
+	ArrayList<Question> questions = questionDAO.findBy("quiz", quiz.getId());
+	quiz.setQuestions(questions);
 
 	return quiz;
     }
@@ -92,7 +98,7 @@ public class QuizDAOImpl extends AbstractDAOImpl<Quiz> implements QuizDAO {
 	try {
 	    connection = daoFactory.getConnection();
 	    preparedStatement = initPreparedStatement(connection, SQL_UPDATE_QUIZ, false, quiz.getTitle(),
-		    quiz.getTheme().getId(), quiz.getIsActive(), quiz.getCreator().getId());
+		    quiz.getTheme().getId(), quiz.getIsActive(), quiz.getId());
 	    preparedStatement.executeUpdate();
 	} catch (SQLException e) {
 	    throw new DAOException(e);
