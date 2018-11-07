@@ -232,7 +232,8 @@ public abstract class AbstractDAOImpl<T> implements CommonDAO<T> {
 
 	try {
 	    connection = daoFactory.getConnection();
-	    preparedStatement = initPreparedStatement(connection, getSelectQuery(filters), false, filters.values());
+	    preparedStatement = initPreparedStatement(connection, getSelectQuery(filters), false,
+		    filters.values().toArray());
 	    resultSet = preparedStatement.executeQuery();
 
 	    while (resultSet.next()) {

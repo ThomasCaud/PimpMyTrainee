@@ -3,6 +3,7 @@ package controllers.admin;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -79,7 +80,8 @@ public class ViewQuizController extends HttpServlet {
 	    return;
 	}
 
-	Quiz quiz = quizDAO.find(id);
+	HashMap<String, Object> filters = new HashMap<String, Object>();
+	Quiz quiz = quizDAO.findActive("id", 1);
 
 	if (quiz == null) {
 	    response.sendError(HttpServletResponse.SC_BAD_REQUEST);

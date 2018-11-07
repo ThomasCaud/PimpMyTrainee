@@ -477,10 +477,38 @@ public class QuizForm extends AbstractForm {
 
 	    for (Question question : quiz.getQuestions()) {
 		Integer questionId = question.getId();
-
 		if (questionId != -1) {
 		    questionDAO.updateQuestion(question);
-		    previousQuizQuestions.remove(questionId);
+
+		    Collections.sort(previousQuizQuestions.get(questionId).getPossibleAnswers(),
+			    new Comparator<Answer>() {
+				@Override
+				public int compare(Answer q1, Answer q2) {
+				    Integer i1 = q1.getId();
+				    Integer i2 = q2.getId();
+				    return (i1 < i2 ? -1 : (i1 == i2 ? 0 : 1));
+				}
+			    });
+		    HashMap<Integer, Answer> previousQuizAnswers = new HashMap<Integer, Answer>();
+		    for (Answer answer : previousQuizQuestions.get(questionId).getPossibleAnswers()) {
+			previousQuizAnswers.put(answer.getId(), answer);
+		    }
+
+		    for (Answer answer : question.getPossibleAnswers()) {
+			Integer answerId = answer.getId();
+			if (answerId != -1) {
+			    answerDAO.update(answer);
+			    previousQuizAnswers.remove(answer.getId());
+
+			} else {
+			    answerDAO.create(question, answer);
+			}
+		    }
+
+		    for (Answer answerToDisable : previousQuizAnswers.values()) {
+			answerDAO.disable(answerToDisable);
+		    }
+		    previousQuizQuestions.remove(question.getId());
 		} else {
 		    questionDAO.create(quiz, question);
 

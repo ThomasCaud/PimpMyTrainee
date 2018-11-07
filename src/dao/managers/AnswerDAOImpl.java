@@ -19,7 +19,7 @@ public class AnswerDAOImpl extends AbstractDAOImpl<Answer> implements AnswerDAO 
     private static final String SQL_INSERT = "INSERT INTO " + tableName
 	    + " (label, isCorrect, isActive, position, question) VALUES (?,?,?,?,?)";
     private static final String SQL_UPDATE = "UPDATE " + tableName
-	    + " set label = ?, isCorrect = ?, isActive = ?, position = ?, question = ? WHERE id = ?";
+	    + " set label = ?, isCorrect = ?, isActive = ?, position = ? WHERE id = ?";
     private static final String SQL_DISABLE_ANSWER = "UPDATE Answers set isActive = 0 WHERE id = ?";
 
     public AnswerDAOImpl() {
@@ -74,14 +74,14 @@ public class AnswerDAOImpl extends AbstractDAOImpl<Answer> implements AnswerDAO 
 	}
     }
 
-    public void update(Question qu, Answer pa) throws DAOException {
+    public void update(Answer pa) throws DAOException {
 	Connection connection = null;
 	PreparedStatement preparedStatement = null;
 
 	try {
 	    connection = daoFactory.getConnection();
 	    preparedStatement = initPreparedStatement(connection, SQL_UPDATE, false, pa.getLabel(), pa.getIsCorrect(),
-		    pa.getIsActive(), pa.getPosition(), qu.getId(), pa.getId());
+		    pa.getIsActive(), pa.getPosition(), pa.getId());
 	    preparedStatement.executeUpdate();
 	} catch (SQLException e) {
 	    throw new DAOException(e);
