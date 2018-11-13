@@ -2,6 +2,9 @@ package models.beans;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Comparator;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import models.iterator.Container;
 import models.iterator.Iterator;
@@ -28,10 +31,10 @@ public class Question implements Serializable, Container {
 	this.label = label;
 	this.isActive = true;
 	this.position = position;
-	this.possibleAnswers = possibleAnswers;
+	this.setPossibleAnswers(possibleAnswers);
 
 	for (Answer possibleAnswer : possibleAnswers) {
-	    if (possibleAnswer.isCorrect()) {
+	    if (possibleAnswer.getIsCorrect()) {
 		this.correctAnswer = possibleAnswer;
 	    }
 	}
@@ -42,7 +45,7 @@ public class Question implements Serializable, Container {
 	this.label = q.getLabel();
 	this.isActive = q.getIsActive();
 	this.position = q.getPosition();
-	this.possibleAnswers = q.getPossibleAnswers();
+	this.setPossibleAnswers(q.getPossibleAnswers());
 	this.correctAnswer = q.getCorrectAnswer();
     }
 
@@ -83,6 +86,7 @@ public class Question implements Serializable, Container {
     }
 
     public void setPossibleAnswers(ArrayList<Answer> pa) {
+	pa.sort(Comparator.comparing(Answer::getPosition));
 	this.possibleAnswers = pa;
     }
 
@@ -104,6 +108,7 @@ public class Question implements Serializable, Container {
     }
 
     @Override
+    @JsonIgnore
     public Iterator getIterator() {
 	return new AnswerIterator();
     }

@@ -23,7 +23,7 @@ import models.beans.E_Role;
 import models.beans.Quiz;
 import models.beans.Theme;
 import models.beans.User;
-import models.forms.CreateQuizForm;
+import models.forms.QuizForm;
 
 @WebServlet("/" + Config.URL_CREATE_QUIZ)
 public class CreateQuizController extends HttpServlet {
@@ -81,7 +81,7 @@ public class CreateQuizController extends HttpServlet {
 	}
 	String submitPattern = tmp.get(0);
 
-	CreateQuizForm createQuizForm = new CreateQuizForm(quizDAO, themeDAO, questionDAO, possibleAnswerDAO);
+	QuizForm createQuizForm = new QuizForm(quizDAO, themeDAO, questionDAO, possibleAnswerDAO);
 	Quiz quiz = null;
 
 	switch (submitPattern) {

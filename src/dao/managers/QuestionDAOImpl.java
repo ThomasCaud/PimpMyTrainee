@@ -8,6 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import dao.DAOFactory;
 import dao.exceptions.DAOException;
@@ -20,6 +21,8 @@ import models.beans.Quiz;
 public class QuestionDAOImpl extends AbstractDAOImpl<Question> implements QuestionDAO {
     private static final String tableName = "Questions";
     private static final String SQL_INSERT = "INSERT INTO Questions (label, isActive, position, quiz) VALUES (?,?,?,?)";
+    private static final String SQL_UPDATE_QUESTION = "UPDATE Questions set label = ?, isActive = ?, position = ? WHERE id = ?";
+    private static final String SQL_DISABLE_QUESTION = "UPDATE Questions set isActive = 0 WHERE id = ?";
 
     public QuestionDAOImpl() {
 	super(null, tableName);
@@ -38,12 +41,14 @@ public class QuestionDAOImpl extends AbstractDAOImpl<Question> implements Questi
 	question.setPosition(resultSet.getInt("position"));
 
 	AnswerDAO paDAO = DAOFactory.getInstance().getAnswerDAO();
-
-	ArrayList<Answer> answers = paDAO.findBy("question", resultSet.getInt("id"));
+	HashMap<String, Object> filters = new HashMap<String, Object>();
+	filters.put("question", resultSet.getInt("id"));
+	filters.put("isActive", 1);
+	ArrayList<Answer> answers = paDAO.findBy(filters);
 	question.setPossibleAnswers(answers);
 
 	for (Answer answer : answers) {
-	    if (answer.isCorrect())
+	    if (answer.getIsCorrect())
 		question.setCorrectAnswer(answer);
 	}
 	return question;
@@ -78,6 +83,37 @@ public class QuestionDAOImpl extends AbstractDAOImpl<Question> implements Questi
 	    throw new DAOException(e);
 	} finally {
 	    silentClose(resultSet, preparedStatement, connection);
+	}
+    }
+
+    public void updateQuestion(Question question) throws DAOException {
+	Connection connection = null;
+	PreparedStatement preparedStatement = null;
+
+	try {
+	    connection = daoFactory.getConnection();
+	    preparedStatement = initPreparedStatement(connection, SQL_UPDATE_QUESTION, false, question.getLabel(),
+		    question.getIsActive(), question.getPosition(), question.getId());
+	    preparedStatement.executeUpdate();
+	} catch (SQLException e) {
+	    throw new DAOException(e);
+	} finally {
+	    silentClose(null, preparedStatement, connection);
+	}
+    }
+
+    public void disable(Question question) throws DAOException {
+	Connection connection = null;
+	PreparedStatement preparedStatement = null;
+
+	try {
+	    connection = daoFactory.getConnection();
+	    preparedStatement = initPreparedStatement(connection, SQL_DISABLE_QUESTION, false, question.getId());
+	    preparedStatement.executeUpdate();
+	} catch (SQLException e) {
+	    throw new DAOException(e);
+	} finally {
+	    silentClose(null, preparedStatement, connection);
 	}
     }
 }
