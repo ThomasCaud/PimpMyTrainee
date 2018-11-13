@@ -9,24 +9,23 @@ import java.util.stream.Collectors;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import common.Config;
+import controllers.AbstractController;
 import dao.interfaces.AnswerDAO;
 import dao.interfaces.QuestionDAO;
 import dao.interfaces.QuizDAO;
 import dao.interfaces.ThemeDAO;
 import dao.DAOFactory;
-import models.beans.E_Role;
 import models.beans.Quiz;
 import models.beans.Theme;
 import models.beans.User;
 import models.forms.CreateQuizForm;
 
 @WebServlet("/" + Config.URL_CREATE_QUIZ)
-public class CreateQuizController extends HttpServlet {
+public class CreateQuizController extends AbstractController {
 
     private static final long serialVersionUID = 1L;
     private static final String ATT_FORM = "form";
@@ -53,14 +52,7 @@ public class CreateQuizController extends HttpServlet {
     }
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-	HttpSession session = request.getSession();
-
-	User sessionUser = (User) session.getAttribute(Config.ATT_SESSION_USER);
-
-	if (sessionUser == null || sessionUser.getRole() != E_Role.ADMIN) {
-	    response.sendError(HttpServletResponse.SC_FORBIDDEN);
-	    return;
-	}
+	checkSessionUser(request, response);
 
 	ArrayList<Theme> themes = themeDAO.findAll();
 
