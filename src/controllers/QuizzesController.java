@@ -9,8 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
-import com.sun.media.jfxmedia.logging.Logger;
+import org.apache.log4j.Logger;
 
 import common.Config;
 import dao.DAOFactory;
@@ -21,6 +20,8 @@ import models.beans.User;
 
 @WebServlet("/" + Config.URL_QUIZZES)
 public class QuizzesController extends HttpServlet {
+
+    private static Logger logger = Logger.getLogger(QuizzesController.class);
 
     private static final long serialVersionUID = 1L;
     private static final String VIEW_ADMIN = "/WEB-INF/admin_quizzes_management.jsp";
@@ -45,7 +46,7 @@ public class QuizzesController extends HttpServlet {
 	} else if (user.getRole() == E_Role.TRAINEE) {
 	    return quizDAO.findBy("creator", user.getManager().getId(), (offset - 1) * limit, limit);
 	} else {
-	    Logger.logMsg(Logger.WARNING, "L'utilisateur courant n'est pas Admin ni Trainee");
+	    logger.warn("L'utilisateur courant n'est pas Admin ni Trainee");
 	    return new ArrayList<Quiz>();
 	}
     }
@@ -56,7 +57,7 @@ public class QuizzesController extends HttpServlet {
 	} else if (user.getRole() == E_Role.TRAINEE) {
 	    return quizDAO.searchQuizzes(user.getManager().getId(), search);
 	} else {
-	    Logger.logMsg(Logger.WARNING, "L'utilisateur courant n'est pas Admin ni Trainee");
+	    logger.warn("L'utilisateur courant n'est pas Admin ni Trainee");
 	    return new ArrayList<Quiz>();
 	}
     }
