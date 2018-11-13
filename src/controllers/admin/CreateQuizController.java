@@ -9,20 +9,21 @@ import java.util.stream.Collectors;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import common.Config;
-import controllers.AbstractController;
 import dao.interfaces.AnswerDAO;
 import dao.interfaces.QuestionDAO;
 import dao.interfaces.QuizDAO;
 import dao.interfaces.ThemeDAO;
 import dao.DAOFactory;
+import models.beans.E_Role;
 import models.beans.Quiz;
 import models.beans.Theme;
 import models.beans.User;
-import models.forms.CreateQuizForm;
+import models.forms.QuizForm;
 
 @WebServlet("/" + Config.URL_CREATE_QUIZ)
 public class CreateQuizController extends AbstractController {
@@ -73,7 +74,7 @@ public class CreateQuizController extends AbstractController {
 	}
 	String submitPattern = tmp.get(0);
 
-	CreateQuizForm createQuizForm = new CreateQuizForm(quizDAO, themeDAO, questionDAO, possibleAnswerDAO);
+	QuizForm createQuizForm = new QuizForm(quizDAO, themeDAO, questionDAO, possibleAnswerDAO);
 	Quiz quiz = null;
 
 	switch (submitPattern) {
