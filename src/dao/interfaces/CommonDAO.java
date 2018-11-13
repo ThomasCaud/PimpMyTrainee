@@ -7,6 +7,8 @@ import dao.exceptions.DAOException;
 public interface CommonDAO<T> {
     Integer count() throws DAOException;
 
+    Integer count(String field, Object value) throws DAOException;
+
     T find(String field, Object value) throws DAOException;
 
     T find(Integer id);
@@ -18,6 +20,8 @@ public interface CommonDAO<T> {
     ArrayList<T> findAll(Integer offset, Integer limit) throws DAOException;
 
     ArrayList<T> findBy(String field, Object value) throws DAOException;
+
+    ArrayList<T> findBy(String field, Object value, Integer offset, Integer limit) throws DAOException;
 
     void delete(Integer id) throws DAOException;
 }

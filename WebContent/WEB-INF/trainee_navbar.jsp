@@ -11,7 +11,7 @@
 	<div class="collapse navbar-collapse" id="navbarColor01">
 		<ul class="navbar-nav mr-auto">
 			<li class="nav-item"><a class="nav-link"
-				href="<c:url value = "/${applicationScope.URL_VIEW_QUIZZES}" />">See quizzes</a></li>
+				href="<c:url value = "/${applicationScope.URL_QUIZZES}" />">See quizzes</a></li>
 			<li class="nav-item"><a class="nav-link"
 				href="<c:url value = "/${applicationScope.URL_RESULTS}" />">Results</a></li>
 		</ul>

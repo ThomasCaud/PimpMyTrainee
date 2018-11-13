@@ -28,6 +28,10 @@ public abstract class AbstractDAOImpl<T> implements CommonDAO<T> {
 	return "SELECT count(*) as count FROM " + tableName;
     }
 
+    private String getCountWithFilterQuery(String field) {
+	return "SELECT count(*) as count FROM " + tableName + " where " + field + " = ?";
+    }
+
     private String getSelectQuery(String field) {
 	return "SELECT * FROM " + tableName + " WHERE " + field + "  = ?";
     }
@@ -44,6 +48,10 @@ public abstract class AbstractDAOImpl<T> implements CommonDAO<T> {
 	return "SELECT * FROM " + tableName + " LIMIT ?,?";
     }
 
+    private String getSelectQueryWithOffsetQuery(String field) {
+	return "SELECT * FROM " + tableName + " WHERE " + field + " = ? LIMIT ?,?";
+    }
+
     private String getDeletedByIdQuery() {
 	return "DELETE FROM " + tableName + " WHERE id = ?";
     }
@@ -58,6 +66,31 @@ public abstract class AbstractDAOImpl<T> implements CommonDAO<T> {
 	try {
 	    connection = daoFactory.getConnection();
 	    preparedStatement = initPreparedStatement(connection, getCountQuery(), false);
+	    resultSet = preparedStatement.executeQuery();
+
+	    while (resultSet.next()) {
+		result = resultSet.getInt("count");
+	    }
+
+	} catch (SQLException e) {
+	    throw new DAOException(e);
+	} finally {
+	    silentClose(resultSet, preparedStatement, connection);
+	}
+
+	return result;
+    }
+
+    @Override
+    public Integer count(String field, Object value) throws DAOException {
+	Connection connection = null;
+	PreparedStatement preparedStatement = null;
+	ResultSet resultSet = null;
+	Integer result = 0;
+
+	try {
+	    connection = daoFactory.getConnection();
+	    preparedStatement = initPreparedStatement(connection, getCountWithFilterQuery(field), false, value);
 	    resultSet = preparedStatement.executeQuery();
 
 	    while (resultSet.next()) {
@@ -188,6 +221,33 @@ public abstract class AbstractDAOImpl<T> implements CommonDAO<T> {
 	try {
 	    connection = daoFactory.getConnection();
 	    preparedStatement = initPreparedStatement(connection, getSelectQuery(field), false, value);
+	    resultSet = preparedStatement.executeQuery();
+
+	    while (resultSet.next()) {
+		T pa = map(resultSet);
+		tList.add(pa);
+	    }
+
+	} catch (SQLException e) {
+	    throw new DAOException(e);
+	} finally {
+	    silentClose(resultSet, preparedStatement, connection);
+	}
+
+	return tList;
+    }
+
+    @Override
+    public ArrayList<T> findBy(String field, Object value, Integer offset, Integer limit) throws DAOException {
+	Connection connection = null;
+	PreparedStatement preparedStatement = null;
+	ResultSet resultSet = null;
+	ArrayList<T> tList = new ArrayList<T>();
+
+	try {
+	    connection = daoFactory.getConnection();
+	    preparedStatement = initPreparedStatement(connection, getSelectQueryWithOffsetQuery(field), false, value,
+		    offset, limit);
 	    resultSet = preparedStatement.executeQuery();
 
 	    while (resultSet.next()) {
