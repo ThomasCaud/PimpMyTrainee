@@ -5,9 +5,9 @@ import java.util.ArrayList;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpSession;
 import org.apache.log4j.Logger;
 
@@ -19,7 +19,7 @@ import models.beans.Quiz;
 import models.beans.User;
 
 @WebServlet("/" + Config.URL_QUIZZES)
-public class QuizzesController extends HttpServlet {
+public class QuizzesController extends AbstractController {
 
 	private static Logger logger = Logger.getLogger(QuizzesController.class);
 
@@ -74,14 +74,7 @@ public class QuizzesController extends HttpServlet {
 	}
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		HttpSession session = request.getSession();
-
-		User sessionUser = (User) session.getAttribute(Config.ATT_SESSION_USER);
-
-		if (sessionUser == null) {
-			response.sendError(HttpServletResponse.SC_FORBIDDEN);
-			return;
-		}
+		User sessionUser = checkSessionUser(request, response);
 
 		ArrayList<Quiz> quizzes = null;
 

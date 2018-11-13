@@ -26,7 +26,7 @@ import models.beans.User;
 import models.forms.QuizForm;
 
 @WebServlet("/" + Config.URL_CREATE_QUIZ)
-public class CreateQuizController extends HttpServlet {
+public class CreateQuizController extends AbstractController {
 
     private static final long serialVersionUID = 1L;
     private static final String ATT_FORM = "form";
@@ -53,14 +53,7 @@ public class CreateQuizController extends HttpServlet {
     }
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-	HttpSession session = request.getSession();
-
-	User sessionUser = (User) session.getAttribute(Config.ATT_SESSION_USER);
-
-	if (sessionUser == null || sessionUser.getRole() != E_Role.ADMIN) {
-	    response.sendError(HttpServletResponse.SC_FORBIDDEN);
-	    return;
-	}
+	checkSessionUser(request, response);
 
 	ArrayList<Theme> themes = themeDAO.findAll();
 

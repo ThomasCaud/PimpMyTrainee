@@ -27,7 +27,7 @@ import models.beans.User;
 import models.forms.QuizForm;
 
 @WebServlet("/" + Config.URL_VIEW_QUIZ + "/*")
-public class ViewQuizController extends HttpServlet {
+public class ViewQuizController extends AbstractController {
 
     private static final long serialVersionUID = 1L;
     private static final String VIEW = "/WEB-INF/admin_view_quiz.jsp";
@@ -52,14 +52,8 @@ public class ViewQuizController extends HttpServlet {
     }
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-	HttpSession session = request.getSession();
-
-	User sessionUser = (User) session.getAttribute(Config.ATT_SESSION_USER);
-
-	if (sessionUser == null || sessionUser.getRole() != E_Role.ADMIN) {
-	    response.sendError(HttpServletResponse.SC_FORBIDDEN);
-	    return;
-	}
+	User sessionUser = checkSessionUser(request, response);
+	checkAdminOnly(sessionUser, response);
 
 	String pathInfo = request.getPathInfo();
 
