@@ -32,7 +32,7 @@ public class Record implements Serializable {
     private int calculateScore() {
 	int score = 0;
 	for (Answer answer : answers) {
-	    if (answer.isCorrect()) {
+	    if (answer.getIsCorrect()) {
 		score++;
 	    }
 	}
