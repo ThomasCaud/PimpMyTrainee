@@ -116,6 +116,7 @@ public class QuizForm extends AbstractForm {
 	List<String> listParamQuestions = request.getParameterMap().keySet().stream()
 		.filter(s -> Pattern.matches(patternQuestionLabel, s)).collect(Collectors.toList());
 
+	// Tri selon le numéro présent dans le label des questions
 	Collections.sort(listParamQuestions, new Comparator<String>() {
 	    public int compare(String o1, String o2) {
 		Integer i1 = Integer.parseInt(o1.replace("question_", "").replace("_label", ""));
@@ -452,16 +453,23 @@ public class QuizForm extends AbstractForm {
     }
 
     public Quiz updateQuiz(HttpServletRequest request) {
+	// Initialisation d'un objet Quiz à partir des données POST de la requête
+	// Puis validation des champs de ce Quiz
 	Quiz quiz = prepareQuiz(request);
+
 	Quiz previousQuiz = quizDAO.find(quiz.getId());
 
+	// Si la validation du Quiz n'a pas généré d'erreurs, on passe à l'update en bdd
 	if (getErrors().isEmpty()) {
+	    // Initialisation des champs qui ne doivent pas changer lors de l'update
 	    quiz.setCreator(previousQuiz.getCreator());
 	    quiz.setCreationDate(previousQuiz.getCreationDate());
 	    quiz.setIsActive(true);
 
+	    // Update BDD des champs volatiles d'un quiz : title, theme
 	    quizDAO.updateQuiz(quiz);
 
+	    // Tri des questions selon leur ID dans le but de convertir la liste en Map
 	    Collections.sort(previousQuiz.getQuestions(), new Comparator<Question>() {
 		@Override
 		public int compare(Question q1, Question q2) {
@@ -470,16 +478,25 @@ public class QuizForm extends AbstractForm {
 		    return (i1 < i2 ? -1 : (i1 == i2 ? 0 : 1));
 		}
 	    });
+
+	    // Création d'une Map<ID,Question> pour accéder rapidement à une question selon
+	    // son ID
 	    HashMap<Integer, Question> previousQuizQuestions = new HashMap<Integer, Question>();
 	    for (Question question : previousQuiz.getQuestions()) {
 		previousQuizQuestions.put(question.getId(), question);
 	    }
 
+	    // Processus d'update des questions du quiz courant
 	    for (Question question : quiz.getQuestions()) {
 		Integer questionId = question.getId();
+		// Si l'ID de cette question est égal à -1, il faut créer cette question
+		// Sinon, il faut la mettre à jour
 		if (questionId != -1) {
+		    // Update des champs volatile de la question :
 		    questionDAO.updateQuestion(question);
 
+		    // Conversion de la list de réponses en map pour accéder rapidement aux IDs
+		    // (comme précédemment)
 		    Collections.sort(previousQuizQuestions.get(questionId).getPossibleAnswers(),
 			    new Comparator<Answer>() {
 				@Override
@@ -494,6 +511,13 @@ public class QuizForm extends AbstractForm {
 			previousQuizAnswers.put(answer.getId(), answer);
 		    }
 
+		    /*
+		     * Même processus que pour les questions : on parcourt les réponses Si l'id est
+		     * égal à -1, il faut créer la réponse, Sinon, cela signifie qu'il faut l'update
+		     * Lorsqu'on update, on enlève cette réponse de la map précédemment créée A la
+		     * fin, on supprime toutes les réponses restantes dans la map car cela veut dire
+		     * qu'elles ont été supprimées dans le formulaire
+		     */
 		    for (Answer answer : question.getPossibleAnswers()) {
 			Integer answerId = answer.getId();
 			if (answerId != -1) {
@@ -510,8 +534,8 @@ public class QuizForm extends AbstractForm {
 		    }
 		    previousQuizQuestions.remove(question.getId());
 		} else {
+		    // Création de la question et de ses réponses associées
 		    questionDAO.create(quiz, question);
-
 		    ArrayList<Answer> possibleAnswers = question.getPossibleAnswers();
 		    for (Answer answer : possibleAnswers) {
 			answerDAO.create(question, answer);
