@@ -13,7 +13,6 @@ import javax.servlet.http.HttpSession;
 import common.Config;
 import dao.DAOFactory;
 import dao.interfaces.RecordDAO;
-import models.beans.E_Role;
 import models.beans.Record;
 import models.beans.User;
 
@@ -34,9 +33,7 @@ public class ResultsController extends HttpServlet {
 	}
 
 	private int getCount(User user) {
-		// à modifier
-		return user.getRole() == E_Role.ADMIN ? recordDAO.count()
-				: recordDAO.count("creator", user.getManager().getId());
+		return recordDAO.get(user).size();
 	}
 
 	// private ArrayList<Quiz> findWithOffsetLimit(User user, int offset, int
@@ -55,14 +52,15 @@ public class ResultsController extends HttpServlet {
 
 	private ArrayList<Record> search(User user, String search) {
 		return recordDAO.findBy("trainee", user.getId());
-//		if (user.getRole() == E_Role.ADMIN) {
-//			return quizDAO.searchQuizzes(search);
-//		} else if (user.getRole() == E_Role.TRAINEE) {
-//			return quizDAO.searchQuizzes(user.getManager().getId(), search);
-//		} else {
-//			Logger.logMsg(Logger.WARNING, "L'utilisateur courant n'est pas Admin ni Trainee");
-//			return new ArrayList<Quiz>();
-//		}
+		// if (user.getRole() == E_Role.ADMIN) {
+		// return quizDAO.searchQuizzes(search);
+		// } else if (user.getRole() == E_Role.TRAINEE) {
+		// return quizDAO.searchQuizzes(user.getManager().getId(), search);
+		// } else {
+		// Logger.logMsg(Logger.WARNING, "L'utilisateur courant n'est pas Admin
+		// ni Trainee");
+		// return new ArrayList<Quiz>();
+		// }
 	}
 
 	private int getNbNeededPage(User user, int nbPerPage) {

@@ -20,4 +20,5 @@ public class Config {
     public static final String URL_START_QUIZ = "startQuiz";
     public static final String URL_CREATE_THEME = "createTheme";
     public static final String URL_RESULTS = "results";
+	public static final String URL_VIEW_RESULT = "viewResult";
 }
