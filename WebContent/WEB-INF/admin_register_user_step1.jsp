@@ -8,7 +8,7 @@
 
 			<div class="row align-items-center">
 				<div class="col-12 col-sm-6 col-md-7 col-lg-8">
-					<h1>Register an user</h1>
+					<h1>Register a user</h1>
 				</div>
 				<div class="col-12 col-sm-6 col-md-5 col-lg-4">
 					<a href="<c:url value = "/${applicationScope.URL_USERS}" />"

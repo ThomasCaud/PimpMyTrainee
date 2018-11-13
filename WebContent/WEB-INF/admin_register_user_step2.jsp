@@ -10,7 +10,7 @@
 
 			<div class="row align-items-center">
 				<div class="col">
-					<h1>Register an user</h1>
+					<h1>Register a user</h1>
 				</div>
 			</div>
 

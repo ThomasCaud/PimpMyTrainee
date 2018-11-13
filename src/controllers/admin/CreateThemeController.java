@@ -4,21 +4,18 @@ import java.io.IOException;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
 import common.Config;
+import controllers.AbstractController;
 import dao.DAOFactory;
 import dao.interfaces.ThemeDAO;
-import models.beans.E_Role;
 import models.beans.Theme;
 import models.beans.User;
 import models.forms.CreateThemeForm;
 
 @WebServlet("/" + Config.URL_CREATE_THEME)
-public class CreateThemeController extends HttpServlet {
+public class CreateThemeController extends AbstractController {
 
     private static final long serialVersionUID = 1L;
     private static final String ATT_FORM = "form";
@@ -31,14 +28,8 @@ public class CreateThemeController extends HttpServlet {
     }
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-	HttpSession session = request.getSession();
-
-	User sessionUser = (User) session.getAttribute(Config.ATT_SESSION_USER);
-
-	if (sessionUser == null || sessionUser.getRole() != E_Role.ADMIN) {
-	    response.sendError(HttpServletResponse.SC_FORBIDDEN);
-	    return;
-	}
+	User sessionUser = checkSessionUser(request, response);
+	checkAdminOnly(sessionUser, response);
 
 	this.getServletContext().getRequestDispatcher(VIEW).forward(request, response);
     }
