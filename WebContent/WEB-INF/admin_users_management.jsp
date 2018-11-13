@@ -11,7 +11,7 @@
 		</div>
 		<div class="col-12 col-sm-4 col-md-2">
 			<a href="<c:url value = "/${applicationScope.URL_REGISTER_USER}"/>"
-				class="btn btn-info"><i class="fa fa-plus"></i> Register an user</a>
+				class="btn btn-info"><i class="fa fa-plus"></i> Register a user</a>
 		</div>
 
 	</div>
