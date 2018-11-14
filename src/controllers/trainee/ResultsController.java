@@ -1,4 +1,4 @@
-package controllers;
+package controllers.trainee;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -21,7 +21,7 @@ import models.beans.User;
 public class ResultsController extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
-	private static final String VIEW = "/WEB-INF/results.jsp";
+	private static final String VIEW = "/WEB-INF/trainee_records.jsp";
 
 	private static final String ATT_SEARCH = "search";
 	private static final String ATT_RECORDS = "records";
@@ -45,20 +45,13 @@ public class ResultsController extends HttpServlet {
 			return;
 		}
 
-		User trainee;
-		if (sessionUser.getRole() == E_Role.ADMIN) {
-			// todo get trainee id which is view by the current admin
-			trainee = new User();
-		} else {
-			trainee = sessionUser;
-		}
-
 		ArrayList<Record> records = null;
-		String search = "%%";
+
+		String search = null;
 		if (sessionUser.getRole() == E_Role.ADMIN && null != request.getParameter(ATT_SEARCH)) {
 			search = request.getParameter(ATT_SEARCH);
 		}
-		records = search(trainee, search);
+		records = search(sessionUser, search);
 
 		request.setAttribute(ATT_RECORDS, records);
 		request.setAttribute(ATT_SEARCH, search);

@@ -60,6 +60,8 @@ public class RecordDAOImpl extends AbstractDAOImpl<Record> implements RecordDAO 
 	 * Retourne la liste des enregistrements actifs d'un utilisateur
 	 */
 	public ArrayList<Record> get(User trainee, String searchOnTitleQuiz) {
+		if (null == searchOnTitleQuiz)
+			searchOnTitleQuiz = "%%";
 		HashMap<String, Object> filters = new HashMap<String, Object>();
 		filters.put("trainee", trainee.getId());
 		filters.put("title", searchOnTitleQuiz);
