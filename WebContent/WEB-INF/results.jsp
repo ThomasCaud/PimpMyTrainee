@@ -5,7 +5,6 @@
 	<table class="table table-responsive-sm table-sm table-bordered">
 		<thead class="thead-dark">
 			<tr>
-				<th>Id</th>
 				<th>Quiz</th>
 				<th>Theme</th>
 				<th>Score</th>
@@ -16,7 +15,6 @@
 		<tbody>
 			<c:forEach items="${records}" var="record">
 				<tr>
-					<td>${record.id}</td>
 					<td>${record.quiz.title}</td>
 					<td>${record.quiz.theme.label}</td>
 					<td>${record.score}/ ${record.answers.size()}</td>

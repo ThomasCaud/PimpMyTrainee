@@ -1,31 +1,24 @@
 package dao.managers;
 
-import static dao.DAOCommon.initPreparedStatement;
-import static dao.DAOCommon.silentClose;
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import dao.DAOFactory;
-import dao.exceptions.DAOException;
 import dao.interfaces.AnswerDAO;
 import dao.interfaces.QuizDAO;
 import dao.interfaces.RecordAnswerDAO;
 import dao.interfaces.RecordDAO;
 import dao.interfaces.UserDAO;
+import javafx.util.Pair;
 import models.beans.Answer;
-import models.beans.E_Role;
 import models.beans.Quiz;
 import models.beans.Record;
 import models.beans.RecordAnswer;
 import models.beans.User;
 
 public class RecordDAOImpl extends AbstractDAOImpl<Record> implements RecordDAO {
-	private static final String SQL_SELECT_FOR_MANAGER = "select * from records join users on records.trainee = users.id where managerId = ?;";
-	private static final String SQL_SELECT_FOR_TRAINEE = "select * from records where trainee = ?";
 	private static final String tableName = "records";
 
 	public RecordDAOImpl() {
@@ -64,32 +57,18 @@ public class RecordDAOImpl extends AbstractDAOImpl<Record> implements RecordDAO 
 	}
 
 	/**
-	 * Retourne la liste des enregistrements visibles, selon les droits de
-	 * l'utilisateur passé en paramètre
+	 * Retourne la liste des enregistrements actifs d'un utilisateur
 	 */
-	public ArrayList<Record> get(User user) {
-		Connection connection = null;
-		PreparedStatement preparedStatement = null;
-		ResultSet resultSet = null;
-		ArrayList<Record> records = new ArrayList<Record>();
+	public ArrayList<Record> get(User trainee, String searchOnTitleQuiz) {
+		HashMap<String, Object> filters = new HashMap<String, Object>();
+		filters.put("trainee", trainee.getId());
+		filters.put("title", searchOnTitleQuiz);
+		filters.put("isActive", 1);
 
-		try {
-			connection = daoFactory.getConnection();
-			final String query = user.getRole() == E_Role.ADMIN ? SQL_SELECT_FOR_MANAGER : SQL_SELECT_FOR_TRAINEE;
-			preparedStatement = initPreparedStatement(connection, query, false, user.getId());
-			resultSet = preparedStatement.executeQuery();
+		HashMap<String, Pair<String, String>> joinClauses = new HashMap<String, Pair<String, String>>();
+		Pair<String, String> join = new Pair<String, String>("records.quiz", "quizzes.id");
+		joinClauses.put("quizzes", join);
 
-			while (resultSet.next()) {
-				Record record = map(resultSet);
-				records.add(record);
-			}
-
-		} catch (SQLException e) {
-			throw new DAOException(e);
-		} finally {
-			silentClose(resultSet, preparedStatement, connection);
-		}
-
-		return records;
+		return find(filters, joinClauses);
 	}
 }

@@ -6,5 +6,5 @@ import models.beans.Record;
 import models.beans.User;
 
 public interface RecordDAO extends CommonDAO<Record> {
-	ArrayList<Record> get(User user);
+	ArrayList<Record> get(User trainee, String searchOnTitleQuiz);
 }

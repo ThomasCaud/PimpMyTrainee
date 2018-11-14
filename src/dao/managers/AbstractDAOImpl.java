@@ -14,6 +14,7 @@ import java.util.Map.Entry;
 import dao.DAOFactory;
 import dao.exceptions.DAOException;
 import dao.interfaces.CommonDAO;
+import javafx.util.Pair;
 
 public abstract class AbstractDAOImpl<T> implements CommonDAO<T> {
 	protected abstract T map(ResultSet resultSet) throws SQLException;
@@ -42,18 +43,35 @@ public abstract class AbstractDAOImpl<T> implements CommonDAO<T> {
 		return "SELECT * FROM " + tableName + " WHERE " + field + " = ? LIMIT ?,?";
 	}
 
-	private String getSelectQuery(HashMap<String, Object> filters) {
+	/**
+	 *
+	 * @param filters
+	 * @param joinClauses
+	 * @return query with WHERE clauses depending on filters, and with JOIN
+	 *         depending on joinClauses parameter
+	 */
+	private String getSelectQuery(HashMap<String, Object> filters, HashMap<String, Pair<String, String>> joinClauses) {
 		String query = "SELECT * FROM " + tableName;
+
+		for (Entry<String, Pair<String, String>> joinClause : joinClauses.entrySet()) {
+			String tableName = joinClause.getKey();
+			Pair<String, String> join = joinClause.getValue();
+
+			query += " JOIN " + tableName + " ON " + join.getKey() + " = " + join.getValue();
+		}
+
 		boolean isFirstClause = true;
 		for (Entry<String, Object> entry : filters.entrySet()) {
 			String field = entry.getKey();
 			if (isFirstClause) {
-				query += " WHERE " + field + " = ? ";
+				query += " WHERE " + field + " like ? ";
 				isFirstClause = false;
 			} else {
-				query += " AND " + field + " = ? ";
+				query += " AND " + field + " like ? ";
 			}
 		}
+
+		System.out.println(query);
 		return query;
 	}
 
@@ -226,14 +244,15 @@ public abstract class AbstractDAOImpl<T> implements CommonDAO<T> {
 	}
 
 	@Override
-	public ArrayList<T> findBy(HashMap<String, Object> filters) throws DAOException {
+	public ArrayList<T> find(HashMap<String, Object> filters, HashMap<String, Pair<String, String>> joinClauses)
+			throws DAOException {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
 		ArrayList<T> tList = new ArrayList<T>();
 		try {
 			connection = daoFactory.getConnection();
-			preparedStatement = initPreparedStatement(connection, getSelectQuery(filters), false,
+			preparedStatement = initPreparedStatement(connection, getSelectQuery(filters, joinClauses), false,
 					filters.values().toArray());
 			resultSet = preparedStatement.executeQuery();
 			while (resultSet.next()) {
@@ -246,5 +265,11 @@ public abstract class AbstractDAOImpl<T> implements CommonDAO<T> {
 			silentClose(resultSet, preparedStatement, connection);
 		}
 		return tList;
+	}
+
+	@Override
+	public ArrayList<T> findBy(HashMap<String, Object> filters) throws DAOException {
+		HashMap<String, Pair<String, String>> joinClauses = new HashMap<String, Pair<String, String>>();
+		return find(filters, joinClauses);
 	}
 }
