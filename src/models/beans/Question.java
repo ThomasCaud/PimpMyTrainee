@@ -27,7 +27,8 @@ public class Question implements Serializable, Container {
 		this.correctAnswer = new Answer();
 	}
 
-	public Question(String label, int position, ArrayList<Answer> possibleAnswers) {
+	public Question(String label, int position,
+			ArrayList<Answer> possibleAnswers) {
 		this.label = label;
 		this.isActive = true;
 		this.position = position;
