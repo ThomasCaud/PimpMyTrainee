@@ -13,7 +13,6 @@ import javax.servlet.http.HttpSession;
 import common.Config;
 import dao.DAOFactory;
 import dao.interfaces.RecordDAO;
-import models.beans.E_Role;
 import models.beans.Record;
 import models.beans.User;
 
@@ -45,16 +44,10 @@ public class ResultsController extends HttpServlet {
 			return;
 		}
 
-		ArrayList<Record> records = null;
-
 		String search = null;
-		if (sessionUser.getRole() == E_Role.ADMIN && null != request.getParameter(ATT_SEARCH)) {
-			search = request.getParameter(ATT_SEARCH);
-		}
-		records = search(sessionUser, search);
+		ArrayList<Record> records = search(sessionUser, search);
 
 		request.setAttribute(ATT_RECORDS, records);
-		request.setAttribute(ATT_SEARCH, search);
 
 		this.getServletContext().getRequestDispatcher(VIEW).forward(request, response);
 	}
