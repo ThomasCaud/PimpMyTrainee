@@ -71,7 +71,6 @@ public abstract class AbstractDAOImpl<T> implements CommonDAO<T> {
 			}
 		}
 
-		System.out.println(query);
 		return query;
 	}
 
