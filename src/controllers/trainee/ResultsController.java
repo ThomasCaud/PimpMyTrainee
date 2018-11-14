@@ -34,8 +34,6 @@ public class ResultsController extends AbstractController {
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		User user = checkSessionUser(request, response);
-		if (null == user)
-			return;
 
 		String search = null;
 		ArrayList<Record> records = search(user, search);
