@@ -12,7 +12,7 @@
 				</div>
 
 				<div class="col-12 col-sm-6 col-md-5 col-lg-4">
-					<input action="action"
+					<input formaction="action"
 						onclick="window.history.go(-1); return false;" type="button"
 						value="Back to the first step" class="btn btn-warning btn-block">
 				</div>
