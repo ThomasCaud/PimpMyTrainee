@@ -10,6 +10,7 @@ import models.iterator.Container;
 import models.iterator.Iterator;
 
 public class Question implements Serializable, Container {
+
 	private static final long serialVersionUID = 1L;
 	private int id;
 	private String label;
