@@ -100,6 +100,42 @@
 					</form>
 				</div>
 				<div class="tab-pane fade" id="records">
+					<c:choose>
+						<c:when test="${records.size() == 0}">
+							Aucun résultat enregistré. 
+						</c:when>
+						<c:otherwise>
+							<hr>
+							<table class="table table-responsive-sm table-sm table-bordered">
+								<thead class="thead-dark">
+									<tr>
+										<th>Quiz</th>
+										<th>Theme</th>
+										<th>Score</th>
+										<th>Durée (en sec.)</th>
+										<th>Meilleur score</th>
+										<th>Classement</th>
+										<th class="text-center">Action</th>
+									</tr>
+								</thead>
+								<tbody>
+									<c:forEach items="${records}" var="record">
+										<tr>
+											<td>${record.quiz.title}</td>
+											<td>${record.quiz.theme.label}</td>
+											<td>${record.score}/${record.answers.size()}</td>
+											<td>${record.duration}</td>
+											<td>${record.ranking.bestScore} (${record.ranking.durationOfBestScore} sec.)</td>
+											<td>${record.ranking.scoreRank}/${record.ranking.nbRespondents}</td>
+											<td class="text-center"><a
+												href="<c:url value = "/${applicationScope.URL_VIEW_RESULT}/${record.id}"/>"
+												class="btn btn-link"><i class="fa fa-eye"></i></a></td>
+										</tr>
+									</c:forEach>
+								</tbody>
+							</table>
+						</c:otherwise>
+					</c:choose>
 				</div>
 			</div>
 		</div>
