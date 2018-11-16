@@ -8,7 +8,7 @@
 				<th>Quiz</th>
 				<th>Theme</th>
 				<th>Score</th>
-				<th>Durée (en sec.)</th>
+				<th>Duration</th>
 				<th class="text-center">Action</th>
 			</tr>
 		</thead>
@@ -18,7 +18,7 @@
 					<td>${record.quiz.title}</td>
 					<td>${record.quiz.theme.label}</td>
 					<td>${record.score}/ ${record.answers.size()}</td>
-					<td>${record.duration}</td>
+					<td>${record.duration} sec.</td>
 					<td class="text-center"><a
 						href="<c:url value = "/${applicationScope.URL_VIEW_RESULT}/${record.id}"/>"
 						class="btn btn-link"><i class="fa fa-eye"></i></a></td>

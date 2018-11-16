@@ -112,10 +112,10 @@
 										<th>Quiz</th>
 										<th>Theme</th>
 										<th>Score</th>
-										<th>Durée</th>
-										<th>Meilleur score</th>
-										<th>Temps du meilleur score</th>
-										<th>Classement</th>
+										<th>Duration</th>
+										<th>Best score</th>
+										<th>Best score duration</th>
+										<th>Rank</th>
 										<th class="text-center">Action</th>
 									</tr>
 								</thead>
@@ -125,9 +125,9 @@
 											<td>${record.quiz.title}</td>
 											<td>${record.quiz.theme.label}</td>
 											<td>${record.score}/${record.answers.size()}</td>
-											<td>${record.duration} sec.</td>
+											<td>${record.duration}sec.</td>
 											<td>${record.ranking.bestScore}</td>
-											<td>${record.ranking.durationOfBestScore} sec.</td>
+											<td>${record.ranking.durationOfBestScore}sec.</td>
 											<td>${record.ranking.scoreRank}/${record.ranking.nbRespondents}</td>
 											<td class="text-center"><a
 												href="<c:url value = "/${applicationScope.URL_VIEW_RESULT}/${record.id}"/>"
