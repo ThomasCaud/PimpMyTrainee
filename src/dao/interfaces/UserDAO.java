@@ -11,4 +11,6 @@ public interface UserDAO extends CommonDAO<User> {
     void updateUser(User user) throws DAOException;
 
     ArrayList<User> findUsersByNameOrLastnameOrCompany(String filter) throws DAOException;
+
+	void updateIsActive(User user, boolean isActive);
 }
