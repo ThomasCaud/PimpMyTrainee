@@ -86,7 +86,8 @@ public class Question implements Serializable, Container {
 	}
 
 	public void setPossibleAnswers(ArrayList<Answer> pa) {
-		pa.sort(Comparator.comparing(Answer::getPosition));
+		if (pa != null)
+			pa.sort(Comparator.comparing(Answer::getPosition));
 		this.possibleAnswers = pa;
 	}
 

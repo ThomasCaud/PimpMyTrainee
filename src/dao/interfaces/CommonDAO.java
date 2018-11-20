@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import dao.exceptions.DAOException;
+import javafx.util.Pair;
 
 public interface CommonDAO<T> {
     Integer count() throws DAOException;
@@ -25,6 +26,9 @@ public interface CommonDAO<T> {
     ArrayList<T> findBy(String field, Object value, Integer offset, Integer limit) throws DAOException;
 
     ArrayList<T> findBy(HashMap<String, Object> filters) throws DAOException;
+
+	ArrayList<T> find(HashMap<String, Object> filters, HashMap<String, Pair<String, String>> joinClauses)
+			throws DAOException;
 
     void delete(Integer id) throws DAOException;
 }

@@ -3,35 +3,35 @@ package models.beans;
 import java.io.Serializable;
 
 public class RecordAnswer implements Serializable {
-    private static final long serialVersionUID = 1L;
-    private Record record;
-    private Answer answer;
+	private static final long serialVersionUID = 1L;
+	private int recordId;
+	private int answerId;
 
-    public RecordAnswer() {
-	super();
-	this.record = new Record();
-	this.answer = new Answer();
-    }
+	public RecordAnswer() {
+		super();
+		this.recordId = -1;
+		this.answerId = -1;
+	}
 
-    public RecordAnswer(Record record, Answer answer) {
-	super();
-	this.record = record;
-	this.answer = answer;
-    }
+	public RecordAnswer(int record, int answer) {
+		super();
+		this.recordId = record;
+		this.answerId = answer;
+	}
 
-    public Record getRecord() {
-	return record;
-    }
+	public int getRecordId() {
+		return recordId;
+	}
 
-    public void setRecord(Record record) {
-	this.record = record;
-    }
+	public void setRecordId(int record) {
+		this.recordId = record;
+	}
 
-    public Answer getAnswer() {
-	return answer;
-    }
+	public int getAnswerId() {
+		return answerId;
+	}
 
-    public void setAnswer(Answer answer) {
-	this.answer = answer;
-    }
+	public void setAnswerId(int answer) {
+		this.answerId = answer;
+	}
 }

@@ -99,13 +99,11 @@
 						</fieldset>
 					</form>
 				</div>
-				<div class="tab-pane fade" id="records"></div>
+				<div class="tab-pane fade" id="records">
+				</div>
 			</div>
 		</div>
 	</div>
 </div>
 
 <%@ include file="footer.jsp"%>
-
-
-
