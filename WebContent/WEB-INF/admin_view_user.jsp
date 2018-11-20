@@ -20,10 +20,21 @@
 			<hr>
 
 			<ul class="nav nav-pills nav-fill justify-content-center">
-				<li class="nav-item"><a class="nav-link active"
-					data-toggle="tab" href="#usersInformation">User's Profile</a></li>
-				<li class="nav-item"><a class="nav-link" data-toggle="tab"
-					href="#records">Records</a></li>
+				<li class="nav-item">
+					<a
+						class="nav-link <c:if test="${searchResults == null}">active</c:if>"
+						data-toggle="tab"
+						href="#usersInformation">
+						User's Profile
+					</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link <c:if test="${searchResults != null}">active</c:if>"
+						data-toggle="tab"
+						href="#records">
+						Records
+					</a>
+				</li>
 			</ul>
 
 			<div id="myTabContent" class="tab-content">
