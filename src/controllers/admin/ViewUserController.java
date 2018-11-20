@@ -26,6 +26,7 @@ public class ViewUserController extends AbstractController {
 	private static final String ATT_ID = "id";
 	private static final String ATT_FORM = "form";
 	private static final String ATT_RECORDS = "records";
+	private static final String ATT_SEARCH_RESULTS = "searchResults";
 
 	private UserDAO userDAO;
 	private RecordDAO recordDAO;
@@ -68,7 +69,10 @@ public class ViewUserController extends AbstractController {
 
 		request.setAttribute(ATT_USER, user);
 
-		String search = null;
+		String search = request.getParameter(ATT_SEARCH_RESULTS);
+		if (search != null) {
+			request.setAttribute(ATT_SEARCH_RESULTS, search);
+		}
 		ArrayList<Record> records = searchResults(user, search);
 		request.setAttribute(ATT_RECORDS, records);
 

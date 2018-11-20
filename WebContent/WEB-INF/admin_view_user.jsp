@@ -27,7 +27,9 @@
 			</ul>
 
 			<div id="myTabContent" class="tab-content">
-				<div class="tab-pane fade show active" id="usersInformation">
+				<div
+					class="tab-pane fade <c:if test="${searchResults == null}">show active</c:if>"
+					id="usersInformation">
 					<hr>
 					<form method="post" action="">
 						<fieldset>
@@ -99,13 +101,37 @@
 						</fieldset>
 					</form>
 				</div>
-				<div class="tab-pane fade" id="records">
+				<div
+					class="tab-pane fade <c:if test="${searchResults != null}">show active</c:if>"
+					id="records">
+
 					<c:choose>
-						<c:when test="${records.size() == 0}">
+						<c:when test="${records.size() == 0 && searchResults == null}">
 							Aucun résultat enregistré. 
 						</c:when>
 						<c:otherwise>
 							<hr>
+							<div class="row justify-content-center">
+								<div class="col-12 col-sm-12 col-lg-5">
+									<form method="get" action="" class="form-inline">
+										<input type="text" class="form-control col-10"
+											placeholder="Search" name="searchResults">
+										<div class="col-2">
+											<button type="submit" class="btn btn-primary form-control">
+												<i class="fa fa-search"></i>
+											</button>
+										</div>
+									</form>
+								</div>
+							</div>
+							<hr>
+							<c:if test="${searchResults != null && searchResults != ''}">
+								<h5 class="inline-block">
+									Results for the search "${searchResults}" <a
+										href="<c:url value = "/${applicationScope.URL_VIEW_USER}/${user.id}"/>"
+										class="btn btn-danger btn-sm"><i class="fa fa-times"></i></a>
+								</h5>
+							</c:if>
 							<table class="table table-responsive-sm table-sm table-bordered">
 								<thead class="thead-dark">
 									<tr>

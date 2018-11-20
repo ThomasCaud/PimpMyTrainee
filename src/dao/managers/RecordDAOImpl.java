@@ -118,8 +118,6 @@ public class RecordDAOImpl extends AbstractDAOImpl<Record> implements RecordDAO 
 					searchOnTitleQuiz);
 			resultSet = preparedStatement.executeQuery();
 
-			System.out.println("Execute as admin V");
-
 			while (resultSet.next()) {
 				Record record = map(resultSet);
 				records.add(record);
