@@ -106,20 +106,21 @@
 						</c:choose></td>
 					<td class="text-center"><a
 						href="<c:url value = "/${applicationScope.URL_VIEW_USER}/${user.id}"/>"
-						class="btn btn-link"><i class="fa fa-eye"></i> </a>
-						<form action="" method="post">
+						class="btn btn-link awesomeBtn"><i class="fa fa-eye awesomeBtn"></i> </a>
+						<form action="" method="post" class="awesomeForm">
 							<c:choose>
 								<c:when test="${user.isActive}">
-									<button type="submit" name="deactivate" value="${user.id}"
-								class="a fa fa-minus-square"></button>
+									<button type="submit" name="deactivate" value="${user.id}" class="awesomeBtn">
+										<i class="fa fa-minus-square awesomeItem"></i>
+									</button>
 								</c:when>
 								<c:otherwise>
-									<button type="submit" name="activate" value="${user.id}"
-								class="a fa fa-plus-square"></button>
+									<button type="submit" name="activate" value="${user.id}" class="awesomeBtn">
+										<i class="fa fa-plus-square awesomeItem"></i>
+									</button>
 								</c:otherwise>
 							</c:choose>
-						</form>
-					</td>
+						</form></td>
 				</tr>
 			</c:forEach>
 		</tbody>
