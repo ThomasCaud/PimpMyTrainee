@@ -104,18 +104,21 @@
 								<span class="badge badge-pill badge-danger">Deleted</span>
 							</c:otherwise>
 						</c:choose></td>
-					<td class="text-center"><a
+					<td><a
 						href="<c:url value = "/${applicationScope.URL_VIEW_USER}/${user.id}"/>"
-						class="btn btn-link awesomeBtn"><i class="fa fa-eye awesomeBtn"></i> </a>
+						class="btn btn-link awesomeBtn"><i
+							class="fa fa-eye awesomeBtn"></i> </a>
 						<form action="" method="post" class="awesomeForm">
 							<c:choose>
 								<c:when test="${user.isActive}">
-									<button type="submit" name="deactivate" value="${user.id}" class="awesomeBtn">
+									<button type="submit" name="deactivate" value="${user.id}"
+										class="awesomeBtn">
 										<i class="fa fa-minus-square awesomeItem"></i>
 									</button>
 								</c:when>
 								<c:otherwise>
-									<button type="submit" name="activate" value="${user.id}" class="awesomeBtn">
+									<button type="submit" name="activate" value="${user.id}"
+										class="awesomeBtn">
 										<i class="fa fa-plus-square awesomeItem"></i>
 									</button>
 								</c:otherwise>

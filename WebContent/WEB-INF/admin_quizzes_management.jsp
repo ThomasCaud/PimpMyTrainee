@@ -91,9 +91,25 @@
 								<span class="badge badge-pill badge-danger">Deleted</span>
 							</c:otherwise>
 						</c:choose></td>
-					<td class="text-center"><a
+					<td><a
 						href="<c:url value = "/${applicationScope.URL_VIEW_QUIZ}/${quiz.id}"/>"
-						class="btn btn-link"><i class="fa fa-eye"></i></a></td>
+						class="btn btn-link"><i class="fa fa-eye"></i></a>
+						<form action="" method="post" class="awesomeForm">
+							<c:choose>
+								<c:when test="${quiz.isActive}">
+									<button type="submit" name="deactivate" value="${quiz.id}"
+										class="awesomeBtn">
+										<i class="fa fa-minus-square awesomeItem"></i>
+									</button>
+								</c:when>
+								<c:otherwise>
+									<button type="submit" name="activate" value="${quiz.id}"
+										class="awesomeBtn">
+										<i class="fa fa-plus-square awesomeItem"></i>
+									</button>
+								</c:otherwise>
+							</c:choose>
+						</form></td>
 				</tr>
 			</c:forEach>
 		</tbody>

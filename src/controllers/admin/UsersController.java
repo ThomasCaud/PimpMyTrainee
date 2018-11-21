@@ -91,6 +91,9 @@ public class UsersController extends AbstractController {
 	}
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		User sessionUser = checkSessionUser(request, response);
+		checkAdminOnly(sessionUser, response);
+
 		// if false, we deactivate an account, otherwise we re-activate it
 		boolean newValueIsActive = false;
 		String idUser;
