@@ -34,7 +34,6 @@
 					class="btn btn-danger btn-sm"><i class="fa fa-times"></i></a>
 			</h5>
 		</c:if>
-
 		<c:if test="${search == null || search == ''}">
 			<div class="row mb-2">
 				<div class="col-12 col-sm-12 col-lg-5">
@@ -43,7 +42,7 @@
 						<option value="1" <c:if test="${param.n == 1}">selected</c:if>>1</option>
 						<option value="2" <c:if test="${param.n == 2}">selected</c:if>>2</option>
 						<option value="3"
-							<c:if test="${!param.n || param.n == 3}">selected</c:if>>3</option>
+							<c:if test="${param.n == null || param.n == 3}">selected</c:if>>3</option>
 						<option value="4" <c:if test="${param.n == 4}">selected</c:if>>4</option>
 						<option value="5" <c:if test="${param.n == 5}">selected</c:if>>5</option>
 						<option value="10" <c:if test="${param.n == 10}">selected</c:if>>10</option>
