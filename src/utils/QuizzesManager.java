@@ -36,7 +36,7 @@ public class QuizzesManager {
 		if (user.getRole() == E_Role.ADMIN) {
 			return getQuizDAO().findAll((offset - 1) * limit, limit);
 		} else if (user.getRole() == E_Role.TRAINEE) {
-			return getQuizDAO().findBy("creator", user.getManager().getId(), (offset - 1) * limit, limit);
+			return getQuizDAO().searchAvailableQuizzes(user, "%%", (offset - 1) * limit, limit);
 		} else {
 			logger.warn("L'utilisateur courant n'est pas Admin ni Trainee");
 			return new ArrayList<Quiz>();

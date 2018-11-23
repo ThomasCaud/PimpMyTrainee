@@ -29,7 +29,7 @@ public class QuizDAOImpl extends AbstractDAOImpl<Quiz> implements QuizDAO {
 			+ " JOIN Themes ON Quizzes.theme = Themes.id " + " LEFT JOIN ("
 			+ "	SELECT Quizzes.id as idRespondent from Quizzes" + "   JOIN records ON quizzes.id = records.quiz"
 			+ "   WHERE trainee = ?" + ") quizzesWithAnswers on quizzes.id = quizzesWithAnswers.idRespondent"
-			+ " WHERE (Quizzes.title like ? OR Themes.label like ? ) AND creator = ? AND idRespondent IS null;";
+			+ " WHERE (Quizzes.title like ? OR Themes.label like ? ) AND creator = ? AND idRespondent IS null limit ?,?;";
 
 	private static final String SQL_INSERT_QUIZ = "INSERT INTO Quizzes (title, theme, creator, creationDate, isActive) VALUES (?,?,?,NOW(),?)";
 
@@ -144,7 +144,8 @@ public class QuizDAOImpl extends AbstractDAOImpl<Quiz> implements QuizDAO {
 	}
 
 	@Override
-	public ArrayList<Quiz> searchAvailableQuizzes(User user, String value) throws DAOException {
+	public ArrayList<Quiz> searchAvailableQuizzes(User user, String value, Integer offset, Integer limit)
+			throws DAOException {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
@@ -154,7 +155,7 @@ public class QuizDAOImpl extends AbstractDAOImpl<Quiz> implements QuizDAO {
 			connection = daoFactory.getConnection();
 			preparedStatement = initPreparedStatement(connection, SQL_SELECTED_BY_TITLE_OR_THEME_FOR_MANAGER_ID, false,
 					user.getId(),
-					'%' + value + '%', '%' + value + '%', user.getManager().getId());
+					'%' + value + '%', '%' + value + '%', user.getManager().getId(), offset, limit);
 			resultSet = preparedStatement.executeQuery();
 
 			while (resultSet.next()) {
@@ -169,6 +170,11 @@ public class QuizDAOImpl extends AbstractDAOImpl<Quiz> implements QuizDAO {
 		}
 
 		return quizzes;
+	}
+
+	@Override
+	public ArrayList<Quiz> searchAvailableQuizzes(User user, String value) throws DAOException {
+		return searchAvailableQuizzes(user, value, 0, 100);
 	}
 
 	@Override
