@@ -11,6 +11,7 @@ public class Record implements Serializable {
 	private Quiz quiz;
 	private User trainee;
 	private ArrayList<Answer> answers;
+	private Ranking ranking;
 
 	public Record() {
 		this.id = -1;
@@ -19,6 +20,7 @@ public class Record implements Serializable {
 		this.quiz = new Quiz();
 		this.trainee = new User();
 		this.answers = new ArrayList<Answer>();
+		this.ranking = new Ranking();
 	}
 
 	public Record(int duration, Quiz quiz, User traine, ArrayList<Answer> answers) {
@@ -85,6 +87,14 @@ public class Record implements Serializable {
 
 	public void setAnswers(ArrayList<Answer> answers) {
 		this.answers = answers;
+	}
+
+	public Ranking getRanking() {
+		return ranking;
+	}
+
+	public void setRanking(Ranking ranking) {
+		this.ranking = ranking;
 	}
 
 	@Override

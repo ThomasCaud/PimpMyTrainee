@@ -7,4 +7,6 @@ import models.beans.User;
 
 public interface RecordDAO extends CommonDAO<Record> {
 	ArrayList<Record> get(User trainee, String searchOnTitleQuiz);
+
+	ArrayList<Record> getOnAdminView(User trainee, String searchOnTitleQuiz);
 }
