@@ -29,7 +29,11 @@ public class QuizDAOImpl extends AbstractDAOImpl<Quiz> implements QuizDAO {
 			+ " JOIN Themes ON Quizzes.theme = Themes.id " + " LEFT JOIN ("
 			+ "	SELECT Quizzes.id as idRespondent from Quizzes" + "   JOIN records ON quizzes.id = records.quiz"
 			+ "   WHERE trainee = ?" + ") quizzesWithAnswers on quizzes.id = quizzesWithAnswers.idRespondent"
-			+ " WHERE (Quizzes.title like ? OR Themes.label like ? ) AND creator = ? AND idRespondent IS null limit ?,?;";
+			+ " WHERE (Quizzes.title like ? OR Themes.label like ? ) AND creator = ? AND idRespondent IS null AND Quizzes.isActive is TRUE limit ?,?;";
+	private static final String SQL_COUNT_AVAILABLE_QUIZZES = "SELECT count(*) as count FROM Quizzes " + "LEFT JOIN ("
+			+ "	SELECT Quizzes.id as idRespondent from Quizzes" + "    JOIN records ON quizzes.id = records.quiz"
+			+ "    WHERE trainee = ?" + ") quizzesWithAnswers on quizzes.id = quizzesWithAnswers.idRespondent"
+			+ " WHERE creator = ? AND idRespondent IS null AND Quizzes.isActive IS true;";
 
 	private static final String SQL_INSERT_QUIZ = "INSERT INTO Quizzes (title, theme, creator, creationDate, isActive) VALUES (?,?,?,NOW(),?)";
 
@@ -154,8 +158,7 @@ public class QuizDAOImpl extends AbstractDAOImpl<Quiz> implements QuizDAO {
 		try {
 			connection = daoFactory.getConnection();
 			preparedStatement = initPreparedStatement(connection, SQL_SELECTED_BY_TITLE_OR_THEME_FOR_MANAGER_ID, false,
-					user.getId(),
-					'%' + value + '%', '%' + value + '%', user.getManager().getId(), offset, limit);
+					user.getId(), '%' + value + '%', '%' + value + '%', user.getManager().getId(), offset, limit);
 			resultSet = preparedStatement.executeQuery();
 
 			while (resultSet.next()) {
@@ -207,5 +210,31 @@ public class QuizDAOImpl extends AbstractDAOImpl<Quiz> implements QuizDAO {
 	@Override
 	public void updateIsActive(Quiz quiz, boolean isActive) {
 		this.update("isActive", isActive, "id", quiz.getId());
+	}
+
+	@Override
+	public Integer countAvailableQuizzes(User trainee) {
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+		Integer result = 0;
+
+		try {
+			connection = daoFactory.getConnection();
+			preparedStatement = initPreparedStatement(connection, SQL_COUNT_AVAILABLE_QUIZZES, false, trainee.getId(),
+					trainee.getManager().getId());
+			resultSet = preparedStatement.executeQuery();
+
+			while (resultSet.next()) {
+				result = resultSet.getInt("count");
+			}
+
+		} catch (SQLException e) {
+			throw new DAOException(e);
+		} finally {
+			silentClose(resultSet, preparedStatement, connection);
+		}
+
+		return result;
 	}
 }

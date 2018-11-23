@@ -29,7 +29,7 @@ public class QuizzesManager {
 	}
 
 	public int getCount(User user) {
-		return user.getRole() == E_Role.ADMIN ? quizDAO.count() : quizDAO.count("creator", user.getManager().getId());
+		return user.getRole() == E_Role.ADMIN ? quizDAO.count() : quizDAO.countAvailableQuizzes(user);
 	}
 
 	public ArrayList<Quiz> findWithOffsetLimit(User user, int offset, int limit) {
