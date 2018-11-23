@@ -25,11 +25,11 @@ public class QuizDAOImpl extends AbstractDAOImpl<Quiz> implements QuizDAO {
 	private static final String tableName = "Quizzes";
 	private static final String SQL_SELECT_BY_MANAGER_WITH_OSSET_LIMIT = "SELECT * FROM Quizzes WHERE creator = ? LIMIT ?,?";
 	private static final String SQL_SELECTED_BY_TITLE_OR_THEME = "SELECT * FROM Quizzes JOIN Themes ON Quizzes.theme = Themes.id WHERE Quizzes.title like ? OR Themes.label like ?";
-	private static final String SQL_SELECTED_BY_TITLE_OR_THEME_FOR_MANAGER_ID = "SELECT * FROM Quizzes"
-			+ " JOIN Themes ON Quizzes.theme = Themes.id " + " LEFT JOIN ("
+	private static final String SQL_SELECTED_AVAILABLE_BY_TITLE = "SELECT * FROM Quizzes"
+			+ " LEFT JOIN ("
 			+ "	SELECT Quizzes.id as idRespondent from Quizzes" + "   JOIN records ON quizzes.id = records.quiz"
 			+ "   WHERE trainee = ?" + ") quizzesWithAnswers on quizzes.id = quizzesWithAnswers.idRespondent"
-			+ " WHERE (Quizzes.title like ? OR Themes.label like ? ) AND creator = ? AND idRespondent IS null AND Quizzes.isActive is TRUE limit ?,?;";
+			+ " WHERE Quizzes.title like ?AND creator = ? AND idRespondent IS null AND Quizzes.isActive is TRUE limit ?,?;";
 	private static final String SQL_COUNT_AVAILABLE_QUIZZES = "SELECT count(*) as count FROM Quizzes " + "LEFT JOIN ("
 			+ "	SELECT Quizzes.id as idRespondent from Quizzes" + "    JOIN records ON quizzes.id = records.quiz"
 			+ "    WHERE trainee = ?" + ") quizzesWithAnswers on quizzes.id = quizzesWithAnswers.idRespondent"
@@ -157,8 +157,8 @@ public class QuizDAOImpl extends AbstractDAOImpl<Quiz> implements QuizDAO {
 
 		try {
 			connection = daoFactory.getConnection();
-			preparedStatement = initPreparedStatement(connection, SQL_SELECTED_BY_TITLE_OR_THEME_FOR_MANAGER_ID, false,
-					user.getId(), '%' + value + '%', '%' + value + '%', user.getManager().getId(), offset, limit);
+			preparedStatement = initPreparedStatement(connection, SQL_SELECTED_AVAILABLE_BY_TITLE, false, user.getId(),
+					'%' + value + '%', user.getManager().getId(), offset, limit);
 			resultSet = preparedStatement.executeQuery();
 
 			while (resultSet.next()) {
