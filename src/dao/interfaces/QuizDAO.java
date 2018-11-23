@@ -10,6 +10,8 @@ public interface QuizDAO extends CommonDAO<Quiz> {
 
     void updateQuiz(Quiz quiz) throws DAOException;
 
+	void updateIsActive(Quiz quiz, boolean isActive);
+
     ArrayList<Quiz> findByManagerId(Integer managerId, Integer offset, Integer limit) throws DAOException;
 
     ArrayList<Quiz> searchQuizzes(String value) throws DAOException;

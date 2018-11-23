@@ -44,6 +44,10 @@ public abstract class AbstractDAOImpl<T> implements CommonDAO<T> {
 		return "SELECT * FROM " + tableName + " WHERE " + field + " = ? LIMIT ?,?";
 	}
 
+	private String getUpdateQuery(String fieldToUpdate, String fieldClause) {
+		return "UPDATE " + tableName + " SET " + fieldToUpdate + " = ? WHERE " + fieldClause + " = ?";
+	}
+
 	public static boolean hasColumn(ResultSet rs, String columnName) throws SQLException {
 		ResultSetMetaData rsmd = rs.getMetaData();
 		int columns = rsmd.getColumnCount();
@@ -282,5 +286,23 @@ public abstract class AbstractDAOImpl<T> implements CommonDAO<T> {
 	public ArrayList<T> findBy(HashMap<String, Object> filters) throws DAOException {
 		HashMap<String, Pair<String, String>> joinClauses = new HashMap<String, Pair<String, String>>();
 		return find(filters, joinClauses);
+	}
+
+	@Override
+	public void update(String fieldToUpdate, Object newValue, String fieldClause, Object clauseValue)
+			throws DAOException {
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+
+		try {
+			connection = daoFactory.getConnection();
+			preparedStatement = initPreparedStatement(connection, getUpdateQuery(fieldToUpdate, fieldClause), false,
+					newValue, clauseValue);
+			preparedStatement.executeUpdate();
+		} catch (SQLException e) {
+			throw new DAOException(e);
+		} finally {
+			silentClose(null, preparedStatement, connection);
+		}
 	}
 }

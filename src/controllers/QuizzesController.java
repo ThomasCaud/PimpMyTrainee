@@ -29,6 +29,8 @@ public class QuizzesController extends AbstractController {
 	private static final String ATT_QUIZZES = "quizzes";
 	private static final String ATT_PAGINATION_ACTIVE = "paginationActive";
 	private static final String ATT_PAGINATION_TOTAL = "paginationTotal";
+	private static final String ATT_ACTIVATE = "activate";
+	private static final String ATT_DEACTIVATE = "deactivate";
 	private QuizDAO quizDAO;
 
 	public void init() throws ServletException {
@@ -125,5 +127,25 @@ public class QuizzesController extends AbstractController {
 		String view = sessionUser.getRole() == E_Role.ADMIN ? VIEW_ADMIN : VIEW_TRAINEE;
 
 		this.getServletContext().getRequestDispatcher(view).forward(request, response);
+	}
+
+	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		User sessionUser = checkSessionUser(request, response);
+		checkAdminOnly(sessionUser, response);
+
+		// if false, we deactivate an account, otherwise we re-activate it
+		boolean newValueIsActive = false;
+		String idQuiz;
+
+		if (request.getParameter(ATT_ACTIVATE) != null) {
+			newValueIsActive = true;
+			idQuiz = request.getParameter(ATT_ACTIVATE);
+		} else {
+			idQuiz = request.getParameter(ATT_DEACTIVATE);
+		}
+
+		Quiz quiz = quizDAO.find("id", idQuiz);
+		quizDAO.updateIsActive(quiz, newValueIsActive);
+		doGet(request, response);
 	}
 }

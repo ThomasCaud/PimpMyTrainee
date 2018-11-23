@@ -192,4 +192,9 @@ public class QuizDAOImpl extends AbstractDAOImpl<Quiz> implements QuizDAO {
 
 	return quizzes;
     }
+
+	@Override
+	public void updateIsActive(Quiz quiz, boolean isActive) {
+		this.update("isActive", isActive, "id", quiz.getId());
+	}
 }
