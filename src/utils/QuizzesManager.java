@@ -119,7 +119,7 @@ public class QuizzesManager {
 		Integer nbQuizzesPerPage = getNbQuizzesPerPage(request, response);
 		Integer nbNeededPages = getNbNeededPage(user, nbQuizzesPerPage);
 
-		setSearchAndQuizzesInRequest(request, user, offset, nbNeededPages);
+		setSearchAndQuizzesInRequest(request, user, offset, nbQuizzesPerPage);
 		request.setAttribute(ATT_PAGINATION_ACTIVE, offset);
 		request.setAttribute(ATT_PAGINATION_TOTAL, nbNeededPages);
 	}
