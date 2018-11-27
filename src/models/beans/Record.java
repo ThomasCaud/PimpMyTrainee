@@ -13,6 +13,7 @@ public class Record implements Serializable {
 	private User trainee;
 	private UUID contextID;
 	private ArrayList<Answer> answers;
+	private Ranking ranking;
 
 	public Record() {
 		this.id = -1;
@@ -22,15 +23,17 @@ public class Record implements Serializable {
 		this.trainee = new User();
 		this.answers = new ArrayList<Answer>();
 		this.contextID = UUID.randomUUID();
+		this.ranking = new Ranking();
 	}
 
-	public Record(int duration, Quiz quiz, User traine, ArrayList<Answer> answers) {
+	public Record(int duration, Quiz quiz, User trainee, ArrayList<Answer> answers) {
 		this.score = this.calculateScore();
 		this.duration = duration;
 		this.quiz = quiz;
-		this.trainee = traine;
+		this.trainee = trainee;
 		this.answers = answers;
 		this.contextID = UUID.randomUUID();
+		this.ranking = new Ranking();
 	}
 
 	public Record(int duration, Quiz quiz, User traine, ArrayList<Answer> answers, UUID contextID) {
@@ -40,6 +43,7 @@ public class Record implements Serializable {
 		this.trainee = traine;
 		this.answers = answers;
 		this.contextID = contextID;
+		this.ranking = new Ranking();
 	}
 
 	private int calculateScore() {
@@ -106,6 +110,14 @@ public class Record implements Serializable {
 
 	public void setAnswers(ArrayList<Answer> answers) {
 		this.answers = answers;
+	}
+
+	public Ranking getRanking() {
+		return ranking;
+	}
+
+	public void setRanking(Ranking ranking) {
+		this.ranking = ranking;
 	}
 
 	@Override

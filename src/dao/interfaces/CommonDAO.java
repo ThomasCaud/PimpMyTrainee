@@ -30,5 +30,7 @@ public interface CommonDAO<T> {
 	ArrayList<T> find(HashMap<String, Object> filters, HashMap<String, Pair<String, String>> joinClauses)
 			throws DAOException;
 
+	void update(String fieldToUpdate, Object newValue, String fieldClause, Object clauseValue) throws DAOException;
+
     void delete(Integer id) throws DAOException;
 }

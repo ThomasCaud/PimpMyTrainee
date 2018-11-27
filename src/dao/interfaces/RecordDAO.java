@@ -10,4 +10,6 @@ public interface RecordDAO extends CommonDAO<Record> {
 	ArrayList<Record> get(User trainee, String searchOnTitleQuiz);
 
 	void createRecord(Record record) throws DAOException;
+
+	ArrayList<Record> getOnAdminView(User trainee, String searchOnTitleQuiz);
 }
