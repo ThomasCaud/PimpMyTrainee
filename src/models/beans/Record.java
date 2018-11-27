@@ -2,6 +2,7 @@ package models.beans;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.UUID;
 
 public class Record implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -10,6 +11,7 @@ public class Record implements Serializable {
 	private int duration;
 	private Quiz quiz;
 	private User trainee;
+	private UUID contextID;
 	private ArrayList<Answer> answers;
 
 	public Record() {
@@ -19,6 +21,7 @@ public class Record implements Serializable {
 		this.quiz = new Quiz();
 		this.trainee = new User();
 		this.answers = new ArrayList<Answer>();
+		this.contextID = UUID.randomUUID();
 	}
 
 	public Record(int duration, Quiz quiz, User traine, ArrayList<Answer> answers) {
@@ -27,6 +30,16 @@ public class Record implements Serializable {
 		this.quiz = quiz;
 		this.trainee = traine;
 		this.answers = answers;
+		this.contextID = UUID.randomUUID();
+	}
+
+	public Record(int duration, Quiz quiz, User traine, ArrayList<Answer> answers, UUID contextID) {
+		this.score = this.calculateScore();
+		this.duration = duration;
+		this.quiz = quiz;
+		this.trainee = traine;
+		this.answers = answers;
+		this.contextID = contextID;
 	}
 
 	private int calculateScore() {
@@ -45,6 +58,14 @@ public class Record implements Serializable {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+
+	public UUID getContextId() {
+		return contextID;
+	}
+
+	public void setContextId(UUID contextID) {
+		this.contextID = contextID;
 	}
 
 	public int getScore() {
