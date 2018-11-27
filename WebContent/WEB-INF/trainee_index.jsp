@@ -71,7 +71,7 @@
 			</tbody>
 		</table>
 
-		<c:if test="${search == null || search == ''}">
+		<c:if test="${(search == null || search == '') && paginationTotal > 1}">
 			<div class="row justify-content-center">
 				<ul class="pagination">
 					<li
