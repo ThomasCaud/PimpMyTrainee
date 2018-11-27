@@ -1,11 +1,18 @@
 package dao.managers;
 
+import static dao.DAOCommon.initPreparedStatement;
+import static dao.DAOCommon.silentClose;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.UUID;
 
 import dao.DAOFactory;
+import dao.exceptions.DAOException;
 import dao.interfaces.AnswerDAO;
 import dao.interfaces.QuizDAO;
 import dao.interfaces.RecordAnswerDAO;
@@ -20,6 +27,7 @@ import models.beans.User;
 
 public class RecordDAOImpl extends AbstractDAOImpl<Record> implements RecordDAO {
 	private static final String tableName = "records";
+	private static final String SQL_INSERT_RECORD = "INSERT INTO Records (score, duration, quiz, trainee) VALUES (?,?,?,?)";
 
 	public RecordDAOImpl() {
 		super(null, tableName);
@@ -35,6 +43,7 @@ public class RecordDAOImpl extends AbstractDAOImpl<Record> implements RecordDAO 
 		record.setId(resultSet.getInt("id"));
 		record.setScore(resultSet.getInt("score"));
 		record.setDuration(resultSet.getInt("duration"));
+		record.setContextId(UUID.fromString(resultSet.getString("contextId")));
 
 		UserDAO userDAO = DAOFactory.getInstance().getUserDAO();
 		User user = userDAO.find(resultSet.getInt("trainee"));
@@ -72,5 +81,37 @@ public class RecordDAOImpl extends AbstractDAOImpl<Record> implements RecordDAO 
 		joinClauses.put("quizzes", join);
 
 		return find(filters, joinClauses);
+	}
+
+	@Override
+	public void createRecord(Record record) throws DAOException {
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+
+		try {
+			// Récupération d'une connexion depuis la Factory
+			connection = daoFactory.getConnection();
+			preparedStatement = initPreparedStatement(connection, SQL_INSERT_RECORD, true, record.getScore(),
+					record.getDuration(), record.getQuiz().getId(), record.getTrainee().getId());
+			int status = preparedStatement.executeUpdate();
+
+			if (status == 0) {
+				throw new DAOException("Échec de la création de record, aucune ligne ajoutée dans la table.");
+			}
+
+			resultSet = preparedStatement.getGeneratedKeys();
+
+			if (resultSet.next()) {
+				record.setId(resultSet.getInt(1));
+			} else {
+				throw new DAOException("Échec de la création de record, aucun ID auto-généré retourné.");
+			}
+
+		} catch (SQLException e) {
+			throw new DAOException(e);
+		} finally {
+			silentClose(resultSet, preparedStatement, connection);
+		}
 	}
 }
