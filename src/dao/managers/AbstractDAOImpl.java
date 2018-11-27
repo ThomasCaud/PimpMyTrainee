@@ -165,7 +165,7 @@ public abstract class AbstractDAOImpl<T> implements CommonDAO<T> {
 		filters.put("isActive", 1);
 		ArrayList<T> results = findBy(filters);
 
-		return results.get(0);
+		return results == null || results.size() == 0 ? null : results.get(0);
 	}
 
 	@Override
