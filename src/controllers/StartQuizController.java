@@ -3,11 +3,13 @@ package controllers;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.UUID;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 
@@ -28,7 +30,6 @@ public class StartQuizController extends AbstractController {
 	private static final String ATT_QUIZ = "quiz";
 	private QuizDAO quizDAO;
 	private RecordDAO recordDAO;
-	private String step;
 
 	public void init() throws ServletException {
 		this.quizDAO = ((DAOFactory) getServletContext().getAttribute(Config.CONF_DAO_FACTORY)).getQuizDAO();
@@ -75,20 +76,42 @@ public class StartQuizController extends AbstractController {
 			Integer quizId = getIntegerFromURL(request, response);
 
 			HashMap<String, Object> filters = new HashMap<String, Object>();
+			filters.put("quiz", quizId);
+			filters.put("trainee", user.getId());
+			ArrayList<Record> records = recordDAO.findBy(filters);
+
+			if (records.size() != 0) {
+				response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+				return;
+			}
+
+			filters = new HashMap<String, Object>();
 			filters.put("creator", user.getManager().getId());
 			filters.put("id", quizId);
 			ArrayList<Quiz> quizzes = quizDAO.findBy(filters);
 
-			if (quizzes == null || quizzes.size() != 1) {
-				response.sendError(HttpServletResponse.SC_FORBIDDEN);
+			if (quizzes.size() != 1) {
+				response.sendError(HttpServletResponse.SC_BAD_REQUEST);
 				return;
 			}
 
 			Quiz quiz = quizzes.get(0);
 
-			request.setAttribute(ATT_QUIZ, quiz);
+			UUID contextID = UUID.randomUUID();
 
-			this.getServletContext().getRequestDispatcher(VIEW).forward(request, response);
+			Record record = new Record();
+			record.setDuration(0);
+			record.setScore(0);
+			record.setTrainee(user);
+			record.setQuiz(quiz);
+			record.setContextId(contextID);
+			recordDAO.createRecord(record);
+
+			HttpSession session = request.getSession();
+			session.setAttribute(Config.ATT_SESSION_CONTEXT_ID, contextID);
+
+			response.sendRedirect(request.getServletContext().getContextPath() + "/" + Config.URL_RUN_QUIZ + "/1");
+
 		} catch (Exception e) {
 			logger.error("Un entier n'a pas pu être extrait de la requête : " + request.getPathInfo());
 		}
