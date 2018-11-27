@@ -118,7 +118,7 @@
 
 					<c:choose>
 						<c:when test="${records.size() == 0 && searchResults == null}">
-							Aucun résultat enregistré. 
+							No saved result.
 						</c:when>
 						<c:otherwise>
 							<hr>
