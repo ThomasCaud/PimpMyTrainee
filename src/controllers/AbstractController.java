@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.Logger;
+
 import common.Config;
 import models.beans.E_Role;
 import models.beans.User;
@@ -14,6 +16,7 @@ import models.beans.User;
 public abstract class AbstractController extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
+	private static Logger logger = Logger.getLogger(AbstractController.class);
 
 	public User checkSessionUser(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		HttpSession session = request.getSession();
@@ -43,10 +46,10 @@ public abstract class AbstractController extends HttpServlet {
 
 		String urlId = request.getPathInfo().substring(1, request.getPathInfo().length());
 		Integer id = -1;
-
 		try {
 			id = Integer.parseInt(urlId);
 		} catch (NumberFormatException e) {
+			logger.error("Un entier n'a pas pu être extrait de la requête : " + request.getPathInfo());
 			response.sendError(HttpServletResponse.SC_BAD_REQUEST);
 		}
 

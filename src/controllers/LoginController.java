@@ -1,6 +1,7 @@
 package controllers;
 
 import java.io.IOException;
+import java.util.UUID;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -48,6 +49,7 @@ public class LoginController extends HttpServlet {
 		/* Récupération de la session depuis la requête */
 		HttpSession session = request.getSession();
 		session.setAttribute(Config.ATT_SESSION_USER, user);
+		session.setAttribute(Config.ATT_SESSION_CONTEXT_ID, UUID.randomUUID());
 		response.sendRedirect(request.getServletContext().getContextPath() + Config.URL_ROOT);
 	}
 

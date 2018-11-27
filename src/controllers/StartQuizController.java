@@ -17,6 +17,7 @@ import common.Config;
 import dao.DAOFactory;
 import dao.interfaces.QuizDAO;
 import dao.interfaces.RecordDAO;
+import models.beans.Answer;
 import models.beans.Quiz;
 import models.beans.Record;
 import models.beans.User;
@@ -47,8 +48,28 @@ public class StartQuizController extends AbstractController {
 			ArrayList<Record> records = recordDAO.findBy(filters);
 
 			if (records.size() != 0) {
-				response.sendError(HttpServletResponse.SC_BAD_REQUEST);
-				return;
+				logger.error("[startQuiz] L'utilisateur " + user.getFirstname() + " " + user.getLastname()
+						+ " a déjà un record enregistré pour le Quiz " + quizId);
+
+				HttpSession session = request.getSession();
+				UUID contextId = (UUID) session.getAttribute(Config.ATT_SESSION_CONTEXT_ID);
+
+				Record record = records.get(0);
+				if (record.getContextId().toString().equals(contextId.toString())) {
+					ArrayList<Answer> answers = record.getAnswers();
+					Integer step = answers.size() + 1;
+					logger.error(
+							"[startQuiz] Le record existant pour cet utilisateur appartient à la session actuelle. Redirection de l'utilisateur à la question "
+									+ step + " du quiz.");
+					response.sendRedirect(
+							request.getServletContext().getContextPath() + "/" + Config.URL_RUN_QUIZ + "/" + step);
+					return;
+				} else {
+					logger.error(
+							"[startQuiz] Le record existant pour cet utilisateur n'appartient pas à la session actuelle. Bad request.");
+					response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+					return;
+				}
 			}
 
 			filters = new HashMap<String, Object>();
@@ -66,7 +87,7 @@ public class StartQuizController extends AbstractController {
 
 			this.getServletContext().getRequestDispatcher(VIEW).forward(request, response);
 		} catch (Exception e) {
-			logger.error("Un entier n'a pas pu être extrait de la requête : " + request.getPathInfo());
+			logger.error("Une erreur interne est survenue : " + e.getMessage());
 		}
 	}
 
@@ -97,7 +118,8 @@ public class StartQuizController extends AbstractController {
 
 			Quiz quiz = quizzes.get(0);
 
-			UUID contextID = UUID.randomUUID();
+			HttpSession session = request.getSession();
+			UUID contextID = (UUID) session.getAttribute(Config.ATT_SESSION_CONTEXT_ID);
 
 			Record record = new Record();
 			record.setDuration(0);
@@ -107,13 +129,10 @@ public class StartQuizController extends AbstractController {
 			record.setContextId(contextID);
 			recordDAO.createRecord(record);
 
-			HttpSession session = request.getSession();
-			session.setAttribute(Config.ATT_SESSION_CONTEXT_ID, contextID);
-
 			response.sendRedirect(request.getServletContext().getContextPath() + "/" + Config.URL_RUN_QUIZ + "/1");
 
 		} catch (Exception e) {
-			logger.error("Un entier n'a pas pu être extrait de la requête : " + request.getPathInfo());
+			logger.error("Une erreur interne est survenue : " + e.getMessage());
 		}
 	}
 }

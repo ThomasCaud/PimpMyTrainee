@@ -28,7 +28,7 @@ import models.beans.User;
 
 public class RecordDAOImpl extends AbstractDAOImpl<Record> implements RecordDAO {
 	private static final String tableName = "records";
-	private static final String SQL_INSERT_RECORD = "INSERT INTO Records (score, duration, quiz, trainee) VALUES (?,?,?,?)";
+	private static final String SQL_INSERT_RECORD = "INSERT INTO Records (score, duration, quiz, trainee, contextId) VALUES (?,?,?,?,?)";
 
 	private static final String SQL_SELECT_AS_ADMIN = "SELECT * FROM records\r\n"
 			+ "JOIN quizzes ON records.quiz = quizzes.id\r\n" + "JOIN (\r\n" + "	-- get number of respondent\r\n"
@@ -117,7 +117,8 @@ public class RecordDAOImpl extends AbstractDAOImpl<Record> implements RecordDAO 
 			// Récupération d'une connexion depuis la Factory
 			connection = daoFactory.getConnection();
 			preparedStatement = initPreparedStatement(connection, SQL_INSERT_RECORD, true, record.getScore(),
-					record.getDuration(), record.getQuiz().getId(), record.getTrainee().getId());
+					record.getDuration(), record.getQuiz().getId(), record.getTrainee().getId(),
+					record.getContextId().toString());
 			int status = preparedStatement.executeUpdate();
 
 			if (status == 0) {
