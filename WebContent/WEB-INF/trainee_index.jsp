@@ -29,8 +29,7 @@
 
 		<c:if test="${search != null && search != ''}">
 			<h5 class="inline-block">
-				Results for the search "${search}" <a
-					href="<c:url value = "/"/>"
+				Results for the search "${search}" <a href="<c:url value = "/"/>"
 					class="btn btn-danger btn-sm"><i class="fa fa-times"></i></a>
 			</h5>
 		</c:if>
