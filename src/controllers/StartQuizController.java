@@ -1,6 +1,7 @@
 package controllers;
 
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.UUID;
@@ -128,6 +129,9 @@ public class StartQuizController extends AbstractController {
 			record.setQuiz(quiz);
 			record.setContextId(contextID);
 			recordDAO.createRecord(record);
+
+			Timestamp beginningTimestamp = new Timestamp(System.currentTimeMillis());
+			session.setAttribute(Config.ATT_SESSION_QUIZ_BEGINNING_TIMESTAMP, beginningTimestamp);
 
 			response.sendRedirect(request.getServletContext().getContextPath() + "/" + Config.URL_RUN_QUIZ + "/1");
 
