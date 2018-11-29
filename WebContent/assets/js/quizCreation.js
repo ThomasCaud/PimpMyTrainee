@@ -20,8 +20,20 @@ function colorPossibleAnswers() {
 	$("input[type='radio']:not(:checked)").closest(".possibleAnswerRow").removeClass('possibleAnswerRow-correct');
 }
 
+function initAndLaunchTimer() {
+	var quizBeginningTimestamp = $("input[name='quizBeginningTimestamp']").val();
+	alert(new Date());
+}
+
 $(document).ready(function(){
 	colorPossibleAnswers();
+	
+	initAndLaunchTimer();
+	
+	$(".runQuiz-possibleAnswer").click(function(){
+		$(this).toggleClass('runQuiz-possibleAnswer-selected');
+		$(this).siblings().removeClass('runQuiz-possibleAnswer-selected');
+	})
 	
 	$("input[type='radio']").click(function(){
 		colorPossibleAnswers();
