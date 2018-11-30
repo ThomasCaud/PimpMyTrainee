@@ -133,7 +133,7 @@ public class StartQuizController extends AbstractController {
 			Timestamp beginningTimestamp = new Timestamp(System.currentTimeMillis());
 			session.setAttribute(Config.ATT_SESSION_QUIZ_BEGINNING_TIMESTAMP, beginningTimestamp);
 
-			response.sendRedirect(request.getServletContext().getContextPath() + "/" + Config.URL_RUN_QUIZ + "/1");
+			response.sendRedirect(request.getServletContext().getContextPath() + "/" + Config.URL_RUN_QUIZ);
 
 		} catch (Exception e) {
 			logger.error("Une erreur interne est survenue : " + e.getMessage());
