@@ -49,19 +49,21 @@ public class RunQuizController extends AbstractController {
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
+			// The quiz & the question are determined by what is in the session, thanks to
+			// the contextID
 			Record record = getRecordFromSessionContextId(request, response);
-
 			Quiz quiz = quizDAO.find(record.getQuiz().getId());
 			Integer questionIndex = record.getAnswers().size();
 
+			// If the user has answered all question of the quiz, then the quiz is finished.
 			if (questionIndex >= quiz.getQuestions().size()) {
-				// Fin du quizz
 				this.getServletContext().getRequestDispatcher(VIEW_END).forward(request, response);
 				return;
 			}
+
+			// Prepare the request for the dispatch
 			request.setAttribute(ATT_QUESTION_NUMBER, questionIndex + 1);
 			request.setAttribute(ATT_QUESTION, quiz.getQuestions().get(questionIndex));
-
 			this.getServletContext().getRequestDispatcher(VIEW).forward(request, response);
 		} catch (Exception e) {
 			logger.error("Une erreur interne est survenue : " + e.getMessage());
@@ -69,8 +71,11 @@ public class RunQuizController extends AbstractController {
 	}
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// The answerIndex is set by a javascript script in the JSP, when the user
-		// choose an answer.
+		/*
+		 * The answerIndex is set by a javascript script in the JSP, when the user
+		 * choose an answer. This allows to know what the user has answered to a
+		 * question that is determined by the sessionContextId.
+		 */
 		String answerIndexStr = request.getParameter("quizAnswerIndex");
 		Integer answerIndex = -1;
 		try {
@@ -80,7 +85,10 @@ public class RunQuizController extends AbstractController {
 			response.sendError(HttpServletResponse.SC_BAD_REQUEST);
 		}
 
-		// Fetching every object needed to process the score
+		/*
+		 * Fetching every object needed to process the score, thanks to the
+		 * sessionContextId
+		 */
 		Record record = getRecordFromSessionContextId(request, response);
 		Integer questionAnsweredIndex = record.getAnswers().size();
 		Quiz quiz = quizDAO.find(record.getQuiz().getId());
@@ -104,7 +112,7 @@ public class RunQuizController extends AbstractController {
 		if (isCorrectAnswer)
 			record.setScore(record.getScore() + 1);
 
-		// Updating the database with the processed results
+		// Updating the database with the previous calculated results
 		RecordAnswerForm recordAnswerForm = new RecordAnswerForm(this.recordAnswerDAO, this.recordDAO);
 		try {
 			recordAnswerForm.recordAnAnswer(record, answerToRecord);
@@ -114,9 +122,18 @@ public class RunQuizController extends AbstractController {
 			return;
 		}
 
+		/*
+		 * Refreshing the page, in order to prepare the next question to display to the
+		 * user
+		 */
 		response.sendRedirect(request.getServletContext().getContextPath() + "/" + Config.URL_RUN_QUIZ);
 	}
 
+	/*
+	 * Common function that allows to fetch a record, regarding a specific contextId
+	 * that is stored in session. It's important that only one record is fetched ;
+	 * otherwise, an error is thrown
+	 */
 	Record getRecordFromSessionContextId(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		UUID contextId;
 		try {
@@ -136,6 +153,7 @@ public class RunQuizController extends AbstractController {
 			response.sendError(HttpServletResponse.SC_BAD_REQUEST);
 			return null;
 		}
+
 		return records.get(0);
 	}
 }
