@@ -123,8 +123,8 @@
 
 .runQuiz-possibleAnswer {
 	background-color : #eee;
-	margin : 2 0;
 	font-size: 20px;
+	margin : 2 0;
 }
 
 .runQuiz-possibleAnswer-selected {
@@ -132,8 +132,8 @@
 }
 
 .runQuiz-possibleAnswer:hover {
-	cursor:pointer;
 	background-color : #ddd;
+	cursor:pointer;
 }
 
 .runQuiz-possibleAnswer-selected:hover {
