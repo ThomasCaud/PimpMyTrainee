@@ -1,6 +1,9 @@
 package controllers;
 
+import static java.lang.Math.toIntExact;
+
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.UUID;
@@ -9,7 +12,6 @@ import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 
@@ -47,26 +49,8 @@ public class RunQuizController extends AbstractController {
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
-			HttpSession session = request.getSession();
+			Record record = getRecordFromSessionContextId(request, response);
 
-			UUID contextId;
-			try {
-				contextId = (UUID) session.getAttribute(Config.ATT_SESSION_CONTEXT_ID);
-			} catch (Exception e) {
-				response.sendError(HttpServletResponse.SC_BAD_REQUEST);
-				return;
-			}
-
-			HashMap<String, Object> filters = new HashMap<String, Object>();
-			filters.put("contextId", contextId.toString());
-			ArrayList<Record> records = recordDAO.findBy(filters);
-
-			if (records.size() != 1) {
-				response.sendError(HttpServletResponse.SC_BAD_REQUEST);
-				return;
-			}
-
-			Record record = records.get(0);
 			Quiz quiz = quizDAO.find(record.getQuiz().getId());
 			Integer questionIndex = record.getAnswers().size();
 
@@ -92,17 +76,54 @@ public class RunQuizController extends AbstractController {
 		try {
 			answerIndex = Integer.parseInt(answerIndexStr);
 		} catch (Exception e) {
-			logger.error(
-					"Une erreur interne est survenue lors de la conversion en entier de la valeur : " + answerIndexStr);
+			logger.error("An error occured while parsing " + answerIndexStr + " to integer : " + e.getMessage());
 			response.sendError(HttpServletResponse.SC_BAD_REQUEST);
 		}
 
+		// Fetching every object needed to process the score
+		Record record = getRecordFromSessionContextId(request, response);
+		Integer questionAnsweredIndex = record.getAnswers().size();
+		Quiz quiz = quizDAO.find(record.getQuiz().getId());
+		Question questionAnswered = quiz.getQuestions().get(questionAnsweredIndex);
+		Answer answerToRecord = questionAnswered.getPossibleAnswers().get(answerIndex);
+
+		// Calculating the time elapsed since the beginning of the test
+		Timestamp beginningTimestamp = (Timestamp) request.getSession()
+				.getAttribute(Config.ATT_SESSION_QUIZ_BEGINNING_TIMESTAMP);
+		Timestamp now = new Timestamp(System.currentTimeMillis());
+		long timeElapsedSinceQuizBeginning = (long) ((now.getTime() - beginningTimestamp.getTime()) * 0.001);
+
+		// Determining whether this is a correct or a wrong answer
+		boolean isCorrectAnswer = false;
+		if (questionAnswered.getCorrectAnswer().getId() == answerToRecord.getId())
+			isCorrectAnswer = true;
+
+		// Updating the attributes of the record
+		Integer newDuration = toIntExact(timeElapsedSinceQuizBeginning);
+		record.setDuration(newDuration);
+		if (isCorrectAnswer)
+			record.setScore(record.getScore() + 1);
+
+		// Updating the database with the processed results
+		RecordAnswerForm recordAnswerForm = new RecordAnswerForm(this.recordAnswerDAO, this.recordDAO);
+		try {
+			recordAnswerForm.recordAnAnswer(record, answerToRecord);
+		} catch (DAOException e) {
+			logger.error(e.getMessage());
+			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			return;
+		}
+
+		response.sendRedirect(request.getServletContext().getContextPath() + "/" + Config.URL_RUN_QUIZ);
+	}
+
+	Record getRecordFromSessionContextId(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		UUID contextId;
 		try {
 			contextId = (UUID) request.getSession().getAttribute(Config.ATT_SESSION_CONTEXT_ID);
 		} catch (Exception e) {
 			response.sendError(HttpServletResponse.SC_BAD_REQUEST);
-			return;
+			return null;
 		}
 
 		HashMap<String, Object> filters = new HashMap<String, Object>();
@@ -113,32 +134,8 @@ public class RunQuizController extends AbstractController {
 			logger.error("Trying to answer to a quiz associated to the contextId " + contextId
 					+ " whereas there is/are " + records.size() + " record(s)");
 			response.sendError(HttpServletResponse.SC_BAD_REQUEST);
-			return;
+			return null;
 		}
-
-		Record record = records.get(0);
-		Quiz quiz = quizDAO.find(record.getQuiz().getId());
-		Integer questionIndex = record.getAnswers().size();
-		Question question = quiz.getQuestions().get(questionIndex);
-
-		if (answerIndex < 0 || answerIndex >= question.getPossibleAnswers().size()) {
-			logger.error("Trying to answer with the index " + answerIndex + " whereas there is/are "
-					+ question.getPossibleAnswers().size() + " possible answer(s)");
-			response.sendError(HttpServletResponse.SC_BAD_REQUEST);
-			return;
-		}
-
-		Answer answerToRecord = question.getPossibleAnswers().get(answerIndex);
-
-		RecordAnswerForm recordAnswerForm = new RecordAnswerForm(this.recordAnswerDAO);
-
-		try {
-			recordAnswerForm.recordAnAnswer(record, answerToRecord);
-		} catch (DAOException e) {
-			logger.error(e.getMessage());
-			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-			return;
-		}
-		response.sendRedirect(request.getServletContext().getContextPath() + "/" + Config.URL_RUN_QUIZ);
+		return records.get(0);
 	}
 }
