@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.UUID;
 
 import dao.DAOFactory;
 import dao.exceptions.DAOException;
@@ -27,6 +28,7 @@ import models.beans.User;
 
 public class RecordDAOImpl extends AbstractDAOImpl<Record> implements RecordDAO {
 	private static final String tableName = "records";
+	private static final String SQL_INSERT_RECORD = "INSERT INTO Records (score, duration, quiz, trainee, contextId) VALUES (?,?,?,?,?)";
 
 	private static final String SQL_SELECT_AS_ADMIN = "SELECT * FROM records\r\n"
 			+ "JOIN quizzes ON records.quiz = quizzes.id\r\n" + "JOIN (\r\n" + "	-- get number of respondent\r\n"
@@ -55,6 +57,7 @@ public class RecordDAOImpl extends AbstractDAOImpl<Record> implements RecordDAO 
 		record.setId(resultSet.getInt("id"));
 		record.setScore(resultSet.getInt("score"));
 		record.setDuration(resultSet.getInt("duration"));
+		record.setContextId(UUID.fromString(resultSet.getString("contextId")));
 
 		UserDAO userDAO = DAOFactory.getInstance().getUserDAO();
 		User user = userDAO.find(resultSet.getInt("trainee"));
@@ -74,8 +77,8 @@ public class RecordDAOImpl extends AbstractDAOImpl<Record> implements RecordDAO 
 		record.setAnswers(answers);
 
 		if (AbstractDAOImpl.hasColumn(resultSet, "nbRespondents")) {
-			// Si cette colonne existe, alors cela signifie que l'on a execut�
-			// la requ�te permettant d'obtenir les informations sur le
+			// Si cette colonne existe, alors cela signifie que l'on a execut�
+			// la requ�te permettant d'obtenir les informations sur le
 			// classement
 			Ranking ranking = new Ranking(resultSet.getInt("nbRespondents"), resultSet.getInt("scoreRank"),
 					resultSet.getInt("bestScore"), resultSet.getInt("durationOfBestScore"));
@@ -105,6 +108,38 @@ public class RecordDAOImpl extends AbstractDAOImpl<Record> implements RecordDAO 
 	}
 
 	@Override
+	public void createRecord(Record record) throws DAOException {
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+
+		try {
+			// Récupération d'une connexion depuis la Factory
+			connection = daoFactory.getConnection();
+			preparedStatement = initPreparedStatement(connection, SQL_INSERT_RECORD, true, record.getScore(),
+					record.getDuration(), record.getQuiz().getId(), record.getTrainee().getId(),
+					record.getContextId().toString());
+			int status = preparedStatement.executeUpdate();
+
+			if (status == 0) {
+				throw new DAOException("Échec de la création de record, aucune ligne ajoutée dans la table.");
+			}
+
+			resultSet = preparedStatement.getGeneratedKeys();
+
+			if (resultSet.next()) {
+				record.setId(resultSet.getInt(1));
+			} else {
+				throw new DAOException("Échec de la création de record, aucun ID auto-généré retourné.");
+			}
+
+		} catch (SQLException e) {
+			throw new DAOException(e);
+		} finally {
+			silentClose(resultSet, preparedStatement, connection);
+		}
+	}
+
 	public ArrayList<Record> getOnAdminView(User trainee, String searchOnTitleQuiz) {
 		searchOnTitleQuiz = (searchOnTitleQuiz != null ? '%' + searchOnTitleQuiz + '%' : "%%");
 		Connection connection = null;
@@ -127,7 +162,6 @@ public class RecordDAOImpl extends AbstractDAOImpl<Record> implements RecordDAO 
 		} finally {
 			silentClose(resultSet, preparedStatement, connection);
 		}
-
 		return records;
 	}
 }

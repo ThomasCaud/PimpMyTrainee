@@ -77,9 +77,9 @@
 			<c:otherwise>
 				There is no available quiz for the moment.
 			</c:otherwise>
-		</c:choose>	
+		</c:choose>
 
-		<c:if test="${(search == null || search == '') && fn:length(quizzes) != 0}">
+		<c:if test="${(search == null || search == '') && fn:length(quizzes) != 0 && paginationTotal > 1}">
 			<div class="row justify-content-center">
 				<ul class="pagination">
 					<li

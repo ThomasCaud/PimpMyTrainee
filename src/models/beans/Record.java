@@ -2,6 +2,7 @@ package models.beans;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.UUID;
 
 public class Record implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -10,6 +11,7 @@ public class Record implements Serializable {
 	private int duration;
 	private Quiz quiz;
 	private User trainee;
+	private UUID contextID;
 	private ArrayList<Answer> answers;
 	private Ranking ranking;
 
@@ -20,15 +22,28 @@ public class Record implements Serializable {
 		this.quiz = new Quiz();
 		this.trainee = new User();
 		this.answers = new ArrayList<Answer>();
+		this.contextID = UUID.randomUUID();
 		this.ranking = new Ranking();
 	}
 
-	public Record(int duration, Quiz quiz, User traine, ArrayList<Answer> answers) {
+	public Record(int duration, Quiz quiz, User trainee, ArrayList<Answer> answers) {
+		this.score = this.calculateScore();
+		this.duration = duration;
+		this.quiz = quiz;
+		this.trainee = trainee;
+		this.answers = answers;
+		this.contextID = UUID.randomUUID();
+		this.ranking = new Ranking();
+	}
+
+	public Record(int duration, Quiz quiz, User traine, ArrayList<Answer> answers, UUID contextID) {
 		this.score = this.calculateScore();
 		this.duration = duration;
 		this.quiz = quiz;
 		this.trainee = traine;
 		this.answers = answers;
+		this.contextID = contextID;
+		this.ranking = new Ranking();
 	}
 
 	private int calculateScore() {
@@ -47,6 +62,14 @@ public class Record implements Serializable {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+
+	public UUID getContextId() {
+		return contextID;
+	}
+
+	public void setContextId(UUID contextID) {
+		this.contextID = contextID;
 	}
 
 	public int getScore() {

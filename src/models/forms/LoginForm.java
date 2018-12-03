@@ -44,23 +44,19 @@ public class LoginForm extends AbstractForm {
 		processPasswordValidation(password, user);
 
 		if (this.getErrors().isEmpty()) {
-			User existingUser = userDAO.find("email", email);
+			User existingUser = userDAO.findActive("email", email);
 
 			if (existingUser == null) {
 				setError(FIELD_EMAIL, "The credentials don't match.");
 				return user;
+			} else {
+				if (passwordEncryptor.checkPassword(user.getPassword(), existingUser.getPassword()))
+					return existingUser;
+				else {
+					setError(FIELD_PASSWORD, "The credentials don't match.");
+					return user;
+				}
 			}
-			if (!passwordEncryptor.checkPassword(user.getPassword(), existingUser.getPassword())) {
-				setError(FIELD_PASSWORD, "The credentials don't match.");
-				return user;
-			}
-			if (!existingUser.getIsActive()) {
-				setError(FIELD_EMAIL, "The account has been disabled. Please contact your administrator.");
-				return user;
-			}
-
-			return existingUser;
-
 		}
 		return user;
 	}
