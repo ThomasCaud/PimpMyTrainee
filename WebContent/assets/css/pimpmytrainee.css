@@ -77,10 +77,6 @@
 	font-style: italic;
 }
 
-.quizz-recap-answer {
-	
-}
-
 .quizz-recap-answer-correct {
 	background-color: rgba(86, 204, 157, 0.7);
 }
@@ -98,6 +94,8 @@
 
 .awesomeForm {
 	display: inline-block;
+	margin-left: 12px;
+	margin-right: 12px;
 }
 
 .awesomeBtn {
