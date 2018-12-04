@@ -68,7 +68,8 @@ public class UsersController extends AbstractController {
 			}
 		}
 
-		Integer nbAllUsers = userDAO.count();
+		// change this - OK
+		Integer nbAllUsers = userDAO.count("managerId", sessionUser.getId());
 
 		Integer res = nbAllUsers % nbUsersPerPage;
 		Integer nbNeededPages = (int) nbAllUsers / nbUsersPerPage;
@@ -77,9 +78,11 @@ public class UsersController extends AbstractController {
 
 		String search = request.getParameter(ATT_SEARCH);
 		if (search != null) {
-			users = userDAO.findUsersByNameOrLastnameOrCompany(search);
+			// change this - OK
+			users = userDAO.findUsersByNameOrLastnameOrCompany(sessionUser.getId(), search);
 		} else {
-			users = userDAO.findAll((offset - 1) * nbUsersPerPage, nbUsersPerPage);
+			// change this - OK
+			users = userDAO.findBy("managerId", sessionUser.getId(), (offset - 1) * nbUsersPerPage, nbUsersPerPage);
 		}
 
 		request.setAttribute(ATT_USERS, users);
