@@ -25,6 +25,7 @@
 
 					<jsp:include page="templates/quiz_recap.jsp">
 						<jsp:param name="quiz" value="${quiz}"/>
+						<jsp:param name="typeOfView" value="quizRecap"/>
 					</jsp:include>
 					
 				</div>
