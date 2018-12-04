@@ -5,15 +5,13 @@
 <div class="container">
 
 	<div class="row align-items-center">
-
 		<div class="col-12 col-sm-8 col-md-10">
 			<h1>Quizzes Management</h1>
 		</div>
 		<div class="col-12 col-sm-4 col-md-2">
 			<a href="<c:url value = "/${applicationScope.URL_CREATE_QUIZ}"/>"
-				class="btn btn-info"><i class="fa fa-plus"></i> Create a quiz</a>
+				class="btn btn-info">Create a quiz <i class="fa fa-plus"></i></a>
 		</div>
-
 	</div>
 
 	<hr>
@@ -71,7 +69,7 @@
 				<th>Number of records</th>
 				<th>Creation</th>
 				<th>Status</th>
-				<th class="text-center">Action</th>
+				<th class="text-center"></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -93,18 +91,18 @@
 						</c:choose></td>
 					<td><a
 						href="<c:url value = "/${applicationScope.URL_VIEW_QUIZ}/${quiz.id}"/>"
-						class="btn btn-link"><i class="fa fa-eye"></i></a>
+						class="btn btn-link" data-toggle="tooltip" title="" data-placement="top" data-original-title="Edit the quiz's content"><i class="fa fa-edit"></i></a>
 						<form action="" method="post" class="awesomeForm">
 							<c:choose>
 								<c:when test="${quiz.isActive}">
 									<button type="submit" name="deactivate" value="${quiz.id}"
-										class="awesomeBtn">
-										<i class="fa fa-minus-square awesomeItem"></i>
+										class="btn btn-link" data-toggle="tooltip" title="" data-placement="top" data-original-title="Deactivate the quiz">
+										<i class="fa fa-minus-square"></i>
 									</button>
 								</c:when>
 								<c:otherwise>
 									<button type="submit" name="activate" value="${quiz.id}"
-										class="awesomeBtn">
+										class="btn btn-link" data-toggle="tooltip" title="" data-placement="top" data-original-title="Reactivate the quiz">
 										<i class="fa fa-plus-square awesomeItem"></i>
 									</button>
 								</c:otherwise>
@@ -115,7 +113,7 @@
 		</tbody>
 	</table>
 
-	<c:if test="${search == null || search == ''}">
+	<c:if test="${(search == null || search == '') && fn:length(quizzes) != 0 && paginationTotal > 1}">
 		<div class="row justify-content-center">
 			<ul class="pagination">
 				<li
