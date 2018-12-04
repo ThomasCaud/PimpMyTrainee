@@ -24,7 +24,6 @@ import models.beans.User;
 public class QuizDAOImpl extends AbstractDAOImpl<Quiz> implements QuizDAO {
 	private static final String tableName = "Quizzes";
 	private static final String SQL_SELECT_BY_MANAGER_WITH_OSSET_LIMIT = "SELECT * FROM Quizzes WHERE creator = ? LIMIT ?,?";
-	private static final String SQL_SELECTED_BY_TITLE_OR_THEME = "SELECT * FROM Quizzes JOIN Themes ON Quizzes.theme = Themes.id WHERE Quizzes.title like ? OR Themes.label like ?";
 	private static final String SQL_SELECTED_BY_TITLE_OR_THEME_FOR_MANAGER_ID = "SELECT * FROM Quizzes JOIN Themes ON Quizzes.theme = Themes.id WHERE (Quizzes.title like ? OR Themes.label like ? ) and creator = ?";
 	private static final String SQL_SELECTED_AVAILABLE_BY_TITLE = "SELECT * FROM Quizzes" + " LEFT JOIN ("
 			+ "	SELECT Quizzes.id as idRespondent from Quizzes" + "   JOIN records ON quizzes.id = records.quiz"
@@ -119,7 +118,7 @@ public class QuizDAOImpl extends AbstractDAOImpl<Quiz> implements QuizDAO {
 	}
 
 	@Override
-	public ArrayList<Quiz> searchQuizzes(String value) throws DAOException {
+	public ArrayList<Quiz> searchQuizzes(Integer adminId, String value) throws DAOException {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
@@ -127,8 +126,8 @@ public class QuizDAOImpl extends AbstractDAOImpl<Quiz> implements QuizDAO {
 
 		try {
 			connection = daoFactory.getConnection();
-			preparedStatement = initPreparedStatement(connection, SQL_SELECTED_BY_TITLE_OR_THEME, false,
-					'%' + value + '%', '%' + value + '%');
+			preparedStatement = initPreparedStatement(connection, SQL_SELECTED_BY_TITLE_OR_THEME_FOR_MANAGER_ID, false,
+					'%' + value + '%', '%' + value + '%', adminId);
 			resultSet = preparedStatement.executeQuery();
 
 			while (resultSet.next()) {
