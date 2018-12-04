@@ -10,13 +10,15 @@ import javax.servlet.http.HttpServletResponse;
 import common.Config;
 import dao.DAOFactory;
 import dao.interfaces.UserDAO;
-import models.beans.E_Role;
 import models.beans.User;
+import models.forms.TraineeSettingsForm;
 
 @WebServlet(urlPatterns = { "/settings" })
 public class SettingsController extends AbstractController {
 	private static final long serialVersionUID = 1L;
 	private static final String VIEW_TRAINEE = "/WEB-INF/trainee_settings.jsp";
+	private static final String ATT_USER = "user";
+	private static final String ATT_FORM = "form";
 
 	private UserDAO userDAO;
 
@@ -28,11 +30,23 @@ public class SettingsController extends AbstractController {
 		User user = checkSessionUser(request, response);
 		checkTraineeOnly(user, response);
 
-		if (user != null) {
-			if (user.getRole() == E_Role.TRAINEE) {
+		User updatedUser = userDAO.find(user.getId());
+		request.setAttribute(ATT_USER, updatedUser);
+		request.setAttribute(Config.ATT_SESSION_USER, updatedUser);
 
-				this.getServletContext().getRequestDispatcher(VIEW_TRAINEE).forward(request, response);
-			}
-		}
+		this.getServletContext().getRequestDispatcher(VIEW_TRAINEE).forward(request, response);
+	}
+
+	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		User user = checkSessionUser(request, response);
+		checkTraineeOnly(user, response);
+
+		TraineeSettingsForm updateUserForm = new TraineeSettingsForm(userDAO);
+		User updatedUser = updateUserForm.updateUser(request, user);
+
+		request.setAttribute(ATT_FORM, updateUserForm);
+		request.setAttribute(ATT_USER, updatedUser);
+
+		this.getServletContext().getRequestDispatcher(VIEW_TRAINEE).forward(request, response);
 	}
 }

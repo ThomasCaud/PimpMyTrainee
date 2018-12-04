@@ -19,7 +19,7 @@ public class UserDAOImpl extends AbstractDAOImpl<User> implements UserDAO {
 	private static final String tableName = "Users";
 	private static final String SQL_SELECTED_BY_NAME_OR_LASTNAME_OR_COMPANY = "SELECT * FROM Users WHERE firstname like ? or lastname like ? or company like ?";
 	private static final String SQL_INSERT_USER = "INSERT INTO Users (firstname, lastname, email, password, company, phone, creationDate, isActive, role, managerId) VALUES (?,?,?,?,?,?,NOW(),?,?,?)";
-	private static final String SQL_UPDATE_USER = "UPDATE Users set firstname = ?, lastname = ?, email = ?, company = ?, phone = ?, isActive = ?, role = ? WHERE id = ?";
+	private static final String SQL_UPDATE_USER = "UPDATE Users set firstname = ?, lastname = ?, email = ?, company = ?, phone = ?, isActive = ?, role = ?, password = ? WHERE id = ?";
 
 	public UserDAOImpl() {
 		super(null, tableName);
@@ -95,7 +95,7 @@ public class UserDAOImpl extends AbstractDAOImpl<User> implements UserDAO {
 			connection = daoFactory.getConnection();
 			preparedStatement = initPreparedStatement(connection, SQL_UPDATE_USER, false, user.getFirstname(),
 					user.getLastname(), user.getEmail(), user.getCompany(), user.getPhone(), user.getIsActive(),
-					user.getRole().toString().toLowerCase(), user.getId());
+					user.getRole().toString().toLowerCase(), user.getPassword(), user.getId());
 			preparedStatement.executeUpdate();
 		} catch (SQLException e) {
 			throw new DAOException(e);
