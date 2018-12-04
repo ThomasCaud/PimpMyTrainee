@@ -118,3 +118,18 @@
 .runQuiz-possibleAnswer-selected:hover {
 	background-color: rgba(86, 204, 157, 0.7);
 }
+
+.metric {
+	background-color: #f7f7f9;
+	border-radius: 0.6rem;
+	display: inline-block;
+	height: 48%;
+	margin-bottom: 2rem;
+	padding: 4rem 2rem;
+	text-align: center;
+	width: 24%;
+}
+
+.value {
+	font-size: 3em;
+}
