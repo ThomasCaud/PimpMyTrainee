@@ -29,4 +29,5 @@ public class Config {
 	public static final String URL_CREATE_THEME = "createTheme";
 	public static final String URL_RESULTS = "records";
 	public static final String URL_VIEW_RECORD = "viewRecord";
+	public static final String URL_SETTINGS = "settings";
 }
