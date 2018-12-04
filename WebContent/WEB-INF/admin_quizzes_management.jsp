@@ -5,15 +5,13 @@
 <div class="container">
 
 	<div class="row align-items-center">
-
 		<div class="col-12 col-sm-8 col-md-10">
 			<h1>Quizzes Management</h1>
 		</div>
 		<div class="col-12 col-sm-4 col-md-2">
 			<a href="<c:url value = "/${applicationScope.URL_CREATE_QUIZ}"/>"
-				class="btn btn-info"><i class="fa fa-plus"></i> Create a quiz</a>
+				class="btn btn-info">Create a quiz <i class="fa fa-plus"></i></a>
 		</div>
-
 	</div>
 
 	<hr>
@@ -115,7 +113,7 @@
 		</tbody>
 	</table>
 
-	<c:if test="${search == null || search == ''}">
+	<c:if test="${(search == null || search == '') && fn:length(quizzes) != 0 && paginationTotal > 1}">
 		<div class="row justify-content-center">
 			<ul class="pagination">
 				<li
