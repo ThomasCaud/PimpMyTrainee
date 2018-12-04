@@ -106,18 +106,18 @@
 						</c:choose></td>
 					<td><a
 						href="<c:url value = "/${applicationScope.URL_VIEW_USER}/${user.id}"/>"
-						class="btn btn-link awesomeBtn" data-toggle="tooltip" title="" data-placement="top" data-original-title="Edit the user's profile"><i
+						class="btn btn-link" data-toggle="tooltip" title="" data-placement="top" data-original-title="Edit the user's profile"><i
 							class="fa fa-edit"></i></a>
 						<form action="" method="post" class="awesomeForm">
 							<c:choose>
 								<c:when test="${user.isActive}">
 									<button type="submit" name="deactivate" value="${user.id}" class="btn btn-link" data-toggle="tooltip" title="" data-placement="top" data-original-title="Deactivate this user">
-										<i class="fa fa-minus-square awesomeItem"></i>
+										<i class="fa fa-minus-square"></i>
 									</button>
 								</c:when>
 								<c:otherwise>
 									<button type="submit" name="activate" value="${user.id}" class="btn btn-link" data-toggle="tooltip" title="" data-placement="top" data-original-title="Reactivate this user">
-										<i class="fa fa-plus-square awesomeItem"></i>
+										<i class="fa fa-plus-square"></i>
 									</button>
 								</c:otherwise>
 							</c:choose>
