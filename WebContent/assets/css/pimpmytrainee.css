@@ -94,25 +94,6 @@
 
 .awesomeForm {
 	display: inline-block;
-	margin-left: 12px;
-	margin-right: 12px;
-}
-
-.awesomeBtn {
-	background-color: white;
-	border: none;
-	padding-top: 0px;
-	width: 16px;
-}
-
-.awesomeBtn:hover {
-	cursor: pointer;
-}
-
-.awesomeItem {
-	color: #78C2AD;
-	padding-left: 12px;
-	padding-right: 12px;
 }
 
 .runQuiz-possibleAnswers {

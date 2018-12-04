@@ -93,18 +93,18 @@
 						</c:choose></td>
 					<td><a
 						href="<c:url value = "/${applicationScope.URL_VIEW_QUIZ}/${quiz.id}"/>"
-						class="btn btn-link"><i class="fa fa-eye"></i></a>
+						class="btn btn-link" data-toggle="tooltip" title="" data-placement="top" data-original-title="View the quiz content"><i class="fa fa-eye"></i></a>
 						<form action="" method="post" class="awesomeForm">
 							<c:choose>
 								<c:when test="${quiz.isActive}">
 									<button type="submit" name="deactivate" value="${quiz.id}"
-										class="awesomeBtn">
+										class="btn btn-link" data-toggle="tooltip" title="" data-placement="top" data-original-title="Deactivate the quiz">
 										<i class="fa fa-minus-square awesomeItem"></i>
 									</button>
 								</c:when>
 								<c:otherwise>
 									<button type="submit" name="activate" value="${quiz.id}"
-										class="awesomeBtn">
+										class="btn btn-link btn-small" data-toggle="tooltip" title="" data-placement="top" data-original-title="Reactivate the quiz">
 										<i class="fa fa-plus-square awesomeItem"></i>
 									</button>
 								</c:otherwise>

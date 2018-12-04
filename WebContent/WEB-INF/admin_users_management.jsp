@@ -11,7 +11,7 @@
 		</div>
 		<div class="col-12 col-sm-4 col-md-2">
 			<a href="<c:url value = "/${applicationScope.URL_REGISTER_USER}"/>"
-				class="btn btn-info"><i class="fa fa-plus"></i> Register a user</a>
+				class="btn btn-info">Register a user <i class="fa fa-user-plus"></i></a>
 		</div>
 
 	</div>
@@ -74,7 +74,7 @@
 				<th>Creation</th>
 				<th>Role</th>
 				<th>Status</th>
-				<th class="text-center">Action</th>
+				<th class="text-center"></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -106,19 +106,17 @@
 						</c:choose></td>
 					<td><a
 						href="<c:url value = "/${applicationScope.URL_VIEW_USER}/${user.id}"/>"
-						class="btn btn-link awesomeBtn"><i
-							class="fa fa-eye awesomeBtn"></i> </a>
+						class="btn btn-link awesomeBtn" data-toggle="tooltip" title="" data-placement="top" data-original-title="Edit the user's profile"><i
+							class="fa fa-edit"></i></a>
 						<form action="" method="post" class="awesomeForm">
 							<c:choose>
 								<c:when test="${user.isActive}">
-									<button type="submit" name="deactivate" value="${user.id}"
-										class="awesomeBtn">
+									<button type="submit" name="deactivate" value="${user.id}" class="btn btn-link" data-toggle="tooltip" title="" data-placement="top" data-original-title="Deactivate this user">
 										<i class="fa fa-minus-square awesomeItem"></i>
 									</button>
 								</c:when>
 								<c:otherwise>
-									<button type="submit" name="activate" value="${user.id}"
-										class="awesomeBtn">
+									<button type="submit" name="activate" value="${user.id}" class="btn btn-link" data-toggle="tooltip" title="" data-placement="top" data-original-title="Reactivate this user">
 										<i class="fa fa-plus-square awesomeItem"></i>
 									</button>
 								</c:otherwise>
