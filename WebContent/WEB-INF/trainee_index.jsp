@@ -132,7 +132,7 @@
 								<td>${record.score}/${record.answers.size()}</td>
 								<td>${record.duration}sec.</td>
 								<td class="text-center"><a
-									href="<c:url value = "/${applicationScope.URL_VIEW_RESULT}/${record.id}"/>"
+									href="<c:url value = "/${applicationScope.URL_VIEW_RECORD}/${record.id}"/>"
 									class="btn btn-link"><i class="fa fa-eye"></i></a></td>
 							</tr>
 						</c:forEach>
