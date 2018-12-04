@@ -11,7 +11,7 @@
 				<div class="card-body">
 					<h4 class="card-title">Internal server error</h4>
 					<p class="card-text">
-						An internal server occurred. Please contact the application administrator.
+						An internal server error occurred. Please contact the application administrator.
 					</p>
 				</div>
 			</div>
