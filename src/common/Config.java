@@ -5,6 +5,11 @@ public class Config {
 	public static final String ATT_SESSION_QUIZ = "sessionQuiz";
 	public static final String ATT_SESSION_CONTEXT_ID = "sessionContextID";
 	public static final String ATT_SESSION_QUIZ_BEGINNING_TIMESTAMP = "sessionQuizBeginningTimestamp";
+	public static final String ATT_STATS_NB_ACTIVE_USERS = "nbActiveUser";
+	public static final String ATT_STATS_NB_INACTIVE_USERS = "nbInactiveUser";
+	public static final String ATT_STATS_NB_CREATED_QUIZZES = "nbCreatedQuizzes";
+	public static final String ATT_STATS_NB_RECORDS = "nbRecords";
+
 	public static final String CONF_DAO_FACTORY = "daofactory";
 	public static final Integer NB_USERS_PER_PAGE = 3;
 	public static final Integer NB_QUIZZES_PER_PAGE = 3;

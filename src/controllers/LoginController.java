@@ -46,8 +46,9 @@ public class LoginController extends HttpServlet {
 			return;
 		}
 
-		/* RÃ©cupÃ©ration de la session depuis la requÃªte */
+		/* Récupération de la session depuis la requête */
 		HttpSession session = request.getSession();
+
 		session.setAttribute(Config.ATT_SESSION_USER, user);
 		session.setAttribute(Config.ATT_SESSION_CONTEXT_ID, UUID.randomUUID());
 		response.sendRedirect(request.getServletContext().getContextPath() + Config.URL_ROOT);

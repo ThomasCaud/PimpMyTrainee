@@ -7,12 +7,15 @@ import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import common.Config;
 import dao.DAOFactory;
 import dao.interfaces.RecordDAO;
+import dao.interfaces.StatsDAO;
 import models.beans.E_Role;
 import models.beans.Record;
+import models.beans.StatsAdminGlobal;
 import models.beans.User;
 import utils.QuizzesManager;
 
@@ -25,9 +28,11 @@ public class HomeController extends AbstractController {
 	private static final String VIEW_TRAINEE = "/WEB-INF/trainee_index.jsp";
 
 	private RecordDAO recordDAO;
+	private StatsDAO statsDAO;
 
 	public void init() throws ServletException {
 		this.recordDAO = ((DAOFactory) getServletContext().getAttribute(Config.CONF_DAO_FACTORY)).getRecordDAO();
+		this.statsDAO = ((DAOFactory) getServletContext().getAttribute(Config.CONF_DAO_FACTORY)).getStatsDAO();
 	}
 
 	private ArrayList<Record> search(User trainee, String search) {
@@ -51,9 +56,16 @@ public class HomeController extends AbstractController {
 		User user = checkSessionUser(request, response);
 
 		if (user != null) {
-			if (user.getRole() == E_Role.ADMIN)
+			if (user.getRole() == E_Role.ADMIN) {
+				StatsAdminGlobal stats = statsDAO.get(user);
+				HttpSession session = request.getSession();
+				session.setAttribute(Config.ATT_STATS_NB_ACTIVE_USERS, stats.getNbActiveUser());
+				session.setAttribute(Config.ATT_STATS_NB_INACTIVE_USERS, stats.getNbInactiveUser());
+				session.setAttribute(Config.ATT_STATS_NB_CREATED_QUIZZES, stats.getNbCreatedQuizzes());
+				session.setAttribute(Config.ATT_STATS_NB_RECORDS, stats.getNbRecords());
 				this.getServletContext().getRequestDispatcher(VIEW_ADMIN).forward(request, response);
-			else {
+
+			} else {
 				getQuizzes(request, response, user);
 				getRecords(request, user);
 				this.getServletContext().getRequestDispatcher(VIEW_TRAINEE).forward(request, response);
