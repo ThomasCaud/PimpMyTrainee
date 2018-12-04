@@ -37,6 +37,13 @@ public abstract class AbstractController extends HttpServlet {
 		}
 	}
 
+	public void checkTraineeOnly(User user, HttpServletResponse response) throws IOException {
+		if (user == null || user.getRole() != E_Role.TRAINEE) {
+			response.sendError(HttpServletResponse.SC_FORBIDDEN);
+			return;
+		}
+	}
+
 	public Integer getIntegerFromURL(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		String pathInfo = request.getPathInfo();
 
