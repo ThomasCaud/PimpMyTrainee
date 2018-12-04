@@ -68,7 +68,6 @@ public class UsersController extends AbstractController {
 			}
 		}
 
-		// change this - OK
 		Integer nbAllUsers = userDAO.count("managerId", sessionUser.getId());
 
 		Integer res = nbAllUsers % nbUsersPerPage;
@@ -78,10 +77,8 @@ public class UsersController extends AbstractController {
 
 		String search = request.getParameter(ATT_SEARCH);
 		if (search != null) {
-			// change this - OK
 			users = userDAO.findUsersByNameOrLastnameOrCompany(sessionUser.getId(), search);
 		} else {
-			// change this - OK
 			users = userDAO.findBy("managerId", sessionUser.getId(), (offset - 1) * nbUsersPerPage, nbUsersPerPage);
 		}
 
