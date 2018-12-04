@@ -150,7 +150,10 @@ public abstract class AbstractDAOImpl<T> implements CommonDAO<T> {
 		filters.put(field, value);
 		ArrayList<T> results = findBy(filters);
 
-		return results.get(0);
+		if (results.size() > 0)
+			return results.get(0);
+		else
+			return null;
 	}
 
 	@Override
