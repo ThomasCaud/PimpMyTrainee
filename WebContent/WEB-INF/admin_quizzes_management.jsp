@@ -16,25 +16,23 @@
 
 	<hr>
 
-	<div class="row justify-content-center">
-
-		<div class="col-12 col-sm-12 col-lg-5">
-			<form method="get" action="" class="form-inline">
-				<input type="text" class="form-control col-10" placeholder="Search"
-					name="search">
-				<div class="col-2">
-					<button type="submit" class="btn btn-primary form-control">
-						<i class="fa fa-search"></i>
-					</button>
-				</div>
-			</form>
+	<c:if test="${fn:length(quizzes) != 0}">
+		<div class="row justify-content-center">
+			<div class="col-12 col-sm-12 col-lg-5">
+				<form method="get" action="" class="form-inline">
+					<input type="text" class="form-control col-10" placeholder="Search"
+						name="search">
+					<div class="col-2">
+						<button type="submit" class="btn btn-primary form-control">
+							<i class="fa fa-search"></i>
+						</button>
+					</div>
+				</form>
+			</div>
 		</div>
-
-	</div>
-
-	<hr>
-
-	<c:if test="${search != null && search != ''}">
+		<hr>
+	</c:if>
+	<c:if test="${search != null && search != '' && fn:length(quizzes) != 0}">
 		<h5 class="inline-block">
 			Results for the search "${search}" <a
 				href="<c:url value = "/${applicationScope.URL_QUIZZES}"/>"
@@ -42,7 +40,7 @@
 		</h5>
 	</c:if>
 
-	<c:if test="${search == null || search == ''}">
+	<c:if test="${(search == null || search == '') && fn:length(quizzes) != 0}">
 		<div class="row mb-2">
 			<div class="col-12 col-sm-12 col-lg-5">
 
@@ -59,59 +57,65 @@
 			</div>
 		</div>
 	</c:if>
-
-	<table class="table table-responsive-sm table-sm table-bordered">
-		<thead class="thead-dark">
-			<tr>
-				<th>#</th>
-				<th>Quiz</th>
-				<th>Theme</th>
-				<th>Number of records</th>
-				<th>Creation</th>
-				<th>Status</th>
-				<th class="text-center"></th>
-			</tr>
-		</thead>
-		<tbody>
-			<c:forEach items="${quizzes}" var="quiz">
-
-				<tr>
-					<th scope="row">${quiz.id}</th>
-					<td>${quiz.title}</td>
-					<td>${quiz.theme.label}</td>
-					<td>N.A.</td>
-					<td><fmt:formatDate type="both" value="${quiz.creationDate}" /></td>
-					<td><c:choose>
-							<c:when test="${quiz.isActive}">
-								<span class="badge badge-pill badge-success">Active</span>
-							</c:when>
-							<c:otherwise>
-								<span class="badge badge-pill badge-danger">Deleted</span>
-							</c:otherwise>
-						</c:choose></td>
-					<td><a
-						href="<c:url value = "/${applicationScope.URL_VIEW_QUIZ}/${quiz.id}"/>"
-						class="btn btn-link" data-toggle="tooltip" title="" data-placement="top" data-original-title="Edit the quiz's content"><i class="fa fa-edit"></i></a>
-						<form action="" method="post" class="awesomeForm">
-							<c:choose>
-								<c:when test="${quiz.isActive}">
-									<button type="submit" name="deactivate" value="${quiz.id}"
-										class="btn btn-link" data-toggle="tooltip" title="" data-placement="top" data-original-title="Deactivate the quiz">
-										<i class="fa fa-minus-square"></i>
-									</button>
-								</c:when>
-								<c:otherwise>
-									<button type="submit" name="activate" value="${quiz.id}"
-										class="btn btn-link" data-toggle="tooltip" title="" data-placement="top" data-original-title="Reactivate the quiz">
-										<i class="fa fa-plus-square awesomeItem"></i>
-									</button>
-								</c:otherwise>
-							</c:choose>
-						</form></td>
-				</tr>
-			</c:forEach>
-		</tbody>
-	</table>
+	
+	<c:choose>
+		<c:when test="${fn:length(quizzes) != 0}">
+			<table class="table table-responsive-sm table-sm table-bordered">
+				<thead class="thead-dark">
+					<tr>
+						<th>#</th>
+						<th>Quiz</th>
+						<th>Theme</th>
+						<th>Number of records</th>
+						<th>Creation</th>
+						<th>Status</th>
+						<th class="text-center"></th>
+					</tr>
+				</thead>
+				<tbody>
+					<c:forEach items="${quizzes}" var="quiz">
+						<tr>
+							<th scope="row">${quiz.id}</th>
+							<td>${quiz.title}</td>
+							<td>${quiz.theme.label}</td>
+							<td>N.A.</td>
+							<td><fmt:formatDate type="both" value="${quiz.creationDate}" /></td>
+							<td><c:choose>
+									<c:when test="${quiz.isActive}">
+										<span class="badge badge-pill badge-success">Active</span>
+									</c:when>
+									<c:otherwise>
+										<span class="badge badge-pill badge-danger">Deleted</span>
+									</c:otherwise>
+								</c:choose></td>
+							<td><a
+								href="<c:url value = "/${applicationScope.URL_VIEW_QUIZ}/${quiz.id}"/>"
+								class="btn btn-link" data-toggle="tooltip" title="" data-placement="top" data-original-title="Edit the quiz's content"><i class="fa fa-edit"></i></a>
+								<form action="" method="post" class="awesomeForm">
+									<c:choose>
+										<c:when test="${quiz.isActive}">
+											<button type="submit" name="deactivate" value="${quiz.id}"
+												class="btn btn-link" data-toggle="tooltip" title="" data-placement="top" data-original-title="Deactivate the quiz">
+												<i class="fa fa-minus-square"></i>
+											</button>
+										</c:when>
+										<c:otherwise>
+											<button type="submit" name="activate" value="${quiz.id}"
+												class="btn btn-link" data-toggle="tooltip" title="" data-placement="top" data-original-title="Reactivate the quiz">
+												<i class="fa fa-plus-square awesomeItem"></i>
+											</button>
+										</c:otherwise>
+									</c:choose>
+								</form></td>
+						</tr>
+					</c:forEach>
+				</tbody>
+			</table>
+		</c:when>
+		<c:otherwise>
+				There is no quiz for the moment.
+		</c:otherwise>
+	</c:choose>
 
 	<c:if test="${(search == null || search == '') && fn:length(quizzes) != 0 && paginationTotal > 1}">
 		<div class="row justify-content-center">

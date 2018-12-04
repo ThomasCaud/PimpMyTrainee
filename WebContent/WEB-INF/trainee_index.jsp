@@ -6,7 +6,7 @@
 	<div>
 		<div class="row align-items-center">
 			<div class="col-12 col-sm-8 col-md-10">
-				<h1>Quizzes availables</h1>
+				<h1>Available Quizzes</h1>
 			</div>
 		</div>
 		<hr>
