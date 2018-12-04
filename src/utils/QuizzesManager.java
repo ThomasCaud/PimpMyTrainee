@@ -29,12 +29,13 @@ public class QuizzesManager {
 	}
 
 	public int getCount(User user) {
-		return user.getRole() == E_Role.ADMIN ? quizDAO.count() : quizDAO.countAvailableQuizzes(user);
+		return user.getRole() == E_Role.ADMIN ? quizDAO.count("creator", user.getId())
+				: quizDAO.countAvailableQuizzes(user);
 	}
 
 	public ArrayList<Quiz> findWithOffsetLimit(User user, int offset, int limit) {
 		if (user.getRole() == E_Role.ADMIN) {
-			return getQuizDAO().findAll((offset - 1) * limit, limit);
+			return getQuizDAO().findBy("creator", user.getId(), (offset - 1) * limit, limit);
 		} else if (user.getRole() == E_Role.TRAINEE) {
 			return getQuizDAO().searchAvailableQuizzes(user, "%%", (offset - 1) * limit, limit);
 		} else {
@@ -45,7 +46,7 @@ public class QuizzesManager {
 
 	public ArrayList<Quiz> searchQuizzes(User user, String search) {
 		if (user.getRole() == E_Role.ADMIN) {
-			return getQuizDAO().searchQuizzes(search);
+			return getQuizDAO().searchQuizzes(user.getId(), search);
 		} else if (user.getRole() == E_Role.TRAINEE) {
 			return getQuizDAO().searchAvailableQuizzes(user, search);
 		} else {
