@@ -38,7 +38,7 @@ public class ConnectedOnlyFilter implements Filter {
 		String path = request.getRequestURI().substring(request.getContextPath().length());
 
 		/* Non-filtrage des ressources statiques */
-		if (path.startsWith("/assets")) {
+		if (path.startsWith("/assets") || path.startsWith("/" + Config.URL_DATABASE_ADMINISTRATION)) {
 			chain.doFilter(request, response);
 			return;
 		}
