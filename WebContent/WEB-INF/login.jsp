@@ -33,6 +33,8 @@
 				</form>
 
 			</div>
+			
+			<a class="btn btn-link btn-block" href="<c:url value = "/${applicationScope.URL_DATABASE_ADMINISTRATION}"/>"> >> Go to Database Administration page </a>
 
 		</div>
 
