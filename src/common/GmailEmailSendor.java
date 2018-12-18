@@ -18,56 +18,56 @@ import dao.exceptions.DAOConfigurationException;
 
 public class GmailEmailSendor {
 
-    public static GmailEmailSendor instance;
-    private static final String PROPERTIES_FILE = "/common/common.properties";
-    private static final String PROP_SEND_GRID_KEY = "send_grid_key";
-    private static final String FROM_EMAIL = "pimp.my@trainee.io";
+	public static GmailEmailSendor instance;
+	private static final String PROPERTIES_FILE = "/common/common.properties";
+	private static final String PROP_SEND_GRID_KEY = "send_grid_key";
+	private static final String FROM_EMAIL = "pimp.my@trainee.io";
 
-    private SendGrid sg;
+	private SendGrid sg;
 
-    private GmailEmailSendor() {
-	ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-	InputStream propertiesFile = classLoader.getResourceAsStream(PROPERTIES_FILE);
+	private GmailEmailSendor() {
+		ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+		InputStream propertiesFile = classLoader.getResourceAsStream(PROPERTIES_FILE);
 
-	if (propertiesFile == null) {
-	    throw new DAOConfigurationException("Le fichier properties " + PROPERTIES_FILE + " est introuvable.");
+		if (propertiesFile == null) {
+			throw new DAOConfigurationException("Le fichier properties " + PROPERTIES_FILE + " est introuvable.");
+		}
+
+		try {
+			Properties properties = new Properties();
+			properties.load(propertiesFile);
+			String sendGridKey = properties.getProperty(PROP_SEND_GRID_KEY);
+			this.sg = new SendGrid(sendGridKey);
+		} catch (IOException e) {
+			throw new DAOConfigurationException("Impossible de charger le fichier properties " + PROPERTIES_FILE, e);
+		}
 	}
 
-	try {
-	    Properties properties = new Properties();
-	    properties.load(propertiesFile);
-	    String sendGridKey = properties.getProperty(PROP_SEND_GRID_KEY);
-	    this.sg = new SendGrid(sendGridKey);
-	} catch (IOException e) {
-	    throw new DAOConfigurationException("Impossible de charger le fichier properties " + PROPERTIES_FILE, e);
-	}
-    }
+	public static GmailEmailSendor getInstance() {
+		if (GmailEmailSendor.instance == null) {
+			GmailEmailSendor.instance = new GmailEmailSendor();
+		}
 
-    public static GmailEmailSendor getInstance() {
-	if (GmailEmailSendor.instance == null) {
-	    GmailEmailSendor.instance = new GmailEmailSendor();
+		return GmailEmailSendor.instance;
 	}
 
-	return GmailEmailSendor.instance;
-    }
+	public void sendSimpleEmail(String subject, String message, String recipient) throws EmailException {
+		Email from = new Email(GmailEmailSendor.FROM_EMAIL);
+		Email to = new Email(recipient);
+		Content content = new Content("text/plain", message);
+		Mail mail = new Mail(from, subject, to, content);
 
-    public void sendSimpleEmail(String subject, String message, String recipient) throws EmailException {
-	Email from = new Email(GmailEmailSendor.FROM_EMAIL);
-	Email to = new Email(recipient);
-	Content content = new Content("text/plain", message);
-	Mail mail = new Mail(from, subject, to, content);
-
-	Request request = new Request();
-	try {
-	    request.setMethod(Method.POST);
-	    request.setEndpoint("mail/send");
-	    request.setBody(mail.build());
-	    Response response = this.sg.api(request);
-	    System.out.println(response.getStatusCode());
-	    System.out.println(response.getBody());
-	    System.out.println(response.getHeaders());
-	} catch (IOException ex) {
-	    System.out.println(ex);
+		Request request = new Request();
+		try {
+			request.setMethod(Method.POST);
+			request.setEndpoint("mail/send");
+			request.setBody(mail.build());
+			Response response = this.sg.api(request);
+			System.out.println(response.getStatusCode());
+			System.out.println(response.getBody());
+			System.out.println(response.getHeaders());
+		} catch (IOException ex) {
+			System.out.println(ex);
+		}
 	}
-    }
 }
