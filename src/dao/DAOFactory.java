@@ -1,11 +1,15 @@
 package dao;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Properties;
+import java.util.Scanner;
 
 import dao.exceptions.DAOConfigurationException;
 import dao.interfaces.AnswerDAO;
@@ -112,5 +116,46 @@ public class DAOFactory {
 
 	public StatsDAO getStatsDAO() {
 		return new StatsDAOImpl(this);
+	}
+
+	public void executeSqlScript(Connection conn, File inputFile) {
+
+		// Delimiter
+		String delimiter = ";";
+
+		// Create scanner
+		Scanner scanner;
+		try {
+			scanner = new Scanner(inputFile).useDelimiter(delimiter);
+		} catch (FileNotFoundException e1) {
+			e1.printStackTrace();
+			return;
+		}
+
+		// Loop through the SQL file statements
+		Statement currentStatement = null;
+		while (scanner.hasNext()) {
+
+			// Get statement
+			String rawStatement = scanner.next() + delimiter;
+			try {
+				// Execute statement
+				currentStatement = conn.createStatement();
+				currentStatement.execute(rawStatement);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} finally {
+				// Release resources
+				if (currentStatement != null) {
+					try {
+						currentStatement.close();
+					} catch (SQLException e) {
+						e.printStackTrace();
+					}
+				}
+				currentStatement = null;
+			}
+		}
+		scanner.close();
 	}
 }
