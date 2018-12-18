@@ -22,6 +22,7 @@ public class DatabaseAdministrationController extends AbstractController {
 	private static final long serialVersionUID = 1L;
 	private static final String VIEW = "/WEB-INF/admin_database_administration.jsp";
 	private static final String SCRIPT_DROP_ALL_TABLES = "drop_all_tables.sql";
+	private static final String SCRIPT_CREATE_ALL_TABLES = "create_all_tables.sql";
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		this.getServletContext().getRequestDispatcher(VIEW).forward(request, response);
@@ -34,6 +35,9 @@ public class DatabaseAdministrationController extends AbstractController {
 			switch (action) {
 			case "drop_all_tables":
 				processDropAllTables();
+				break;
+			case "create_all_tables":
+				processCreateAllTables();
 				break;
 			}
 		}
@@ -48,6 +52,16 @@ public class DatabaseAdministrationController extends AbstractController {
 	public void processDropAllTables() {
 		ClassLoader classLoader = getClass().getClassLoader();
 		File scriptFile = new File(classLoader.getResource(SCRIPT_DROP_ALL_TABLES).getFile());
+		try {
+			DAOFactory.getInstance().executeSqlScript(DAOFactory.getInstance().getConnection(), scriptFile);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void processCreateAllTables() {
+		ClassLoader classLoader = getClass().getClassLoader();
+		File scriptFile = new File(classLoader.getResource(SCRIPT_CREATE_ALL_TABLES).getFile());
 		try {
 			DAOFactory.getInstance().executeSqlScript(DAOFactory.getInstance().getConnection(), scriptFile);
 		} catch (SQLException e) {

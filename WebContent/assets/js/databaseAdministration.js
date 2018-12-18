@@ -11,4 +11,17 @@ $(document).ready(function(){
 			$this.removeAttr("disabled");
 		});
 	})
+	
+	$('#btn_dbadmin_create_all_tables').on('click',function(e) {
+		e.preventDefault();
+		var $this = $(this)
+		
+		$this.attr("disabled", "disabled");
+		$('#span_dbadmin_create_all_tables').text('Creating all tables...')
+		
+		$.post("databaseAdministration", {action:'create_all_tables'}).done(function(responseJson) {
+			$('#span_dbadmin_create_all_tables').text('Done !')
+			$this.removeAttr("disabled");
+		});
+	})
 })
