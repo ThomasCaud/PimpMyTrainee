@@ -2,13 +2,10 @@ package models.forms;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.log4j.Logger;
-
 import dao.interfaces.UserDAO;
 import models.beans.User;
 
 public class TraineeSettingsForm extends AbstractForm {
-	private static Logger logger = Logger.getLogger(TraineeSettingsForm.class);
 
 	private static final String FIELD_NEW_PASSWORD = "newPassword";
 	private static final String FIELD_PASSWORD_CONFIRMATION = "newPasswordConfirmation";
