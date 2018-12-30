@@ -27,9 +27,13 @@ public class RegisterUserController extends AbstractController {
 	private static final String VIEW_STEP2 = "/WEB-INF/admin_register_user_step2.jsp";
 	private static UserDAO userDAO;
 
+	public static void setDAOs(UserDAO userDAO) {
+		RegisterUserController.userDAO = userDAO;
+	}
+
 	public void init() throws ServletException {
-		RegisterUserController.userDAO = ((DAOFactory) getServletContext().getAttribute(Config.CONF_DAO_FACTORY))
-				.getUserDAO();
+		RegisterUserController
+				.setDAOs(((DAOFactory) getServletContext().getAttribute(Config.CONF_DAO_FACTORY)).getUserDAO());
 	}
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

@@ -42,15 +42,17 @@ public class ViewQuizController extends AbstractController {
 	private static QuestionDAO questionDAO;
 	private static AnswerDAO answerDAO;
 
+	public static void setDAOs(QuizDAO quizDAO, ThemeDAO themeDAO, QuestionDAO questionDAO, AnswerDAO answerDAO) {
+		ViewQuizController.quizDAO = quizDAO;
+		ViewQuizController.themeDAO = themeDAO;
+		ViewQuizController.questionDAO = questionDAO;
+		ViewQuizController.answerDAO = answerDAO;
+	}
+
 	public void init() throws ServletException {
-		ViewQuizController.quizDAO = ((DAOFactory) getServletContext().getAttribute(Config.CONF_DAO_FACTORY))
-				.getQuizDAO();
-		ViewQuizController.themeDAO = ((DAOFactory) getServletContext().getAttribute(Config.CONF_DAO_FACTORY))
-				.getThemeDAO();
-		ViewQuizController.questionDAO = ((DAOFactory) getServletContext().getAttribute(Config.CONF_DAO_FACTORY))
-				.getQuestionDAO();
-		ViewQuizController.answerDAO = ((DAOFactory) getServletContext().getAttribute(Config.CONF_DAO_FACTORY))
-				.getAnswerDAO();
+		DAOFactory daoFactory = (DAOFactory) getServletContext().getAttribute(Config.CONF_DAO_FACTORY);
+		ViewQuizController.setDAOs(daoFactory.getQuizDAO(), daoFactory.getThemeDAO(), daoFactory.getQuestionDAO(),
+				daoFactory.getAnswerDAO());
 	}
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

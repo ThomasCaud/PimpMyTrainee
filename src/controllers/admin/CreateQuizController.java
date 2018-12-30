@@ -44,16 +44,19 @@ public class CreateQuizController extends AbstractController {
 	private static QuestionDAO questionDAO;
 	private static AnswerDAO possibleAnswerDAO;
 
+	public static void setDAOs(ThemeDAO themeDAO, QuizDAO quizDAO, QuestionDAO questionDAO,
+			AnswerDAO possibleAnswerDAO) {
+		CreateQuizController.themeDAO = themeDAO;
+		CreateQuizController.quizDAO = quizDAO;
+		CreateQuizController.questionDAO = questionDAO;
+		CreateQuizController.possibleAnswerDAO = possibleAnswerDAO;
+	}
+
 	public void init() throws ServletException {
-		CreateQuizController.themeDAO = ((DAOFactory) getServletContext().getAttribute(Config.CONF_DAO_FACTORY))
-				.getThemeDAO();
-		CreateQuizController.quizDAO = ((DAOFactory) getServletContext().getAttribute(Config.CONF_DAO_FACTORY))
-				.getQuizDAO();
-		CreateQuizController.questionDAO = ((DAOFactory) getServletContext().getAttribute(Config.CONF_DAO_FACTORY))
-				.getQuestionDAO();
-		CreateQuizController.possibleAnswerDAO = ((DAOFactory) getServletContext()
-				.getAttribute(Config.CONF_DAO_FACTORY))
-				.getAnswerDAO();
+		DAOFactory daoFactory = (DAOFactory) getServletContext().getAttribute(Config.CONF_DAO_FACTORY);
+
+		CreateQuizController.setDAOs(daoFactory.getThemeDAO(), daoFactory.getQuizDAO(), daoFactory.getQuestionDAO(),
+				daoFactory.getAnswerDAO());
 	}
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

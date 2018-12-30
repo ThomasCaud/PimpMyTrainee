@@ -28,8 +28,12 @@ public class UsersController extends AbstractController {
 
 	private static UserDAO userDAO;
 
+	public static void setDAOs(UserDAO userDAO) {
+		UsersController.userDAO = userDAO;
+	}
+
 	public void init() throws ServletException {
-		UsersController.userDAO = ((DAOFactory) getServletContext().getAttribute(Config.CONF_DAO_FACTORY)).getUserDAO();
+		UsersController.setDAOs(((DAOFactory) getServletContext().getAttribute(Config.CONF_DAO_FACTORY)).getUserDAO());
 	}
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

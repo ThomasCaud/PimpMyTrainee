@@ -28,9 +28,13 @@ public class ViewRecordController extends AbstractController {
 	private static final String ATT_QUIZ = "quiz";
 	private static RecordDAO recordDAO;
 
+	public static void setDAOs(RecordDAO recordDAO) {
+		ViewRecordController.recordDAO = recordDAO;
+	}
+
 	public void init() throws ServletException {
-		ViewRecordController.recordDAO = ((DAOFactory) getServletContext().getAttribute(Config.CONF_DAO_FACTORY))
-				.getRecordDAO();
+		ViewRecordController
+				.setDAOs(((DAOFactory) getServletContext().getAttribute(Config.CONF_DAO_FACTORY)).getRecordDAO());
 	}
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

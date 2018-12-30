@@ -24,9 +24,13 @@ public class QuizzesController extends AbstractController {
 	private static final String ATT_DEACTIVATE = "deactivate";
 	private static QuizzesManager quizzesManager;
 
+	public static void setManagers(QuizzesManager quizzesManager) {
+		QuizzesController.quizzesManager = quizzesManager;
+	}
+
 	public void init() throws ServletException {
-		QuizzesController.quizzesManager = new QuizzesManager(
-				((DAOFactory) getServletContext().getAttribute(Config.CONF_DAO_FACTORY)).getQuizDAO());
+		QuizzesController.setManagers(new QuizzesManager(
+				((DAOFactory) getServletContext().getAttribute(Config.CONF_DAO_FACTORY)).getQuizDAO()));
 	}
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

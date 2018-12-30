@@ -25,8 +25,12 @@ public class LoginController extends HttpServlet {
 	private static final String VIEW = "/WEB-INF/login.jsp";
 	private static UserDAO userDAO;
 
+	private static void setDAOs(UserDAO userDAO) {
+		LoginController.userDAO = userDAO;
+	}
+
 	public void init() throws ServletException {
-		LoginController.userDAO = ((DAOFactory) getServletContext().getAttribute(Config.CONF_DAO_FACTORY)).getUserDAO();
+		LoginController.setDAOs(((DAOFactory) getServletContext().getAttribute(Config.CONF_DAO_FACTORY)).getUserDAO());
 	}
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
