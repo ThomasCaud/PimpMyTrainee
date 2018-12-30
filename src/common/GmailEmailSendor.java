@@ -19,8 +19,8 @@ import dao.exceptions.DAOConfigurationException;
 
 public class GmailEmailSendor {
 
-	public static GmailEmailSendor instance;
-	private static Logger logger = Logger.getLogger(GmailEmailSendor.class);
+	private static GmailEmailSendor instance;
+	private static final Logger logger = Logger.getLogger(GmailEmailSendor.class);
 	private static final String PROPERTIES_FILE = "/common/common.properties";
 	private static final String PROP_SEND_GRID_KEY = "send_grid_key";
 	private static final String FROM_EMAIL = "pimp.my@trainee.io";
