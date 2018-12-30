@@ -12,6 +12,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
+
 import common.Config;
 import controllers.AbstractController;
 import dao.DAOFactory;
@@ -28,6 +30,7 @@ import models.forms.QuizForm;
 public class ViewQuizController extends AbstractController {
 
 	private static final long serialVersionUID = 1L;
+	private static Logger logger = Logger.getLogger(ViewQuizController.class);
 	private static final String VIEW = "/WEB-INF/admin_view_quiz.jsp";
 	private static final String ATT_QUIZ = "quiz";
 	private static final String ATT_THEMES = "themes";
@@ -83,7 +86,14 @@ public class ViewQuizController extends AbstractController {
 			return;
 		}
 
-		ArrayList<Theme> themes = themeDAO.findAll();
+		ArrayList<Theme> themes = new ArrayList<Theme>();
+		try {
+			themes = themeDAO.findAll();
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			return;
+		}
 
 		request.setAttribute(ATT_THEMES, themes);
 		request.setAttribute(ATT_QUIZ, quiz);
@@ -135,7 +145,14 @@ public class ViewQuizController extends AbstractController {
 			break;
 		}
 
-		ArrayList<Theme> themes = themeDAO.findAll();
+		ArrayList<Theme> themes = new ArrayList<Theme>();
+		try {
+			themes = themeDAO.findAll();
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			return;
+		}
 
 		request.setAttribute(ATT_THEMES, themes);
 		request.setAttribute(ATT_FORM, createQuizForm);

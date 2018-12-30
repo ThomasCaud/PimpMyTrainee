@@ -13,6 +13,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.Logger;
+
 import common.Config;
 import controllers.AbstractController;
 import dao.DAOFactory;
@@ -29,6 +31,7 @@ import models.forms.QuizForm;
 public class CreateQuizController extends AbstractController {
 
 	private static final long serialVersionUID = 1L;
+	private static Logger logger = Logger.getLogger(CreateQuizController.class);
 	private static final String ATT_FORM = "form";
 	private static final String ATT_QUIZ = "quiz";
 	private static final String ATT_THEMES = "themes";
@@ -62,7 +65,15 @@ public class CreateQuizController extends AbstractController {
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		checkSessionUser(request, response);
 
-		ArrayList<Theme> themes = themeDAO.findAll();
+		ArrayList<Theme> themes = new ArrayList<Theme>();
+
+		try {
+			themes = themeDAO.findAll();
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			return;
+		}
 
 		request.setAttribute(ATT_THEMES, themes);
 
@@ -120,7 +131,14 @@ public class CreateQuizController extends AbstractController {
 			break;
 		}
 
-		ArrayList<Theme> themes = themeDAO.findAll();
+		ArrayList<Theme> themes = new ArrayList<Theme>();
+		try {
+			themes = themeDAO.findAll();
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			return;
+		}
 
 		request.setAttribute(ATT_THEMES, themes);
 		request.setAttribute(ATT_FORM, createQuizForm);

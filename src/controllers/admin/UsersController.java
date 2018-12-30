@@ -8,6 +8,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
+
 import common.Config;
 import controllers.AbstractController;
 import dao.DAOFactory;
@@ -18,6 +20,7 @@ import models.beans.User;
 public class UsersController extends AbstractController {
 
 	private static final long serialVersionUID = 1L;
+	private static Logger logger = Logger.getLogger(CreateQuizController.class);
 	private static final String VIEW = "/WEB-INF/admin_users_management.jsp";
 	private static final String ATT_SEARCH = "search";
 	private static final String ATT_USERS = "users";
@@ -72,7 +75,14 @@ public class UsersController extends AbstractController {
 			}
 		}
 
-		Integer nbAllUsers = userDAO.count("managerId", sessionUser.getId());
+		Integer nbAllUsers = 0;
+		try {
+			nbAllUsers = userDAO.count("managerId", sessionUser.getId());
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			return;
+		}
 
 		Integer res = nbAllUsers % nbUsersPerPage;
 		Integer nbNeededPages = (int) nbAllUsers / nbUsersPerPage;
@@ -81,9 +91,21 @@ public class UsersController extends AbstractController {
 
 		String search = request.getParameter(ATT_SEARCH);
 		if (search != null) {
-			users = userDAO.findUsersByNameOrLastnameOrCompany(sessionUser.getId(), search);
+			try {
+				users = userDAO.findUsersByNameOrLastnameOrCompany(sessionUser.getId(), search);
+			} catch (Exception e) {
+				logger.error(e.getMessage());
+				response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+				return;
+			}
 		} else {
-			users = userDAO.findBy("managerId", sessionUser.getId(), (offset - 1) * nbUsersPerPage, nbUsersPerPage);
+			try {
+				users = userDAO.findBy("managerId", sessionUser.getId(), (offset - 1) * nbUsersPerPage, nbUsersPerPage);
+			} catch (Exception e) {
+				logger.error(e.getMessage());
+				response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+				return;
+			}
 		}
 
 		request.setAttribute(ATT_USERS, users);
@@ -109,8 +131,14 @@ public class UsersController extends AbstractController {
 			idUser = request.getParameter(ATT_DEACTIVATE);
 		}
 
-		User user = userDAO.find("id", idUser);
-		userDAO.updateIsActive(user, newValueIsActive);
-		doGet(request, response);
+		try {
+			User user = userDAO.find("id", idUser);
+			userDAO.updateIsActive(user, newValueIsActive);
+			doGet(request, response);
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			return;
+		}
 	}
 }

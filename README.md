@@ -5,6 +5,7 @@
 [![Badges from SonarCloud](https://sonarcloud.io/api/project_badges/measure?project=ThomasCaud_PimpMyTrainee&metric=sqale_rating)](https://sonarcloud.io/api/project_badges/measure?project=ThomasCaud_PimpMyTrainee&metric=sqale_rating)
 [![Badges from SonarCloud](https://sonarcloud.io/api/project_badges/measure?project=ThomasCaud_PimpMyTrainee&metric=reliability_rating)](https://sonarcloud.io/api/project_badges/measure?project=ThomasCaud_PimpMyTrainee&metric=reliability_rating)
 [![Badges from SonarCloud](https://sonarcloud.io/api/project_badges/measure?project=ThomasCaud_PimpMyTrainee&metric=security_rating)](https://sonarcloud.io/api/project_badges/measure?project=ThomasCaud_PimpMyTrainee&metric=security_rating)
+[![Badges from SonarCloud](https://sonarcloud.io/api/project_badges/measure?project=ThomasCaud_PimpMyTrainee&metric=vulnerabilities)](https://sonarcloud.io/api/project_badges/measure?project=ThomasCaud_PimpMyTrainee&metric=vulnerabilities)
 [![Badges from SonarCloud](https://sonarcloud.io/api/project_badges/measure?project=ThomasCaud_PimpMyTrainee&metric=bugs)](https://sonarcloud.io/api/project_badges/measure?project=ThomasCaud_PimpMyTrainee&metric=bugs)
 [![Badges from SonarCloud](https://sonarcloud.io/api/project_badges/measure?project=ThomasCaud_PimpMyTrainee&metric=sqale_index)](https://sonarcloud.io/api/project_badges/measure?project=ThomasCaud_PimpMyTrainee&metric=sqale_index)
 
