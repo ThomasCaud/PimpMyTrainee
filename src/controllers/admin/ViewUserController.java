@@ -28,12 +28,17 @@ public class ViewUserController extends AbstractController {
 	private static final String ATT_RECORDS = "records";
 	private static final String ATT_SEARCH_RESULTS = "searchResults";
 
-	private UserDAO userDAO;
-	private RecordDAO recordDAO;
+	private static UserDAO userDAO;
+	private static RecordDAO recordDAO;
+
+	public static void setDAOs(UserDAO userDAO, RecordDAO recordDAO) {
+		ViewUserController.userDAO = userDAO;
+		ViewUserController.recordDAO = recordDAO;
+	}
 
 	public void init() throws ServletException {
-		this.userDAO = ((DAOFactory) getServletContext().getAttribute(Config.CONF_DAO_FACTORY)).getUserDAO();
-		this.recordDAO = ((DAOFactory) getServletContext().getAttribute(Config.CONF_DAO_FACTORY)).getRecordDAO();
+		DAOFactory daoFactory = (DAOFactory) getServletContext().getAttribute(Config.CONF_DAO_FACTORY);
+		ViewUserController.setDAOs(daoFactory.getUserDAO(), daoFactory.getRecordDAO());
 	}
 
 	private ArrayList<Record> searchResults(User trainee, String search) {

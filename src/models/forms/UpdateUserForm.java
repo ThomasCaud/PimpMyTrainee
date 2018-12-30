@@ -65,7 +65,10 @@ public class UpdateUserForm extends AbstractForm {
 				|| (!isActiveStr.toUpperCase().equals("TRUE") && !isActiveStr.toUpperCase().equals("FALSE")))
 			setError(FIELD_IS_ACTIVE, "One the two radio buttons must be checked.");
 
-		boolean isActive = isActiveStr.toUpperCase().equals("TRUE");
+		boolean isActive = false;
+		if (isActiveStr != null) {
+			isActive = isActiveStr.toUpperCase().equals("TRUE");
+		}
 		user.setIsActive(isActive);
 	}
 

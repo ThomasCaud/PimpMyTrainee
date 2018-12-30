@@ -30,11 +30,15 @@ public class HomeController extends AbstractController {
 	private static RecordDAO recordDAO;
 	private static StatsDAO statsDAO;
 
+	public static void setDAOs(RecordDAO recordDAO, StatsDAO statsDAO) {
+		HomeController.recordDAO = recordDAO;
+		HomeController.statsDAO = statsDAO;
+	}
+
 	public void init() throws ServletException {
-		HomeController.recordDAO = ((DAOFactory) getServletContext().getAttribute(Config.CONF_DAO_FACTORY))
-				.getRecordDAO();
-		HomeController.statsDAO = ((DAOFactory) getServletContext().getAttribute(Config.CONF_DAO_FACTORY))
-				.getStatsDAO();
+		DAOFactory daoFactory = (DAOFactory) getServletContext().getAttribute(Config.CONF_DAO_FACTORY);
+
+		HomeController.setDAOs(daoFactory.getRecordDAO(), daoFactory.getStatsDAO());
 	}
 
 	private ArrayList<Record> search(User trainee, String search) {

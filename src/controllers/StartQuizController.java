@@ -30,12 +30,18 @@ public class StartQuizController extends AbstractController {
 	private static final long serialVersionUID = 1L;
 	private static final String VIEW = "/WEB-INF/start_quiz.jsp";
 	private static final String ATT_QUIZ = "quiz";
-	private QuizDAO quizDAO;
-	private RecordDAO recordDAO;
+	private static QuizDAO quizDAO;
+	private static RecordDAO recordDAO;
+
+	public static void setDAOs(QuizDAO quizDAO, RecordDAO recordDAO) {
+		StartQuizController.quizDAO = quizDAO;
+		StartQuizController.recordDAO = recordDAO;
+	}
 
 	public void init() throws ServletException {
-		this.quizDAO = ((DAOFactory) getServletContext().getAttribute(Config.CONF_DAO_FACTORY)).getQuizDAO();
-		this.recordDAO = ((DAOFactory) getServletContext().getAttribute(Config.CONF_DAO_FACTORY)).getRecordDAO();
+		DAOFactory daoFactory = (DAOFactory) getServletContext().getAttribute(Config.CONF_DAO_FACTORY);
+
+		StartQuizController.setDAOs(daoFactory.getQuizDAO(), daoFactory.getRecordDAO());
 	}
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

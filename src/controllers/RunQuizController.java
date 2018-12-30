@@ -36,26 +36,33 @@ public class RunQuizController extends AbstractController {
 	private static final String VIEW_END = "/WEB-INF/run_end_quiz.jsp";
 	private static final String ATT_QUESTION = "question";
 	private static final String ATT_QUESTION_NUMBER = "questionNumber";
-	private QuizDAO quizDAO;
-	private RecordDAO recordDAO;
-	private RecordAnswerDAO recordAnswerDAO;
+	private static QuizDAO quizDAO;
+	private static RecordDAO recordDAO;
+	private static RecordAnswerDAO recordAnswerDAO;
+
+	public static void setDAOs(QuizDAO quizDAO, RecordDAO recordDAO, RecordAnswerDAO recordAnswerDAO) {
+		RunQuizController.quizDAO = quizDAO;
+		RunQuizController.recordDAO = recordDAO;
+		RunQuizController.recordAnswerDAO = recordAnswerDAO;
+	}
 
 	public void init() throws ServletException {
-		this.quizDAO = ((DAOFactory) getServletContext().getAttribute(Config.CONF_DAO_FACTORY)).getQuizDAO();
-		this.recordDAO = ((DAOFactory) getServletContext().getAttribute(Config.CONF_DAO_FACTORY)).getRecordDAO();
-		this.recordAnswerDAO = ((DAOFactory) getServletContext().getAttribute(Config.CONF_DAO_FACTORY))
-				.getRecordAnswerDAO();
+		DAOFactory daoFactory = (DAOFactory) getServletContext().getAttribute(Config.CONF_DAO_FACTORY);
+
+		RunQuizController.setDAOs(daoFactory.getQuizDAO(), daoFactory.getRecordDAO(), daoFactory.getRecordAnswerDAO());
 	}
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
-			// The quiz & the question are determined by what is in the session, thanks to
+			// The quiz & the question are determined by what is in the session,
+			// thanks to
 			// the contextID
 			Record record = getRecordFromSessionContextId(request, response);
 			Quiz quiz = quizDAO.find(record.getQuiz().getId());
 			Integer questionIndex = record.getAnswers().size();
 
-			// If the user has answered all question of the quiz, then the quiz is finished.
+			// If the user has answered all question of the quiz, then the quiz
+			// is finished.
 			if (questionIndex >= quiz.getQuestions().size()) {
 				this.getServletContext().getRequestDispatcher(VIEW_END).forward(request, response);
 				return;
@@ -72,9 +79,9 @@ public class RunQuizController extends AbstractController {
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		/*
-		 * The answerIndex is set by a javascript script in the JSP, when the user
-		 * choose an answer. This allows to know what the user has answered to a
-		 * question that is determined by the sessionContextId.
+		 * The answerIndex is set by a javascript script in the JSP, when the
+		 * user choose an answer. This allows to know what the user has answered
+		 * to a question that is determined by the sessionContextId.
 		 */
 		String answerIndexStr = request.getParameter("quizAnswerIndex");
 		Integer answerIndex = -1;
@@ -113,7 +120,8 @@ public class RunQuizController extends AbstractController {
 			record.setScore(record.getScore() + 1);
 
 		// Updating the database with the previous calculated results
-		RecordAnswerForm recordAnswerForm = new RecordAnswerForm(this.recordAnswerDAO, this.recordDAO);
+		RecordAnswerForm recordAnswerForm = new RecordAnswerForm(RunQuizController.recordAnswerDAO,
+				RunQuizController.recordDAO);
 		try {
 			recordAnswerForm.recordAnAnswer(record, answerToRecord);
 		} catch (DAOException e) {
@@ -123,16 +131,16 @@ public class RunQuizController extends AbstractController {
 		}
 
 		/*
-		 * Refreshing the page, in order to prepare the next question to display to the
-		 * user
+		 * Refreshing the page, in order to prepare the next question to display
+		 * to the user
 		 */
 		response.sendRedirect(request.getServletContext().getContextPath() + "/" + Config.URL_RUN_QUIZ);
 	}
 
 	/*
-	 * Common function that allows to fetch a record, regarding a specific contextId
-	 * that is stored in session. It's important that only one record is fetched ;
-	 * otherwise, an error is thrown
+	 * Common function that allows to fetch a record, regarding a specific
+	 * contextId that is stored in session. It's important that only one record
+	 * is fetched ; otherwise, an error is thrown
 	 */
 	Record getRecordFromSessionContextId(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		UUID contextId;
