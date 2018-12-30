@@ -39,16 +39,20 @@ public class CreateQuizController extends AbstractController {
 			"deleteQuestion_([0-9]+)", "deleteAnswer_([0-9]+)_fromQuestion_([0-9]+)", "moveUpQuestion_([0-9]+)",
 			"moveDownQuestion_([0-9]+)", "moveUpAnswer_([0-9]+)_fromQuestion_([0-9]+)",
 			"moveDownAnswer_([0-9]+)_fromQuestion_([0-9]+)", "createQuiz", "confirmQuiz" };
-	private ThemeDAO themeDAO;
-	private QuizDAO quizDAO;
-	private QuestionDAO questionDAO;
-	private AnswerDAO possibleAnswerDAO;
+	private static ThemeDAO themeDAO;
+	private static QuizDAO quizDAO;
+	private static QuestionDAO questionDAO;
+	private static AnswerDAO possibleAnswerDAO;
 
 	public void init() throws ServletException {
-		this.themeDAO = ((DAOFactory) getServletContext().getAttribute(Config.CONF_DAO_FACTORY)).getThemeDAO();
-		this.quizDAO = ((DAOFactory) getServletContext().getAttribute(Config.CONF_DAO_FACTORY)).getQuizDAO();
-		this.questionDAO = ((DAOFactory) getServletContext().getAttribute(Config.CONF_DAO_FACTORY)).getQuestionDAO();
-		this.possibleAnswerDAO = ((DAOFactory) getServletContext().getAttribute(Config.CONF_DAO_FACTORY))
+		CreateQuizController.themeDAO = ((DAOFactory) getServletContext().getAttribute(Config.CONF_DAO_FACTORY))
+				.getThemeDAO();
+		CreateQuizController.quizDAO = ((DAOFactory) getServletContext().getAttribute(Config.CONF_DAO_FACTORY))
+				.getQuizDAO();
+		CreateQuizController.questionDAO = ((DAOFactory) getServletContext().getAttribute(Config.CONF_DAO_FACTORY))
+				.getQuestionDAO();
+		CreateQuizController.possibleAnswerDAO = ((DAOFactory) getServletContext()
+				.getAttribute(Config.CONF_DAO_FACTORY))
 				.getAnswerDAO();
 	}
 

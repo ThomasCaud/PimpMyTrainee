@@ -36,14 +36,16 @@ public class RunQuizController extends AbstractController {
 	private static final String VIEW_END = "/WEB-INF/run_end_quiz.jsp";
 	private static final String ATT_QUESTION = "question";
 	private static final String ATT_QUESTION_NUMBER = "questionNumber";
-	private QuizDAO quizDAO;
-	private RecordDAO recordDAO;
-	private RecordAnswerDAO recordAnswerDAO;
+	private static QuizDAO quizDAO;
+	private static RecordDAO recordDAO;
+	private static RecordAnswerDAO recordAnswerDAO;
 
 	public void init() throws ServletException {
-		this.quizDAO = ((DAOFactory) getServletContext().getAttribute(Config.CONF_DAO_FACTORY)).getQuizDAO();
-		this.recordDAO = ((DAOFactory) getServletContext().getAttribute(Config.CONF_DAO_FACTORY)).getRecordDAO();
-		this.recordAnswerDAO = ((DAOFactory) getServletContext().getAttribute(Config.CONF_DAO_FACTORY))
+		RunQuizController.quizDAO = ((DAOFactory) getServletContext().getAttribute(Config.CONF_DAO_FACTORY))
+				.getQuizDAO();
+		RunQuizController.recordDAO = ((DAOFactory) getServletContext().getAttribute(Config.CONF_DAO_FACTORY))
+				.getRecordDAO();
+		RunQuizController.recordAnswerDAO = ((DAOFactory) getServletContext().getAttribute(Config.CONF_DAO_FACTORY))
 				.getRecordAnswerDAO();
 	}
 
@@ -113,7 +115,8 @@ public class RunQuizController extends AbstractController {
 			record.setScore(record.getScore() + 1);
 
 		// Updating the database with the previous calculated results
-		RecordAnswerForm recordAnswerForm = new RecordAnswerForm(this.recordAnswerDAO, this.recordDAO);
+		RecordAnswerForm recordAnswerForm = new RecordAnswerForm(RunQuizController.recordAnswerDAO,
+				RunQuizController.recordDAO);
 		try {
 			recordAnswerForm.recordAnAnswer(record, answerToRecord);
 		} catch (DAOException e) {

@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.util.Properties;
 
 import org.apache.commons.mail.EmailException;
+import org.apache.log4j.Logger;
 
 import com.sendgrid.Content;
 import com.sendgrid.Email;
@@ -19,6 +20,7 @@ import dao.exceptions.DAOConfigurationException;
 public class GmailEmailSendor {
 
 	public static GmailEmailSendor instance;
+	private static Logger logger = Logger.getLogger(GmailEmailSendor.class);
 	private static final String PROPERTIES_FILE = "/common/common.properties";
 	private static final String PROP_SEND_GRID_KEY = "send_grid_key";
 	private static final String FROM_EMAIL = "pimp.my@trainee.io";
@@ -63,11 +65,11 @@ public class GmailEmailSendor {
 			request.setEndpoint("mail/send");
 			request.setBody(mail.build());
 			Response response = this.sg.api(request);
-			System.out.println(response.getStatusCode());
-			System.out.println(response.getBody());
-			System.out.println(response.getHeaders());
+			logger.info(response.getStatusCode());
+			logger.info(response.getBody());
+			logger.info(response.getHeaders());
 		} catch (IOException ex) {
-			System.out.println(ex);
+			logger.error(ex);
 		}
 	}
 }

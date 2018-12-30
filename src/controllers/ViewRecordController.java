@@ -26,10 +26,11 @@ public class ViewRecordController extends AbstractController {
 	private static final String VIEW = "/WEB-INF/trainee_view_record.jsp";
 	private static final String ATT_RECORD = "record";
 	private static final String ATT_QUIZ = "quiz";
-	private RecordDAO recordDAO;
+	private static RecordDAO recordDAO;
 
 	public void init() throws ServletException {
-		this.recordDAO = ((DAOFactory) getServletContext().getAttribute(Config.CONF_DAO_FACTORY)).getRecordDAO();
+		ViewRecordController.recordDAO = ((DAOFactory) getServletContext().getAttribute(Config.CONF_DAO_FACTORY))
+				.getRecordDAO();
 	}
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

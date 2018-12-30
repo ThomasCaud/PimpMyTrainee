@@ -22,10 +22,11 @@ public class CreateThemeController extends AbstractController {
 	private static final String ATT_FORM = "form";
 	private static final String ATT_THEME = "theme";
 	private static final String VIEW = "/WEB-INF/admin_create_theme.jsp";
-	private ThemeDAO themeDAO;
+	private static ThemeDAO themeDAO;
 
 	public void init() throws ServletException {
-		this.themeDAO = ((DAOFactory) getServletContext().getAttribute(Config.CONF_DAO_FACTORY)).getThemeDAO();
+		CreateThemeController.themeDAO = ((DAOFactory) getServletContext().getAttribute(Config.CONF_DAO_FACTORY))
+				.getThemeDAO();
 	}
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

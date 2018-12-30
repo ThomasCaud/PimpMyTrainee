@@ -3,6 +3,8 @@
 ## Continuous Integration/Deployment
 ### SonarCloud
 [![Badges from SonarCloud](https://sonarcloud.io/api/project_badges/measure?project=ThomasCaud_PimpMyTrainee&metric=sqale_rating)](https://sonarcloud.io/api/project_badges/measure?project=ThomasCaud_PimpMyTrainee&metric=sqale_rating)
+[![Badges from SonarCloud](https://sonarcloud.io/api/project_badges/measure?project=ThomasCaud_PimpMyTrainee&metric=bugs)](https://sonarcloud.io/api/project_badges/measure?project=ThomasCaud_PimpMyTrainee&metric=bugs)
+[![Badges from SonarCloud](https://sonarcloud.io/api/project_badges/measure?project=ThomasCaud_PimpMyTrainee&metric=sqale_index)](https://sonarcloud.io/api/project_badges/measure?project=ThomasCaud_PimpMyTrainee&metric=sqale_index)
 
 ## Links
 [subject](https://e.edim.co/125089730/Projet1.pdf?&Expires=1538641667&Signature=KSnoNLeWNyCXUW2MLOhubhjVYgON-M67J0OPsC~UKobCK19MLI90~hkmrX0Ppt6dINvlzjJiqLUFz8RxVwGITyPFPfD2pRHZKnSI4VQhYCZKSjHcoMQcHNW4-eWK6X~oJvkG5ueoDfBa7WkHBKsF58A67IrfnKNmjDhghgY~u-~shGPTjxOH3oZK6bIK7zhlJMPNmMWZuQtGXXQkncHSB54XjioRjWo2QBDDYn~yPFXfIigd7aBNSJOKYsVPnGg6qldFJiNZxoFnVN69zDNGEf9GXNhx7HuW0yMJq7v2UeuDA-piW5E-O-G5cYmxg89KUSgIEHx~1z9Dip7AMdRlvQ__&Key-Pair-Id=APKAJMSU6JYPN6FG5PBQ)

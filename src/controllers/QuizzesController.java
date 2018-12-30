@@ -7,8 +7,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.log4j.Logger;
-
 import common.Config;
 import dao.DAOFactory;
 import models.beans.E_Role;
@@ -19,17 +17,15 @@ import utils.QuizzesManager;
 @WebServlet("/" + Config.URL_QUIZZES)
 public class QuizzesController extends AbstractController {
 
-	private static Logger logger = Logger.getLogger(QuizzesController.class);
-
 	private static final long serialVersionUID = 1L;
 	private static final String VIEW_ADMIN = "/WEB-INF/admin_quizzes_management.jsp";
 	private static final String VIEW_TRAINEE = "/WEB-INF/trainee_quizzes.jsp";
 	private static final String ATT_ACTIVATE = "activate";
 	private static final String ATT_DEACTIVATE = "deactivate";
-	private QuizzesManager quizzesManager;
+	private static QuizzesManager quizzesManager;
 
 	public void init() throws ServletException {
-		quizzesManager = new QuizzesManager(
+		QuizzesController.quizzesManager = new QuizzesManager(
 				((DAOFactory) getServletContext().getAttribute(Config.CONF_DAO_FACTORY)).getQuizDAO());
 	}
 

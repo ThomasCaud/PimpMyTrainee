@@ -23,10 +23,10 @@ public class LoginController extends HttpServlet {
 	private static final String ATT_FORM = "form";
 	private static final String ATT_USER = "user";
 	private static final String VIEW = "/WEB-INF/login.jsp";
-	private UserDAO userDAO;
+	private static UserDAO userDAO;
 
 	public void init() throws ServletException {
-		this.userDAO = ((DAOFactory) getServletContext().getAttribute(Config.CONF_DAO_FACTORY)).getUserDAO();
+		LoginController.userDAO = ((DAOFactory) getServletContext().getAttribute(Config.CONF_DAO_FACTORY)).getUserDAO();
 	}
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

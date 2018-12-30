@@ -7,11 +7,14 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
 
+import org.apache.log4j.Logger;
+
 import dao.DAOFactory;
 
 @WebListener
 public class InitServletContext implements ServletContextListener {
 
+	private static Logger logger = Logger.getLogger(InitServletContext.class);
 	private static final String ATT_DAO_FACTORY = "daofactory";
 	private DAOFactory daoFactory;
 
@@ -36,11 +39,11 @@ public class InitServletContext implements ServletContextListener {
 				try {
 					servletContext.setAttribute(fieldName, field.get(fieldName));
 				} catch (SecurityException e) {
-					e.printStackTrace();
+					logger.error(e.getStackTrace());
 				} catch (IllegalArgumentException e) {
-					e.printStackTrace();
+					logger.error(e.getStackTrace());
 				} catch (IllegalAccessException e) {
-					e.printStackTrace();
+					logger.error(e.getStackTrace());
 				}
 			}
 		}
