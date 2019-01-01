@@ -46,7 +46,15 @@ public class ViewRecordController extends AbstractController {
 		HashMap<String, Object> filters = new HashMap<String, Object>();
 		filters.put("id", recordId);
 		filters.put("trainee", user.getId());
-		ArrayList<Record> records = recordDAO.findBy(filters);
+
+		ArrayList<Record> records = new ArrayList<Record>();
+		try {
+			records = recordDAO.findBy(filters);
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			return;
+		}
 
 		if (records.size() != 1) {
 			logger.error("Records size should be equal to 1, but is equal to " + records.size());
