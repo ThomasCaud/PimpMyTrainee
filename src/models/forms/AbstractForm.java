@@ -5,8 +5,6 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.jasypt.util.password.ConfigurablePasswordEncryptor;
-
 import models.beans.E_Role;
 
 public abstract class AbstractForm {
@@ -14,8 +12,6 @@ public abstract class AbstractForm {
 	// validation
 	// process
 	protected Map<String, String> errors = new HashMap<String, String>();
-	protected static final String ALGO_CHIFFREMENT = "SHA-256";
-	ConfigurablePasswordEncryptor passwordEncryptor = new ConfigurablePasswordEncryptor();
 
 	public Map<String, String> getErrors() {
 		return errors;
@@ -23,11 +19,6 @@ public abstract class AbstractForm {
 
 	protected void setError(String field, String message) {
 		errors.put(field, message);
-	}
-
-	AbstractForm() {
-		passwordEncryptor.setAlgorithm(ALGO_CHIFFREMENT);
-		passwordEncryptor.setPlainDigest(false);
 	}
 
 	/*

@@ -2,6 +2,7 @@ package models.forms;
 
 import javax.servlet.http.HttpServletRequest;
 
+import common.PasswordManager;
 import dao.interfaces.UserDAO;
 import models.beans.User;
 
@@ -50,7 +51,7 @@ public class LoginForm extends AbstractForm {
 				setError(FIELD_EMAIL, "The credentials don't match.");
 				return user;
 			} else {
-				if (passwordEncryptor.checkPassword(user.getPassword(), existingUser.getPassword()))
+				if (PasswordManager.getInstance().checkPasswords(user.getPassword(), existingUser.getPassword()))
 					return existingUser;
 				else {
 					setError(FIELD_PASSWORD, "The credentials don't match.");
