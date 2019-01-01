@@ -63,7 +63,8 @@ public class UserDAOImpl extends AbstractDAOImpl<User> implements UserDAO {
 			connection = daoFactory.getConnection();
 			preparedStatement = initPreparedStatement(connection, SQL_INSERT_USER, true, user.getFirstname(),
 					user.getLastname(), user.getEmail(), user.getPassword(), user.getCompany(), user.getPhone(),
-					(user.getIsActive() ? 1 : 0), user.getRole().toString().toLowerCase(), creator.getId());
+					(user.getIsActive() ? 1 : 0), user.getRole().toString().toLowerCase(),
+					(creator == null ? null : creator.getId()));
 			int status = preparedStatement.executeUpdate();
 
 			if (status == 0) {
@@ -75,8 +76,7 @@ public class UserDAOImpl extends AbstractDAOImpl<User> implements UserDAO {
 			if (resultSet.next()) {
 				user.setId(resultSet.getInt(1));
 			} else {
-				throw new DAOException(
-						"Échec de la création de l'utilisateur en base, aucun ID auto-généré retourné.");
+				throw new DAOException("Échec de la création de l'utilisateur en base, aucun ID auto-généré retourné.");
 			}
 
 		} catch (SQLException e) {
