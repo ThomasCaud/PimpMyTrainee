@@ -9,8 +9,11 @@
 			<button class="btn btn-danger" id="btn_dbadmin_drop_all_tables">Drop all tables</button><br>
 			Output: <span id="span_dbadmin_drop_all_tables"></span><br/>
 			
-			<button class="btn btn-danger" id="btn_dbadmin_create_all_tables">Create all tables</button><br>
+			<button class="btn btn-success" id="btn_dbadmin_create_all_tables">Create all tables</button><br>
 			Output: <span id="span_dbadmin_create_all_tables"></span><br/>
+			
+			<button class="btn btn-success" id="btn_dbadmin_create_admin_account">Create an admin account</button><br>
+			Output: <span id="span_dbadmin_create_admin_account"></span><br/>
 		</div>
 	</div>
 </div>

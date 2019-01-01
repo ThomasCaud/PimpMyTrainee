@@ -24,4 +24,19 @@ $(document).ready(function(){
 			$this.removeAttr("disabled");
 		});
 	})
+	
+	$('#btn_dbadmin_create_admin_account').on('click',function(e) {
+		e.preventDefault();
+		var $this = $(this)
+		
+		$this.attr("disabled", "disabled");
+		$('#span_dbadmin_create_admin_account').text('Creating admin account...')
+		
+		$.post("databaseAdministration", {action:'create_admin_account'}).done(function(responseJson) {
+			var email = responseJson.email;
+			var password= responseJson.password;
+			$('#span_dbadmin_create_admin_account').text('An admin has been created with the email '+email+'. The password is '+password)
+			$this.removeAttr("disabled");
+		});
+	})
 })
