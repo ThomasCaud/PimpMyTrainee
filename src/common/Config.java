@@ -30,4 +30,6 @@ public class Config {
 	public static final String URL_RESULTS = "records";
 	public static final String URL_VIEW_RECORD = "viewRecord";
 	public static final String URL_SETTINGS = "settings";
+	public static final String URL_DATABASE_ADMINISTRATION = "databaseAdministration";
+
 }

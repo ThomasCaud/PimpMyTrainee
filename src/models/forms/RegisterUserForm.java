@@ -8,7 +8,7 @@ import org.apache.commons.mail.EmailException;
 import org.apache.log4j.Logger;
 
 import common.GmailEmailSendor;
-import common.RandomStringGenerator;
+import common.PasswordManager;
 import dao.interfaces.UserDAO;
 import models.beans.E_Role;
 import models.beans.User;
@@ -105,9 +105,9 @@ public class RegisterUserForm extends AbstractForm {
 				return user;
 			}
 
-			String password = RandomStringGenerator.getRandomString(10);
+			String password = PasswordManager.getInstance().getNewPassword();
 
-			user.setPassword(passwordEncryptor.encryptPassword(password));
+			user.setPassword(PasswordManager.getInstance().getEncryptedValue(password));
 			user.setIsActive(true);
 			user.setCreationDate(new Timestamp(System.currentTimeMillis()));
 

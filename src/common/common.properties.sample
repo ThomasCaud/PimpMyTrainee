@@ -3,3 +3,4 @@ driver = com.mysql.cj.jdbc.Driver
 user = ai12
 password = passworddatabase
 send_grid_key = goToTheCredentialsDoc
+default_admin_email = admin@pimpmytrainee.fr

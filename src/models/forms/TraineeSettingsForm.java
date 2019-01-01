@@ -2,6 +2,7 @@ package models.forms;
 
 import javax.servlet.http.HttpServletRequest;
 
+import common.PasswordManager;
 import dao.interfaces.UserDAO;
 import models.beans.User;
 
@@ -30,7 +31,7 @@ public class TraineeSettingsForm extends AbstractForm {
 			setError(FIELD_PASSWORD_CONFIRMATION, "Password confirm doesn't work.");
 			return;
 		}
-		user.setPassword(passwordEncryptor.encryptPassword(password));
+		user.setPassword(PasswordManager.getInstance().getEncryptedValue(password));
 	}
 
 	public void processPhoneValidation(String phone, User user) {
