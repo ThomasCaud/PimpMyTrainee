@@ -6,7 +6,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import org.apache.log4j.Logger;
+
 public class DAOCommon {
+	private static Logger logger = Logger.getLogger(DAOCommon.class);
+
+	private DAOCommon() {
+	}
 
 	/* Fermeture silencieuse du resultset */
 	public static void silentClose(ResultSet resultSet) {
@@ -14,7 +20,7 @@ public class DAOCommon {
 			try {
 				resultSet.close();
 			} catch (SQLException e) {
-				System.out.println("Échec de la fermeture du ResultSet : " + e.getMessage());
+				logger.error("Echec de la fermeture du ResultSet : " + e.getMessage());
 			}
 		}
 	}
@@ -25,7 +31,7 @@ public class DAOCommon {
 			try {
 				statement.close();
 			} catch (SQLException e) {
-				System.out.println("Échec de la fermeture du Statement : " + e.getMessage());
+				logger.error("Echec de la fermeture du Statement : " + e.getMessage());
 			}
 		}
 	}
@@ -36,7 +42,7 @@ public class DAOCommon {
 			try {
 				connection.close();
 			} catch (SQLException e) {
-				System.out.println("Échec de la fermeture de la connexion : " + e.getMessage());
+				logger.error("Echec de la fermeture de la connexion : " + e.getMessage());
 			}
 		}
 	}

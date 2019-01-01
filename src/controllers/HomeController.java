@@ -27,12 +27,18 @@ public class HomeController extends AbstractController {
 	private static final String VIEW_ADMIN = "/WEB-INF/admin_index.jsp";
 	private static final String VIEW_TRAINEE = "/WEB-INF/trainee_index.jsp";
 
-	private RecordDAO recordDAO;
-	private StatsDAO statsDAO;
+	private static RecordDAO recordDAO;
+	private static StatsDAO statsDAO;
+
+	public static void setDAOs(RecordDAO recordDAO, StatsDAO statsDAO) {
+		HomeController.recordDAO = recordDAO;
+		HomeController.statsDAO = statsDAO;
+	}
 
 	public void init() throws ServletException {
-		this.recordDAO = ((DAOFactory) getServletContext().getAttribute(Config.CONF_DAO_FACTORY)).getRecordDAO();
-		this.statsDAO = ((DAOFactory) getServletContext().getAttribute(Config.CONF_DAO_FACTORY)).getStatsDAO();
+		DAOFactory daoFactory = (DAOFactory) getServletContext().getAttribute(Config.CONF_DAO_FACTORY);
+
+		HomeController.setDAOs(daoFactory.getRecordDAO(), daoFactory.getStatsDAO());
 	}
 
 	private ArrayList<Record> search(User trainee, String search) {

@@ -20,10 +20,15 @@ public class SettingsController extends AbstractController {
 	private static final String ATT_USER = "user";
 	private static final String ATT_FORM = "form";
 
-	private UserDAO userDAO;
+	private static UserDAO userDAO;
+
+	public static void setDAOs(UserDAO userDAO) {
+		SettingsController.userDAO = userDAO;
+	}
 
 	public void init() throws ServletException {
-		this.userDAO = ((DAOFactory) getServletContext().getAttribute(Config.CONF_DAO_FACTORY)).getUserDAO();
+		SettingsController
+				.setDAOs(((DAOFactory) getServletContext().getAttribute(Config.CONF_DAO_FACTORY)).getUserDAO());
 	}
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
