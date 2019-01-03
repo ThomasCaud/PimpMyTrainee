@@ -18,7 +18,7 @@
 
 	<hr>
 	
-	<c:if test="${fn:length(users) != 0 || search != null}}">
+	<c:if test="${fn:length(users) != 0 || search != null}">
 		<div class="row justify-content-center">
 			<div class="col-12 col-sm-12 col-lg-5">
 				<form method="get" action="" class="form-inline">
