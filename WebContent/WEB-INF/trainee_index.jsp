@@ -11,7 +11,7 @@
 		</div>
 		<hr>
 
-		<c:if test="${fn:length(quizzes) != 0}">
+		<c:if test="${fn:length(quizzes) != 0 || search != null}">
 			<div class="row justify-content-center">
 				<div class="col-12 col-sm-12 col-lg-5">
 					<form method="get" action="" class="form-inline">
@@ -28,7 +28,7 @@
 			<hr>
 		</c:if>
 			
-		<c:if test="${search != null && search != '' && fn:length(quizzes) != 0}">
+		<c:if test="${search != null && search != ''}">
 			<h5 class="inline-block">
 				Results for the search "${search}" <a href="<c:url value = "/"/>"
 					class="btn btn-danger btn-sm"><i class="fa fa-times"></i></a>
