@@ -1,19 +1,18 @@
 <%@ include file="header.jsp"%>
 
-<%@ include file="trainee_navbar.jsp"%>
+<%@ include file="navbar.jsp"%>
 
 <div class="container">
 	<div class="row ">
 		<div class="col-12">
 			<div class="row align-items-center">
 				<div class="col-12 col-sm-6 col-md-7 col-lg-8">
-					<h1>Your Result</h1>
+					<h1>Result</h1>
 				</div>
 				<div class="col-12 col-sm-6 col-md-5 col-lg-4">
-					<a href="<c:url value = "/${applicationScope.URL_ROOT}" />"
-						class="btn btn-warning btn-block"> <i class="fa fa-arrow-left"></i>
-						Back to the homepage
-					</a>
+					<input formaction="action"
+						onclick="window.history.go(-1); return false;" type="button"
+						value="Back to the previous page" class="btn btn-warning btn-block">
 				</div>
 			</div>
 			

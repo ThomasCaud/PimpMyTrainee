@@ -44,7 +44,64 @@
 						</div>
 					</form>
 				</div>
-				<div class="tab-pane fade" id="records"></div>
+				<div class="tab-pane fade" id="records">
+					<c:choose>
+						<c:when test="${records.size() == 0}">
+							No saved result.
+						</c:when>
+						<c:otherwise>
+							<hr>
+							<div class="row justify-content-center">
+								<div class="col-12 col-sm-12 col-lg-5">
+									<form method="get" action="" class="form-inline">
+										<input type="text" class="form-control col-10"
+											placeholder="Search" name="searchResults">
+										<div class="col-2">
+											<button type="submit" class="btn btn-primary form-control">
+												<i class="fa fa-search"></i>
+											</button>
+										</div>
+									</form>
+								</div>
+							</div>
+							<hr>
+							<c:if test="${searchResults != null && searchResults != ''}">
+								<h5 class="inline-block">
+									Results for the search "${searchResults}" <a
+										href="<c:url value = "/${applicationScope.URL_VIEW_USER}/${user.id}"/>"
+										class="btn btn-danger btn-sm"><i class="fa fa-times"></i></a>
+								</h5>
+							</c:if>
+							<table class="table table-responsive-sm table-sm table-bordered">
+								<thead class="thead-dark">
+									<tr>
+										<th>Firstname</th>
+										<th>Lastname</th>
+										<th>Score</th>
+										<th>Duration</th>
+										<th>Rank</th>
+										<th class="text-center">Action</th>
+									</tr>
+								</thead>
+								<tbody>
+									<c:forEach items="${records}" var="record">
+										<tr>
+											<td>${record.trainee.firstname}</td>
+											<td>${record.trainee.lastname}</td>
+											<td>${record.score}/${record.answers.size()}</td>
+											<td>${record.duration}sec.</td>
+											<td>${record.ranking.scoreRank}/${record.ranking.nbRespondents}</td>
+											<td class="text-center"><a
+												href="<c:url value = "/${applicationScope.URL_VIEW_RECORD}/${record.id}"/>"
+												class="btn btn-link"><i class="fa fa-eye"></i></a>
+											</td>
+										</tr>
+									</c:forEach>
+								</tbody>
+							</table>
+						</c:otherwise>
+					</c:choose>
+				</div>
 			</div>		
 		</div>
 	</div>
