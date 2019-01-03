@@ -167,8 +167,9 @@
 											<td>${record.ranking.durationOfBestScore}sec.</td>
 											<td>${record.ranking.scoreRank}/${record.ranking.nbRespondents}</td>
 											<td class="text-center"><a
-												href="<c:url value = "/${applicationScope.URL_VIEW_RESULT}/${record.id}"/>"
-												class="btn btn-link"><i class="fa fa-eye"></i></a></td>
+												href="<c:url value = "/${applicationScope.URL_VIEW_RECORD}/${record.id}"/>"
+												class="btn btn-link"><i class="fa fa-eye"></i></a>
+											</td>
 										</tr>
 									</c:forEach>
 								</tbody>

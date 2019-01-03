@@ -50,7 +50,7 @@ public class LoginController extends HttpServlet {
 			return;
 		}
 
-		/* Récupération de la session depuis la requête */
+		/* RÃ©cupÃ©ration de la session depuis la requÃªte */
 		HttpSession session = request.getSession();
 
 		session.setAttribute(Config.ATT_SESSION_USER, user);

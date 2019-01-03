@@ -21,5 +21,7 @@ public interface QuizDAO extends CommonDAO<Quiz> {
 
 	ArrayList<Quiz> searchAvailableQuizzes(User trainee, String value) throws DAOException;
 
-	Integer countAvailableQuizzes(User trainee) throws DAOException;
+	int countAvailableQuizzes(User trainee) throws DAOException;
+
+	int countNbOfRecordsForAQuiz(Quiz quiz) throws DAOException;
 }

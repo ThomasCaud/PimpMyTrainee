@@ -13,8 +13,8 @@ import dao.interfaces.UserDAO;
 import models.beans.E_Role;
 import models.beans.User;
 
-public class RegisterUserForm extends AbstractForm {
-	private static Logger logger = Logger.getLogger(RegisterUserForm.class);
+public class UserForm extends AbstractForm {
+	private static Logger logger = Logger.getLogger(UserForm.class);
 
 	// Variables that represents each field of the form
 	private static final String FIELD_FIRSTNAME = "firstname";
@@ -23,9 +23,12 @@ public class RegisterUserForm extends AbstractForm {
 	private static final String FIELD_COMPANY = "company";
 	private static final String FIELD_PHONE = "phone";
 	private static final String FIELD_ROLE = "role";
+	private static final String FIELD_CURRENT_PASSWORD = "currentPassword";
+	private static final String FIELD_NEW_PASSWORD = "newPassword";
+	private static final String FIELD_CONFIRM_PASSWORD = "confirmPassword";
 	private UserDAO userDAO;
 
-	public RegisterUserForm(UserDAO userDAO) {
+	public UserForm(UserDAO userDAO) {
 		super();
 		this.userDAO = userDAO;
 	}
@@ -119,5 +122,39 @@ public class RegisterUserForm extends AbstractForm {
 			return user;
 		}
 		return user;
+	}
+
+	public void changePassword(HttpServletRequest request, User pConnectedUser) {
+		String currentPassword = getFieldValue(request, FIELD_CURRENT_PASSWORD);
+		String newPassword = getFieldValue(request, FIELD_NEW_PASSWORD);
+		String confirmPassword = getFieldValue(request, FIELD_CONFIRM_PASSWORD);
+
+		processNotNullAndNotEmpty(currentPassword, FIELD_CURRENT_PASSWORD);
+		processNotNullAndNotEmpty(newPassword, FIELD_NEW_PASSWORD);
+		processNotNullAndNotEmpty(confirmPassword, FIELD_CONFIRM_PASSWORD);
+
+		if (this.getErrors().isEmpty()) {
+			User vConnectedUser = userDAO.find(pConnectedUser.getId());
+
+			if (PasswordManager.getInstance().checkPasswords(currentPassword, vConnectedUser.getPassword())) {
+
+				if (newPassword.equals(confirmPassword)) {
+					String newPasswordEncrypted = PasswordManager.getInstance().getEncryptedValue(newPassword);
+					userDAO.update("password", newPasswordEncrypted, "id", vConnectedUser.getId());
+					setSuccessMessage("Password successfully changed !");
+				} else {
+					setError(FIELD_CONFIRM_PASSWORD, "The passwords are not the same");
+				}
+
+			} else {
+				setError(FIELD_CURRENT_PASSWORD, "This is not your current password");
+			}
+		}
+	}
+
+	public void processNotNullAndNotEmpty(String value, String key) {
+		if (isNullOrEmpty(value)) {
+			setError(key, "This field cannot be empty.");
+		}
 	}
 }

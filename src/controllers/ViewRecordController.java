@@ -39,13 +39,11 @@ public class ViewRecordController extends AbstractController {
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		User user = checkSessionUser(request, response);
-		checkTraineeOnly(user, response);
 
 		Integer recordId = getIntegerFromURL(request, response);
 
 		HashMap<String, Object> filters = new HashMap<String, Object>();
 		filters.put("id", recordId);
-		filters.put("trainee", user.getId());
 
 		ArrayList<Record> records = new ArrayList<Record>();
 		try {

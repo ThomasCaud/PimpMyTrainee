@@ -14,6 +14,7 @@
 				href="<c:url value = "/${applicationScope.URL_SETTINGS}" />">Settings</a></li>
 		</ul>
 		<form class="form-inline my-2 my-lg-0">
+			<a class="form-control mr-sm-2" href="<c:url value="/${applicationScope.URL_MY_PROFILE}" />">My profile</a>
 			<a class="btn btn-secondary my-2 my-sm-0"
 				href="<c:url value = "/${applicationScope.URL_LOGOUT}" />">Logout</a>
 		</form>

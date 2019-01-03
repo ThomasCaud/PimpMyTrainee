@@ -125,4 +125,8 @@ public class Record implements Serializable {
 		return "Record [id=" + id + ", score=" + score + ", duration=" + duration + ", quiz=" + quiz + ", trainee="
 				+ trainee + ", answers=" + answers + "]";
 	}
+
+	public int getScoreRank() {
+		return this.ranking.getScoreRank();
+	}
 }

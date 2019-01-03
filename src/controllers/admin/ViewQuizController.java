@@ -3,6 +3,7 @@ package controllers.admin;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -20,8 +21,10 @@ import dao.DAOFactory;
 import dao.interfaces.AnswerDAO;
 import dao.interfaces.QuestionDAO;
 import dao.interfaces.QuizDAO;
+import dao.interfaces.RecordDAO;
 import dao.interfaces.ThemeDAO;
 import models.beans.Quiz;
+import models.beans.Record;
 import models.beans.Theme;
 import models.beans.User;
 import models.forms.QuizForm;
@@ -35,6 +38,7 @@ public class ViewQuizController extends AbstractController {
 	private static final String ATT_QUIZ = "quiz";
 	private static final String ATT_THEMES = "themes";
 	private static final String ATT_FORM = "form";
+	private static final String ATT_RECORDS = "records";
 	private static final String FIELD_SUBMIT = "submit";
 	private static final String[] ALLOWED_SUBMIT_PATTERNS = { "newQuestion", "newAnswer_([0-9]+)",
 			"deleteQuestion_([0-9]+)", "deleteAnswer_([0-9]+)_fromQuestion_([0-9]+)", "moveUpQuestion_([0-9]+)",
@@ -44,18 +48,21 @@ public class ViewQuizController extends AbstractController {
 	private static ThemeDAO themeDAO;
 	private static QuestionDAO questionDAO;
 	private static AnswerDAO answerDAO;
+	private static RecordDAO recordDAO;
 
-	public static void setDAOs(QuizDAO quizDAO, ThemeDAO themeDAO, QuestionDAO questionDAO, AnswerDAO answerDAO) {
+	public static void setDAOs(QuizDAO quizDAO, ThemeDAO themeDAO, QuestionDAO questionDAO, AnswerDAO answerDAO,
+			RecordDAO recordDAO) {
 		ViewQuizController.quizDAO = quizDAO;
 		ViewQuizController.themeDAO = themeDAO;
 		ViewQuizController.questionDAO = questionDAO;
 		ViewQuizController.answerDAO = answerDAO;
+		ViewQuizController.recordDAO = recordDAO;
 	}
 
 	public void init() throws ServletException {
 		DAOFactory daoFactory = (DAOFactory) getServletContext().getAttribute(Config.CONF_DAO_FACTORY);
 		ViewQuizController.setDAOs(daoFactory.getQuizDAO(), daoFactory.getThemeDAO(), daoFactory.getQuestionDAO(),
-				daoFactory.getAnswerDAO());
+				daoFactory.getAnswerDAO(), daoFactory.getRecordDAO());
 	}
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -95,6 +102,21 @@ public class ViewQuizController extends AbstractController {
 			return;
 		}
 
+		ArrayList<Record> records = new ArrayList<Record>();
+		ArrayList<Record> listToGetTrainees = recordDAO.findBy("quiz", quiz.getId());
+		for (Record tmpRecord : listToGetTrainees) {
+			User trainee = tmpRecord.getTrainee();
+			ArrayList<Record> recordsOfThisTrainee = recordDAO.getOnAdminView(trainee, null);
+
+			for (Record record : recordsOfThisTrainee) {
+				if (record.getQuiz().getId() == quiz.getId()) {
+					records.add(record);
+				}
+			}
+		}
+		records.sort(Comparator.comparingInt(Record::getScoreRank));
+
+		request.setAttribute(ATT_RECORDS, records);
 		request.setAttribute(ATT_THEMES, themes);
 		request.setAttribute(ATT_QUIZ, quiz);
 

@@ -35,6 +35,7 @@ public class QuizDAOImpl extends AbstractDAOImpl<Quiz> implements QuizDAO {
 			+ " WHERE creator = ? AND idRespondent IS null AND Quizzes.isActive IS true;";
 	private static final String SQL_INSERT_QUIZ = "INSERT INTO Quizzes (title, theme, creator, creationDate, isActive) VALUES (?,?,?,NOW(),?)";
 	private static final String SQL_UPDATE_QUIZ = "UPDATE Quizzes set title = ?, theme = ?, isActive = ? WHERE id = ?";
+	private static final String SQL_COUNT_RECORDS_OF_A_SPECIFIC_QUIZ = "SELECT COUNT(*) as count FROM pimpmytrainee.records WHERE quiz = ?";
 
 	public QuizDAOImpl() {
 		super(null, tableName);
@@ -66,6 +67,8 @@ public class QuizDAOImpl extends AbstractDAOImpl<Quiz> implements QuizDAO {
 		filters.put("isActive", 1);
 		ArrayList<Question> questions = questionDAO.findBy(filters);
 		quiz.setQuestions(questions);
+
+		quiz.setNbOfRecords(this.countNbOfRecordsForAQuiz(quiz));
 
 		return quiz;
 	}
@@ -209,7 +212,7 @@ public class QuizDAOImpl extends AbstractDAOImpl<Quiz> implements QuizDAO {
 	}
 
 	@Override
-	public Integer countAvailableQuizzes(User trainee) {
+	public int countAvailableQuizzes(User trainee) {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
@@ -219,6 +222,32 @@ public class QuizDAOImpl extends AbstractDAOImpl<Quiz> implements QuizDAO {
 			connection = daoFactory.getConnection();
 			preparedStatement = initPreparedStatement(connection, SQL_COUNT_AVAILABLE_QUIZZES, false, trainee.getId(),
 					trainee.getManager().getId());
+			resultSet = preparedStatement.executeQuery();
+
+			while (resultSet.next()) {
+				result = resultSet.getInt("count");
+			}
+
+		} catch (SQLException e) {
+			throw new DAOException(e);
+		} finally {
+			silentClose(resultSet, preparedStatement, connection);
+		}
+
+		return result;
+	}
+
+	@Override
+	public int countNbOfRecordsForAQuiz(Quiz quiz) throws DAOException {
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+		Integer result = 0;
+
+		try {
+			connection = daoFactory.getConnection();
+			preparedStatement = initPreparedStatement(connection, SQL_COUNT_RECORDS_OF_A_SPECIFIC_QUIZ, false,
+					quiz.getId());
 			resultSet = preparedStatement.executeQuery();
 
 			while (resultSet.next()) {
