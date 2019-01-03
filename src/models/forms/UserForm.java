@@ -13,8 +13,8 @@ import dao.interfaces.UserDAO;
 import models.beans.E_Role;
 import models.beans.User;
 
-public class RegisterUserForm extends AbstractForm {
-	private static Logger logger = Logger.getLogger(RegisterUserForm.class);
+public class UserForm extends AbstractForm {
+	private static Logger logger = Logger.getLogger(UserForm.class);
 
 	// Variables that represents each field of the form
 	private static final String FIELD_FIRSTNAME = "firstname";
@@ -25,7 +25,7 @@ public class RegisterUserForm extends AbstractForm {
 	private static final String FIELD_ROLE = "role";
 	private UserDAO userDAO;
 
-	public RegisterUserForm(UserDAO userDAO) {
+	public UserForm(UserDAO userDAO) {
 		super();
 		this.userDAO = userDAO;
 	}
