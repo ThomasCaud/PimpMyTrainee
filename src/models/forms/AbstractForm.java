@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import models.beans.E_Role;
 
 public abstract class AbstractForm {
+	protected String successMessage;
 	// Map that contains all the errors that are thrown during the form
 	// validation
 	// process
@@ -19,6 +20,14 @@ public abstract class AbstractForm {
 
 	protected void setError(String field, String message) {
 		errors.put(field, message);
+	}
+
+	public String getSuccessMessage() {
+		return successMessage;
+	}
+
+	protected void setSuccessMessage(String message) {
+		successMessage = message;
 	}
 
 	/*
