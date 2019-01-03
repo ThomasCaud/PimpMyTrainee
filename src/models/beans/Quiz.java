@@ -16,11 +16,12 @@ public class Quiz implements Serializable, Container {
 	private static final long serialVersionUID = 1L;
 	private int id;
 	private String title;
-	private Boolean isActive;
+	private boolean isActive;
 	private ArrayList<Question> questions;
 	private Theme theme;
 	private User creator;
 	private Timestamp creationDate;
+	private int nbOfRecords;
 
 	public Quiz() {
 		this.id = -1;
@@ -30,6 +31,7 @@ public class Quiz implements Serializable, Container {
 		this.theme = new Theme("Default");
 		this.creator = null;
 		this.creationDate = new Timestamp(System.currentTimeMillis());
+		this.nbOfRecords = 0;
 	}
 
 	public Quiz(String title, Theme theme, User administrator) {
@@ -39,6 +41,7 @@ public class Quiz implements Serializable, Container {
 		this.theme = theme;
 		this.creator = administrator;
 		this.creationDate = new Timestamp(System.currentTimeMillis());
+		this.nbOfRecords = 0;
 	}
 
 	public Quiz(Quiz q) {
@@ -49,6 +52,7 @@ public class Quiz implements Serializable, Container {
 		this.theme = q.getTheme();
 		this.creator = q.getCreator();
 		this.creationDate = q.getCreationDate();
+		this.nbOfRecords = q.getNbOfRecords();
 	}
 
 	public int getId() {
@@ -107,6 +111,14 @@ public class Quiz implements Serializable, Container {
 
 	public void setCreationDate(Timestamp creationDate) {
 		this.creationDate = creationDate;
+	}
+
+	public int getNbOfRecords() {
+		return nbOfRecords;
+	}
+
+	public void setNbOfRecords(int nbOfRecords) {
+		this.nbOfRecords = nbOfRecords;
 	}
 
 	public String toString() {
