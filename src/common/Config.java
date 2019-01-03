@@ -17,6 +17,7 @@ public class Config {
 	// URLS
 	public static final String URL_ROOT = "";
 	public static final String URL_LOGIN = "login";
+	public static final String URL_MY_PROFILE = "profile";
 	public static final String URL_LOGOUT = "logout";
 	public static final String URL_USERS = "users";
 	public static final String URL_VIEW_USER = "viewUser";
