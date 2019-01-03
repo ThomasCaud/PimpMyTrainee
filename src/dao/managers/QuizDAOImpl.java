@@ -14,6 +14,7 @@ import dao.DAOFactory;
 import dao.exceptions.DAOException;
 import dao.interfaces.QuestionDAO;
 import dao.interfaces.QuizDAO;
+import dao.interfaces.RecordDAO;
 import dao.interfaces.ThemeDAO;
 import dao.interfaces.UserDAO;
 import models.beans.Question;
@@ -66,6 +67,11 @@ public class QuizDAOImpl extends AbstractDAOImpl<Quiz> implements QuizDAO {
 		filters.put("isActive", 1);
 		ArrayList<Question> questions = questionDAO.findBy(filters);
 		quiz.setQuestions(questions);
+
+		RecordDAO recordDAO = DAOFactory.getInstance().getRecordDAO();
+		filters = new HashMap<String, Object>();
+		filters.put("quiz", quiz.getId());
+		quiz.setNbOfRecords(recordDAO.findBy(filters).size());
 
 		return quiz;
 	}
