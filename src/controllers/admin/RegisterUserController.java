@@ -15,7 +15,7 @@ import controllers.AbstractController;
 import dao.DAOFactory;
 import dao.interfaces.UserDAO;
 import models.beans.User;
-import models.forms.RegisterUserForm;
+import models.forms.UserForm;
 
 @WebServlet("/" + Config.URL_REGISTER_USER)
 public class RegisterUserController extends AbstractController {
@@ -44,7 +44,7 @@ public class RegisterUserController extends AbstractController {
 	}
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		RegisterUserForm registerUserForm = new RegisterUserForm(userDAO);
+		UserForm registerUserForm = new UserForm(userDAO);
 
 		User user = null;
 		HttpSession session = request.getSession();
