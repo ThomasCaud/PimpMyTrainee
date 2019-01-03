@@ -18,7 +18,7 @@
 
 	<hr>
 	
-	<c:if test="${fn:length(users) != 0}">
+	<c:if test="${fn:length(users) != 0 || search != null}}">
 		<div class="row justify-content-center">
 			<div class="col-12 col-sm-12 col-lg-5">
 				<form method="get" action="" class="form-inline">
@@ -37,7 +37,7 @@
 
 	
 
-	<c:if test="${search != null && search != '' && fn:length(users) != 0}">
+	<c:if test="${search != null && search != ''}">
 		<h5 class="inline-block">
 			Results for the search "${search}" <a
 				href="<c:url value = "/${applicationScope.URL_USERS}"/>"
@@ -45,7 +45,7 @@
 		</h5>
 	</c:if>
 
-	<c:if test="${(search == null || search == '') && fn:length(users) != 0}}">
+	<c:if test="${(search == null || search == '') && fn:length(users) != 0}">
 		<div class="row mb-2">
 			<div class="col-12 col-sm-12 col-lg-5">
 

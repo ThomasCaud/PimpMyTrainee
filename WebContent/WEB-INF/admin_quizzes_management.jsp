@@ -16,7 +16,7 @@
 
 	<hr>
 
-	<c:if test="${fn:length(quizzes) != 0}">
+	<c:if test="${fn:length(quizzes) != 0 || search != null}">
 		<div class="row justify-content-center">
 			<div class="col-12 col-sm-12 col-lg-5">
 				<form method="get" action="" class="form-inline">
@@ -32,7 +32,7 @@
 		</div>
 		<hr>
 	</c:if>
-	<c:if test="${search != null && search != '' && fn:length(quizzes) != 0}">
+	<c:if test="${search != null && search != ''}">
 		<h5 class="inline-block">
 			Results for the search "${search}" <a
 				href="<c:url value = "/${applicationScope.URL_QUIZZES}"/>"
@@ -78,7 +78,7 @@
 							<th scope="row">${quiz.id}</th>
 							<td>${quiz.title}</td>
 							<td>${quiz.theme.label}</td>
-							<td>N.A.</td>
+							<td>${quiz.nbOfRecords}</td>
 							<td><fmt:formatDate type="both" value="${quiz.creationDate}" /></td>
 							<td><c:choose>
 									<c:when test="${quiz.isActive}">
