@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -55,6 +57,7 @@ public class DAOFactory {
 		String password;
 
 		ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+		URL[] urls = ((URLClassLoader) (Thread.currentThread().getContextClassLoader())).getURLs();
 		InputStream propertiesFile = classLoader.getResourceAsStream(PROPERTIES_FILE);
 
 		if (propertiesFile == null) {
