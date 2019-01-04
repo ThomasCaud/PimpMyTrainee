@@ -43,6 +43,12 @@ public abstract class AbstractForm {
 		}
 	}
 
+	/**
+	 * Throw exception if email is not valid
+	 * 
+	 * @param email
+	 * @throws Exception
+	 */
 	protected void validateEmail(String email) throws Exception {
 		if (email != null) {
 			if (!email.matches("([^.@]+)(\\.[^.@]+)*@([^.@]+\\.)+([^.@]+)")) {
@@ -53,6 +59,12 @@ public abstract class AbstractForm {
 		}
 	}
 
+	/**
+	 * Throw exception if phone is not valid
+	 * 
+	 * @param phone
+	 * @throws Exception
+	 */
 	protected void validatePhone(String phone) throws Exception {
 		if (phone != null) {
 			if (!phone.matches(
@@ -64,6 +76,12 @@ public abstract class AbstractForm {
 		}
 	}
 
+	/**
+	 * Throw exception if password is empty or too short
+	 * 
+	 * @param password
+	 * @throws Exception
+	 */
 	protected void validatePassword(String password) throws Exception {
 		if (password != null) {
 			if (password.length() < 6) {
@@ -74,6 +92,12 @@ public abstract class AbstractForm {
 		}
 	}
 
+	/**
+	 * Throw exception if the role is empty or does not exist
+	 * 
+	 * @param role
+	 * @throws Exception
+	 */
 	protected void validateRole(String role) throws Exception {
 
 		if (role != null) {
@@ -87,10 +111,13 @@ public abstract class AbstractForm {
 		}
 	}
 
+	/**
+	 * return true if str is null or empty
+	 * 
+	 * @param str
+	 * @return
+	 */
 	protected boolean isNullOrEmpty(String str) {
-		if (str == null || str.isEmpty()) {
-			return true;
-		}
-		return false;
+		return (str == null || str.isEmpty());
 	}
 }
