@@ -22,34 +22,35 @@ public class ConnectedOnlyFilter implements Filter {
 	public void destroy() {
 	}
 
+	/**
+	 * Check if the user is connected in order to access to the request asked
+	 */
 	@Override
 	public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain)
 			throws IOException, ServletException {
 
-		/* Cast des objets request et response */
+		// Cast des objets request et response
 		HttpServletRequest request = (HttpServletRequest) req;
 		HttpServletResponse response = (HttpServletResponse) res;
 
-		/* Initialisation de l'encoding gÃ©nÃ©ral */
+		// Initialisation de l'encoding général
 		req.setCharacterEncoding("UTF-8");
 
-		/* RÃ©cupÃ©ration de la session depuis la requÃªte */
+		// Récupération de la session depuis la requête
 		HttpSession session = request.getSession();
 		String path = request.getRequestURI().substring(request.getContextPath().length());
 
-		/* Non-filtrage des ressources statiques */
+		// Non-filtrage des ressources statiques
 		if (path.startsWith("/assets") || path.startsWith("/" + Config.URL_DATABASE_ADMINISTRATION)) {
 			chain.doFilter(request, response);
 			return;
 		}
 
 		/*
-		 * Si aucun utilisateur en session (donc pas connectÃ©), alors redirection vers
-		 * la page de login
-		 */
-		/*
-		 * Si dÃ©jÃ  connectÃ© et essaye d'accÃ©der Ã  la page de login, alors redirection
-		 * sur la page principale
+		 * Si aucun utilisateur en session (donc pas connecté), alors
+		 * redirection vers la page de login Si déjà connecté et essaye
+		 * d'accéder à la page de login, alors redirection sur la page
+		 * principale
 		 */
 		if (session.getAttribute(Config.ATT_SESSION_USER) == null) {
 			if (!path.equals("/" + Config.URL_LOGIN))
@@ -62,11 +63,9 @@ public class ConnectedOnlyFilter implements Filter {
 			else
 				response.sendRedirect(request.getServletContext().getContextPath() + Config.URL_ROOT);
 		}
-
 	}
 
 	@Override
 	public void init(FilterConfig arg0) throws ServletException {
 	}
-
 }

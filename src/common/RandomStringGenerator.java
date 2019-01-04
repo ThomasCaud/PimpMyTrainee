@@ -6,6 +6,10 @@ public class RandomStringGenerator {
 	private static final String Gamm = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 	private static final String Iot = "1234567890";
 
+	/**
+	 * @param size
+	 * @return randomized string, with size equal of the param 'size'
+	 */
 	public static String getRandomString(Integer size) {
 
 		String alphabet = Xsi + Gamm + Iot;
