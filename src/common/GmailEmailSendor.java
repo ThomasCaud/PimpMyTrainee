@@ -27,6 +27,9 @@ public class GmailEmailSendor {
 
 	private SendGrid sg;
 
+	/**
+	 * Initialize the GmailEmailSendor by using the properties file
+	 */
 	private GmailEmailSendor() {
 		ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
 		InputStream propertiesFile = classLoader.getResourceAsStream(PROPERTIES_FILE);
@@ -45,6 +48,9 @@ public class GmailEmailSendor {
 		}
 	}
 
+	/**
+	 * @return instance of GmailEmailSendor
+	 */
 	public static GmailEmailSendor getInstance() {
 		if (GmailEmailSendor.instance == null) {
 			GmailEmailSendor.instance = new GmailEmailSendor();
@@ -53,6 +59,14 @@ public class GmailEmailSendor {
 		return GmailEmailSendor.instance;
 	}
 
+	/**
+	 * send email using the sendGrid API
+	 * 
+	 * @param subject
+	 * @param message
+	 * @param recipient
+	 * @throws EmailException
+	 */
 	public void sendSimpleEmail(String subject, String message, String recipient) throws EmailException {
 		Email from = new Email(GmailEmailSendor.FROM_EMAIL);
 		Email to = new Email(recipient);

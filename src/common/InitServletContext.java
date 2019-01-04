@@ -20,16 +20,19 @@ public class InitServletContext implements ServletContextListener {
 
 	@Override
 	public void contextDestroyed(ServletContextEvent event) {
-		// RIEN A FAIRE
+		// nothing to do
 	}
 
 	@Override
+	/**
+	 * Initialize the application context
+	 */
 	public void contextInitialized(ServletContextEvent event) {
-		/* RÃ©cupÃ©ration du ServletContext lors du chargement de l'application */
+		// Récupération du ServletContext lors du chargement de l'application
 		ServletContext servletContext = event.getServletContext();
-		/* Instanciation de notre DAOFactory */
+		// Instanciation de notre DAOFactory
 		this.daoFactory = DAOFactory.getInstance();
-		/* Enregistrement dans un attribut ayant pour portÃ©e toute l'application */
+		// Enregistrement dans un attribut ayant pour portée toute l'application
 		servletContext.setAttribute(ATT_DAO_FACTORY, this.daoFactory);
 
 		// Chargement dans l'application des URLs de l'appli
