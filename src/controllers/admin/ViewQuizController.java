@@ -40,18 +40,20 @@ public class ViewQuizController extends AbstractController {
 	private static final String ATT_FORM = "form";
 	private static final String ATT_RECORDS = "records";
 	private static final String FIELD_SUBMIT = "submit";
-	private static final String[] ALLOWED_SUBMIT_PATTERNS = { "newQuestion", "newAnswer_([0-9]+)",
-			"deleteQuestion_([0-9]+)", "deleteAnswer_([0-9]+)_fromQuestion_([0-9]+)", "moveUpQuestion_([0-9]+)",
-			"moveDownQuestion_([0-9]+)", "moveUpAnswer_([0-9]+)_fromQuestion_([0-9]+)",
-			"moveDownAnswer_([0-9]+)_fromQuestion_([0-9]+)", "updateQuiz" };
+	private static final String[] ALLOWED_SUBMIT_PATTERNS = {"newQuestion",
+			"newAnswer_([0-9]+)", "deleteQuestion_([0-9]+)",
+			"deleteAnswer_([0-9]+)_fromQuestion_([0-9]+)",
+			"moveUpQuestion_([0-9]+)", "moveDownQuestion_([0-9]+)",
+			"moveUpAnswer_([0-9]+)_fromQuestion_([0-9]+)",
+			"moveDownAnswer_([0-9]+)_fromQuestion_([0-9]+)", "updateQuiz"};
 	private static QuizDAO quizDAO;
 	private static ThemeDAO themeDAO;
 	private static QuestionDAO questionDAO;
 	private static AnswerDAO answerDAO;
 	private static RecordDAO recordDAO;
 
-	public static void setDAOs(QuizDAO quizDAO, ThemeDAO themeDAO, QuestionDAO questionDAO, AnswerDAO answerDAO,
-			RecordDAO recordDAO) {
+	public static void setDAOs(QuizDAO quizDAO, ThemeDAO themeDAO,
+			QuestionDAO questionDAO, AnswerDAO answerDAO, RecordDAO recordDAO) {
 		ViewQuizController.quizDAO = quizDAO;
 		ViewQuizController.themeDAO = themeDAO;
 		ViewQuizController.questionDAO = questionDAO;
@@ -60,12 +62,15 @@ public class ViewQuizController extends AbstractController {
 	}
 
 	public void init() throws ServletException {
-		DAOFactory daoFactory = (DAOFactory) getServletContext().getAttribute(Config.CONF_DAO_FACTORY);
-		ViewQuizController.setDAOs(daoFactory.getQuizDAO(), daoFactory.getThemeDAO(), daoFactory.getQuestionDAO(),
+		DAOFactory daoFactory = (DAOFactory) getServletContext()
+				.getAttribute(Config.CONF_DAO_FACTORY);
+		ViewQuizController.setDAOs(daoFactory.getQuizDAO(),
+				daoFactory.getThemeDAO(), daoFactory.getQuestionDAO(),
 				daoFactory.getAnswerDAO(), daoFactory.getRecordDAO());
 	}
 
-	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	public void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		User sessionUser = checkSessionUser(request, response);
 		checkAdminOnly(sessionUser, response);
 
@@ -76,7 +81,8 @@ public class ViewQuizController extends AbstractController {
 			return;
 		}
 
-		String urlId = request.getPathInfo().substring(1, request.getPathInfo().length());
+		String urlId = request.getPathInfo().substring(1,
+				request.getPathInfo().length());
 		Integer id;
 
 		try {
@@ -103,10 +109,12 @@ public class ViewQuizController extends AbstractController {
 		}
 
 		ArrayList<Record> records = new ArrayList<Record>();
-		ArrayList<Record> listToGetTrainees = recordDAO.findBy("quiz", quiz.getId());
+		ArrayList<Record> listToGetTrainees = recordDAO.findBy("quiz",
+				quiz.getId());
 		for (Record tmpRecord : listToGetTrainees) {
 			User trainee = tmpRecord.getTrainee();
-			ArrayList<Record> recordsOfThisTrainee = recordDAO.getOnAdminView(trainee, null);
+			ArrayList<Record> recordsOfThisTrainee = recordDAO
+					.getOnAdminView(trainee, null);
 
 			for (Record record : recordsOfThisTrainee) {
 				if (record.getQuiz().getId() == quiz.getId()) {
@@ -120,13 +128,16 @@ public class ViewQuizController extends AbstractController {
 		request.setAttribute(ATT_THEMES, themes);
 		request.setAttribute(ATT_QUIZ, quiz);
 
-		this.getServletContext().getRequestDispatcher(VIEW).forward(request, response);
+		this.getServletContext().getRequestDispatcher(VIEW).forward(request,
+				response);
 	}
 
-	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	public void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		String submitAction = request.getParameter(FIELD_SUBMIT);
 
-		List<String> tmp = Arrays.asList(ALLOWED_SUBMIT_PATTERNS).stream().filter(s -> Pattern.matches(s, submitAction))
+		List<String> tmp = Arrays.asList(ALLOWED_SUBMIT_PATTERNS).stream()
+				.filter(s -> Pattern.matches(s, submitAction))
 				.collect(Collectors.toList());
 		if (tmp.isEmpty()) {
 			response.sendError(HttpServletResponse.SC_BAD_REQUEST);
@@ -134,37 +145,38 @@ public class ViewQuizController extends AbstractController {
 		}
 
 		String submitPattern = tmp.get(0);
-		QuizForm createQuizForm = new QuizForm(quizDAO, themeDAO, questionDAO, answerDAO);
+		QuizForm createQuizForm = new QuizForm(quizDAO, themeDAO, questionDAO,
+				answerDAO);
 		Quiz quiz = null;
 
 		switch (submitPattern) {
-		case "newQuestion":
-			quiz = createQuizForm.newQuestion(request);
-			break;
-		case "newAnswer_([0-9]+)":
-			quiz = createQuizForm.newAnswer(request);
-			break;
-		case "deleteQuestion_([0-9]+)":
-			quiz = createQuizForm.deleteQuestion(request);
-			break;
-		case "deleteAnswer_([0-9]+)_fromQuestion_([0-9]+)":
-			quiz = createQuizForm.deleteAnswerFromQuestion(request);
-			break;
-		case "moveUpQuestion_([0-9]+)":
-			quiz = createQuizForm.moveUpQuestion(request);
-			break;
-		case "moveDownQuestion_([0-9]+)":
-			quiz = createQuizForm.moveDownQuestion(request);
-			break;
-		case "moveUpAnswer_([0-9]+)_fromQuestion_([0-9]+)":
-			quiz = createQuizForm.moveUpAnswerFromQuestion(request);
-			break;
-		case "moveDownAnswer_([0-9]+)_fromQuestion_([0-9]+)":
-			quiz = createQuizForm.moveDownAnswerFromQuestion(request);
-			break;
-		case "updateQuiz":
-			quiz = createQuizForm.updateQuiz(request);
-			break;
+			case "newQuestion" :
+				quiz = createQuizForm.newQuestion(request);
+				break;
+			case "newAnswer_([0-9]+)" :
+				quiz = createQuizForm.newAnswer(request);
+				break;
+			case "deleteQuestion_([0-9]+)" :
+				quiz = createQuizForm.deleteQuestion(request);
+				break;
+			case "deleteAnswer_([0-9]+)_fromQuestion_([0-9]+)" :
+				quiz = createQuizForm.deleteAnswerFromQuestion(request);
+				break;
+			case "moveUpQuestion_([0-9]+)" :
+				quiz = createQuizForm.moveUpQuestion(request);
+				break;
+			case "moveDownQuestion_([0-9]+)" :
+				quiz = createQuizForm.moveDownQuestion(request);
+				break;
+			case "moveUpAnswer_([0-9]+)_fromQuestion_([0-9]+)" :
+				quiz = createQuizForm.moveUpAnswerFromQuestion(request);
+				break;
+			case "moveDownAnswer_([0-9]+)_fromQuestion_([0-9]+)" :
+				quiz = createQuizForm.moveDownAnswerFromQuestion(request);
+				break;
+			case "updateQuiz" :
+				quiz = createQuizForm.updateQuiz(request);
+				break;
 		}
 
 		ArrayList<Theme> themes = new ArrayList<Theme>();
@@ -176,11 +188,29 @@ public class ViewQuizController extends AbstractController {
 			return;
 		}
 
+		ArrayList<Record> records = new ArrayList<Record>();
+		ArrayList<Record> listToGetTrainees = recordDAO.findBy("quiz",
+				quiz.getId());
+		for (Record tmpRecord : listToGetTrainees) {
+			User trainee = tmpRecord.getTrainee();
+			ArrayList<Record> recordsOfThisTrainee = recordDAO
+					.getOnAdminView(trainee, null);
+
+			for (Record record : recordsOfThisTrainee) {
+				if (record.getQuiz().getId() == quiz.getId()) {
+					records.add(record);
+				}
+			}
+		}
+		records.sort(Comparator.comparingInt(Record::getScoreRank));
+
+		request.setAttribute(ATT_RECORDS, records);
 		request.setAttribute(ATT_THEMES, themes);
 		request.setAttribute(ATT_FORM, createQuizForm);
 		request.setAttribute(ATT_QUIZ, quiz);
 
-		this.getServletContext().getRequestDispatcher(VIEW).forward(request, response);
+		this.getServletContext().getRequestDispatcher(VIEW).forward(request,
+				response);
 	}
 
 }
