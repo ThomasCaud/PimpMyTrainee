@@ -3,10 +3,6 @@ package controllers.admin;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Properties;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -17,12 +13,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import common.Config;
-import common.PasswordManager;
 import controllers.AbstractController;
 import dao.DAOFactory;
 import dao.interfaces.UserDAO;
-import models.beans.E_Role;
-import models.beans.User;
 
 @WebServlet("/" + Config.URL_DATABASE_ADMINISTRATION)
 public class DatabaseAdministrationController extends AbstractController {
@@ -32,6 +25,7 @@ public class DatabaseAdministrationController extends AbstractController {
 	private static final String VIEW = "/WEB-INF/admin_database_administration.jsp";
 	private static final String SCRIPT_DROP_ALL_TABLES = "WEB-INF/sql/drop_all_tables.sql";
 	private static final String SCRIPT_CREATE_ALL_TABLES = "/WEB-INF/sql/create_all_tables.sql";
+	private static final String SCRIPT_DEMO_DATASET = "/WEB-INF/sql/demo_dataset_";
 	private UserDAO userDAO;
 
 	public void init() throws ServletException {
@@ -58,10 +52,11 @@ public class DatabaseAdministrationController extends AbstractController {
 					processCreateAllTables();
 					processResponseSending(response, "");
 					break;
-
-				case "create_admin_account" :
-					Map<String, String> result = processCreateAdminAccount();
-					processResponseSending(response, result);
+				case "demo_dataset" :
+					int datasetNumber = Integer
+							.parseInt(request.getParameter("datasetNumber"));
+					processDataset(datasetNumber);
+					processResponseSending(response, "");
 					break;
 			}
 		}
@@ -72,13 +67,17 @@ public class DatabaseAdministrationController extends AbstractController {
 		return request.getParameter("action");
 	}
 
-	public void processDropAllTables() throws IOException {
+	public void processDropAllTables() {
 		InputStream is = getServletContext()
 				.getResourceAsStream(SCRIPT_DROP_ALL_TABLES);
 		try {
 			DAOFactory.getInstance().executeSqlScript(
 					DAOFactory.getInstance().getConnection(), is);
+			is.close();
 		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -89,39 +88,13 @@ public class DatabaseAdministrationController extends AbstractController {
 		try {
 			DAOFactory.getInstance().executeSqlScript(
 					DAOFactory.getInstance().getConnection(), is);
+			is.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-	}
-
-	public Map<String, String> processCreateAdminAccount() throws IOException {
-		Properties properties = new Properties();
-		ClassLoader classLoader = Thread.currentThread()
-				.getContextClassLoader();
-		InputStream propertiesFile = classLoader
-				.getResourceAsStream(PROPERTIES_FILE);
-		properties.load(propertiesFile);
-		String defaultAdminEmail = properties
-				.getProperty("default_admin_email");
-		String defaultPassword = properties.getProperty("default_password");
-
-		User user = new User();
-		user.setFirstname("admin");
-		user.setEmail(defaultAdminEmail);
-		user.setRole(E_Role.ADMIN);
-
-		user.setPassword(PasswordManager.getInstance()
-				.getEncryptedValue(defaultPassword));
-		user.setIsActive(true);
-		user.setCreationDate(new Timestamp(System.currentTimeMillis()));
-
-		userDAO.createUser(user, null);
-
-		Map<String, String> result = new HashMap<String, String>();
-		result.put("email", defaultAdminEmail);
-		result.put("password", defaultPassword);
-
-		return result;
 	}
 
 	public void processResponseSending(HttpServletResponse response,
@@ -131,5 +104,24 @@ public class DatabaseAdministrationController extends AbstractController {
 		response.setCharacterEncoding("UTF-8");
 		response.getWriter().write(mapper.writerWithDefaultPrettyPrinter()
 				.writeValueAsString(data));
+	}
+
+	public void processDataset(int number) {
+		InputStream is = getServletContext()
+				.getResourceAsStream(SCRIPT_DEMO_DATASET + number + ".sql");
+		try {
+			DAOFactory.getInstance().executeSqlScript(
+					DAOFactory.getInstance().getConnection(), is);
+			Thread.sleep(1000);
+			is.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }
