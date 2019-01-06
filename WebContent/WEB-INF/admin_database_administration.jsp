@@ -40,6 +40,18 @@
 				data-in-progress="Filling with dataset 1..."
 				data-done="Done!">
 					Fill the database
+			</button><br/>
+			
+			<h5>Dataset 2 :</h5>
+			1 admin account and 1 trainee account <br/>
+			<button
+				class="btn btn-info btn_dbadmin"
+				data-span-id="#span_demo_dataset_2"
+				data-script="demo_dataset"
+				data-dataset-number="2" 
+				data-in-progress="Filling with dataset 2..."
+				data-done="Done!">
+					Fill the database
 			</button>
 		</div>
 	</div>
