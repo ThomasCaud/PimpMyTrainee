@@ -1,7 +1,5 @@
 package dao;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
@@ -31,7 +29,7 @@ import dao.managers.UserDAOImpl;
 
 public class DAOFactory {
 
-	private static final String PROPERTIES_FILE = "/common/common.properties";
+	private static final String PROPERTIES_FILE = "/common.properties";
 	private static final String PROP_URL = "url";
 	private static final String PROP_DRIVER = "driver";
 	private static final String PROP_USER = "user";
@@ -54,11 +52,14 @@ public class DAOFactory {
 		String user;
 		String password;
 
-		ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-		InputStream propertiesFile = classLoader.getResourceAsStream(PROPERTIES_FILE);
+		ClassLoader classLoader = Thread.currentThread()
+				.getContextClassLoader();
+		InputStream propertiesFile = classLoader
+				.getResourceAsStream(PROPERTIES_FILE);
 
 		if (propertiesFile == null) {
-			throw new DAOConfigurationException("Le fichier properties " + PROPERTIES_FILE + " est introuvable.");
+			throw new DAOConfigurationException("Le fichier properties "
+					+ PROPERTIES_FILE + " est introuvable.");
 		}
 
 		try {
@@ -68,13 +69,17 @@ public class DAOFactory {
 			user = properties.getProperty(PROP_USER);
 			password = properties.getProperty(PROP_PASSWORD);
 		} catch (IOException e) {
-			throw new DAOConfigurationException("Impossible de charger le fichier properties " + PROPERTIES_FILE, e);
+			throw new DAOConfigurationException(
+					"Impossible de charger le fichier properties "
+							+ PROPERTIES_FILE,
+					e);
 		}
 
 		try {
 			Class.forName(driver);
 		} catch (ClassNotFoundException e) {
-			throw new DAOConfigurationException("Le driver est introuvable dans le classpath.", e);
+			throw new DAOConfigurationException(
+					"Le driver est introuvable dans le classpath.", e);
 		}
 
 		DAOFactory instance = new DAOFactory(url, user, password);
@@ -118,19 +123,13 @@ public class DAOFactory {
 		return new StatsDAOImpl(this);
 	}
 
-	public void executeSqlScript(Connection conn, File inputFile) {
+	public void executeSqlScript(Connection conn, InputStream is) {
 
 		// Delimiter
 		String delimiter = ";";
 
 		// Create scanner
-		Scanner scanner;
-		try {
-			scanner = new Scanner(inputFile).useDelimiter(delimiter);
-		} catch (FileNotFoundException e1) {
-			e1.printStackTrace();
-			return;
-		}
+		Scanner scanner = new Scanner(is).useDelimiter(delimiter);
 
 		// Loop through the SQL file statements
 		Statement currentStatement = null;
