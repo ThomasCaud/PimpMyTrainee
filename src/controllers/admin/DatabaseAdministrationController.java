@@ -53,6 +53,8 @@ public class DatabaseAdministrationController extends AbstractController {
 					processResponseSending(response, "");
 					break;
 				case "demo_dataset" :
+					processDropAllTables();
+					processCreateAllTables();
 					int datasetNumber = Integer
 							.parseInt(request.getParameter("datasetNumber"));
 					processDataset(datasetNumber);
