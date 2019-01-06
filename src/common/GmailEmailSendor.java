@@ -20,8 +20,9 @@ import dao.exceptions.DAOConfigurationException;
 public class GmailEmailSendor {
 
 	private static GmailEmailSendor instance;
-	private static final Logger logger = Logger.getLogger(GmailEmailSendor.class);
-	private static final String PROPERTIES_FILE = "/common/common.properties";
+	private static final Logger logger = Logger
+			.getLogger(GmailEmailSendor.class);
+	private static final String PROPERTIES_FILE = "/common.properties";
 	private static final String PROP_SEND_GRID_KEY = "send_grid_key";
 	private static final String FROM_EMAIL = "pimp.my@trainee.io";
 
@@ -31,11 +32,14 @@ public class GmailEmailSendor {
 	 * Initialize the GmailEmailSendor by using the properties file
 	 */
 	private GmailEmailSendor() {
-		ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-		InputStream propertiesFile = classLoader.getResourceAsStream(PROPERTIES_FILE);
+		ClassLoader classLoader = Thread.currentThread()
+				.getContextClassLoader();
+		InputStream propertiesFile = classLoader
+				.getResourceAsStream(PROPERTIES_FILE);
 
 		if (propertiesFile == null) {
-			throw new DAOConfigurationException("Le fichier properties " + PROPERTIES_FILE + " est introuvable.");
+			throw new DAOConfigurationException("Le fichier properties "
+					+ PROPERTIES_FILE + " est introuvable.");
 		}
 
 		try {
@@ -44,7 +48,10 @@ public class GmailEmailSendor {
 			String sendGridKey = properties.getProperty(PROP_SEND_GRID_KEY);
 			this.sg = new SendGrid(sendGridKey);
 		} catch (IOException e) {
-			throw new DAOConfigurationException("Impossible de charger le fichier properties " + PROPERTIES_FILE, e);
+			throw new DAOConfigurationException(
+					"Impossible de charger le fichier properties "
+							+ PROPERTIES_FILE,
+					e);
 		}
 	}
 
@@ -67,7 +74,8 @@ public class GmailEmailSendor {
 	 * @param recipient
 	 * @throws EmailException
 	 */
-	public void sendSimpleEmail(String subject, String message, String recipient) throws EmailException {
+	public void sendSimpleEmail(String subject, String message,
+			String recipient) throws EmailException {
 		Email from = new Email(GmailEmailSendor.FROM_EMAIL);
 		Email to = new Email(recipient);
 		Content content = new Content("text/plain", message);
