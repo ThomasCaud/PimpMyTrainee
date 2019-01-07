@@ -3,6 +3,7 @@ package controllers.admin;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.SQLException;
+import java.util.HashMap;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -13,9 +14,12 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import common.Config;
+import common.PasswordManager;
 import controllers.AbstractController;
 import dao.DAOFactory;
 import dao.interfaces.UserDAO;
+import models.beans.E_Role;
+import models.beans.User;
 
 @WebServlet("/" + Config.URL_DATABASE_ADMINISTRATION)
 public class DatabaseAdministrationController extends AbstractController {
@@ -59,6 +63,14 @@ public class DatabaseAdministrationController extends AbstractController {
 							.parseInt(request.getParameter("datasetNumber"));
 					processDataset(datasetNumber);
 					processResponseSending(response, "");
+					break;
+				case "create_user" :
+					User newUser = processCreateUser(request);
+					HashMap<String, String> responseData = new HashMap<String, String>();
+					responseData.put("firstname", newUser.getFirstname());
+					responseData.put("lastname", newUser.getLastname());
+					responseData.put("email", newUser.getEmail());
+					processResponseSending(response, responseData);
 					break;
 			}
 		}
@@ -125,5 +137,34 @@ public class DatabaseAdministrationController extends AbstractController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+
+	public User processCreateUser(HttpServletRequest request) {
+		User newUser = new User();
+		User manager = userDAO.find("email", "admin@pimpmytrainee.fr");
+
+		String rFirstname = request.getParameter("firstname");
+		String firstname = rFirstname.substring(0, 1).toUpperCase()
+				+ rFirstname.substring(1);
+		String lastname = request.getParameter("lastname").toUpperCase();
+		String phone = "0123456789";
+		String email = request.getParameter("email");
+		String password = PasswordManager.getInstance()
+				.getEncryptedValue("password");
+		String company = request.getParameter("company");
+
+		newUser.setFirstname(firstname);
+		newUser.setLastname(lastname);
+		newUser.setEmail(email);
+		newUser.setPhone(phone);
+		newUser.setPassword(password);
+		newUser.setCompany(company);
+		newUser.setIsActive(true);
+		newUser.setManager(manager);
+		newUser.setRole(E_Role.TRAINEE);
+
+		userDAO.createUser(newUser, manager);
+
+		return newUser;
 	}
 }

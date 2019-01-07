@@ -53,6 +53,18 @@
 				data-done="Done!">
 					Fill the database
 			</button>
+			
+			<hr>
+			<h3>Actions :</h3>
+			<button class="btn btn-primary" id="btn_dbadmin_createuser_minus"><i class="fa fa-minus"></i></button>
+			<button
+				class="btn btn-primary"
+				id="btn_dbadmin_createuser"
+				data-nbusers="5">
+					Create 5 users 
+			</button>
+			<button class="btn btn-primary" id="btn_dbadmin_createuser_plus"><i class="fa fa-plus"></i></button><br/>
+			<span id="span_dbadmin_createuser_console"></span>
 		</div>
 	</div>
 </div>
