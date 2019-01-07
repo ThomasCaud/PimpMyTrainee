@@ -10,7 +10,11 @@
 			<c:forEach items="${quiz.questions}" var="question" varStatus="statusQ">
 
 				<div class="quizz-recap-question-header mt-4 px-2 py-2">
-					Question ${question.position}</div>
+					Question ${question.position}
+					<c:if test="${fn:contains(notAnsweredQuestionsID, question.id)}">
+						<strong style="color:#ef7479">This question hasn't been answered</strong>
+					</c:if>
+					</div>
 				<div class="quizz-recap-question-label px-2 py-2">
 					${question.label}</div>
 				<c:choose>
