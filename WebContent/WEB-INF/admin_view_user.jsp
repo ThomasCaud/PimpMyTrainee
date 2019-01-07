@@ -161,7 +161,7 @@
 										<tr>
 											<td>${record.quiz.title}</td>
 											<td>${record.quiz.theme.label}</td>
-											<td>${record.score}/${record.answers.size()}</td>
+											<td>${record.score}/${record.quiz.questions.size()}</td>
 											<td>${record.duration}sec.</td>
 											<td>${record.ranking.bestScore}</td>
 											<td>${record.ranking.durationOfBestScore}sec.</td>
