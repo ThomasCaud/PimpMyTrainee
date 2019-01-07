@@ -103,7 +103,7 @@ $(document).ready(function(){
 		params.n = value
 				
 		for (var param in params) {
-		    if (params.hasOwnProperty(param)) {
+		    if (param != "p" && params.hasOwnProperty(param)) {
 		        url += param
 		        url += "="
 		        url += params[param]
