@@ -10,6 +10,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -30,6 +32,7 @@ public class DatabaseAdministrationController extends AbstractController {
 	private static final String SCRIPT_DROP_ALL_TABLES = "WEB-INF/sql/drop_all_tables.sql";
 	private static final String SCRIPT_CREATE_ALL_TABLES = "/WEB-INF/sql/create_all_tables.sql";
 	private static final String SCRIPT_DEMO_DATASET = "/WEB-INF/sql/demo_dataset_";
+	private static Logger logger = Logger.getLogger(CreateQuizController.class);
 	private UserDAO userDAO;
 
 	public void init() throws ServletException {
@@ -163,7 +166,11 @@ public class DatabaseAdministrationController extends AbstractController {
 		newUser.setManager(manager);
 		newUser.setRole(E_Role.TRAINEE);
 
-		userDAO.createUser(newUser, manager);
+		if (userDAO.find("email", email) == null)
+			userDAO.createUser(newUser, manager);
+		else
+			logger.info("A user with the email " + email
+					+ " already exists. Skipping.");
 
 		return newUser;
 	}
