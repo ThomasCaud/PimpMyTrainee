@@ -96,22 +96,10 @@ $(document).ready(function(){
 		var search = window.location.search.substr(1);
 		url = url.replace(search,"")
 		
-		var params = getSearchParameters();
-		
 		if(search == "")
 			url += "?"
-		params.n = value
-				
-		for (var param in params) {
-		    if (param != "p" && params.hasOwnProperty(param)) {
-		        url += param
-		        url += "="
-		        url += params[param]
-		        url += "&"
-		    }
-		}
 
-		url = url.substring(0,url.length-1)
+		url += "n="+value
 			
 		window.location.href = url;
 	});
