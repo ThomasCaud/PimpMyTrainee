@@ -86,7 +86,6 @@ public class ViewRecordController extends AbstractController {
 				notAnsweredQuestionsID.add(notAnsweredQuestionID);
 			}
 		}
-		System.out.println(notAnsweredQuestionsID);
 
 		request.setAttribute(ATT_RECORD, record);
 		request.setAttribute(ATT_QUIZ, quiz);
