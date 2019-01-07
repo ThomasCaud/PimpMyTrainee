@@ -26,6 +26,8 @@ public class UsersController extends AbstractController {
 	private static final String ATT_USERS = "users";
 	private static final String ATT_PAGINATION_ACTIVE = "paginationActive";
 	private static final String ATT_PAGINATION_TOTAL = "paginationTotal";
+	private static final String ATT_PAGINATION_BEGIN = "paginationBegin";
+	private static final String ATT_PAGINATION_END = "paginationEnd";
 	private static final String ATT_ACTIVATE = "activate";
 	private static final String ATT_DEACTIVATE = "deactivate";
 
@@ -36,10 +38,12 @@ public class UsersController extends AbstractController {
 	}
 
 	public void init() throws ServletException {
-		UsersController.setDAOs(((DAOFactory) getServletContext().getAttribute(Config.CONF_DAO_FACTORY)).getUserDAO());
+		UsersController.setDAOs(((DAOFactory) getServletContext()
+				.getAttribute(Config.CONF_DAO_FACTORY)).getUserDAO());
 	}
 
-	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	public void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		User sessionUser = checkSessionUser(request, response);
 		checkAdminOnly(sessionUser, response);
 
@@ -92,18 +96,22 @@ public class UsersController extends AbstractController {
 		String search = request.getParameter(ATT_SEARCH);
 		if (search != null) {
 			try {
-				users = userDAO.findUsersByNameOrLastnameOrCompany(sessionUser.getId(), search);
+				users = userDAO.findUsersByNameOrLastnameOrCompany(
+						sessionUser.getId(), search);
 			} catch (Exception e) {
 				logger.error(e.getMessage());
-				response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+				response.sendError(
+						HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 				return;
 			}
 		} else {
 			try {
-				users = userDAO.findBy("managerId", sessionUser.getId(), (offset - 1) * nbUsersPerPage, nbUsersPerPage);
+				users = userDAO.findBy("managerId", sessionUser.getId(),
+						(offset - 1) * nbUsersPerPage, nbUsersPerPage);
 			} catch (Exception e) {
 				logger.error(e.getMessage());
-				response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+				response.sendError(
+						HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 				return;
 			}
 		}
@@ -113,10 +121,28 @@ public class UsersController extends AbstractController {
 		request.setAttribute(ATT_PAGINATION_ACTIVE, offset);
 		request.setAttribute(ATT_PAGINATION_TOTAL, nbNeededPages);
 
-		this.getServletContext().getRequestDispatcher(VIEW).forward(request, response);
+		int paginationBegin = 1;
+		int paginationEnd = nbNeededPages;
+
+		if (nbNeededPages > Config.PAGINATION_MAX_SIZE)
+			paginationEnd = Config.PAGINATION_MAX_SIZE;
+
+		int midPagination = (int) Config.PAGINATION_MAX_SIZE / 2;
+
+		if (offset > midPagination) {
+			paginationBegin = offset - midPagination + 1;
+			paginationEnd = offset + midPagination;
+		}
+
+		request.setAttribute(ATT_PAGINATION_BEGIN, paginationBegin);
+		request.setAttribute(ATT_PAGINATION_END, paginationEnd);
+
+		this.getServletContext().getRequestDispatcher(VIEW).forward(request,
+				response);
 	}
 
-	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	public void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		User sessionUser = checkSessionUser(request, response);
 		checkAdminOnly(sessionUser, response);
 
