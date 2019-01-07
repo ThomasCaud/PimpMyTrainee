@@ -1,4 +1,5 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
 <div class="card border-primary mb-3">
 	<div class="card-header">Recap of the content</div>
@@ -28,7 +29,7 @@
 							Answers :
 							<c:forEach items="${question.possibleAnswers}" var="answer">
 								<c:choose>
-									<c:when test="${answer.id == record.answers[statusQ.index].id}">
+									<c:when test="${fn:contains(answersID, answer.id)}">
 										<div class="quizz-recap-answer ${answer.isCorrect ? 'quizz-recap-answer-correct':'quizz-recap-answer-incorrect'} mt-1 px-2 py-1">
 											${answer.label}
 										</div>
