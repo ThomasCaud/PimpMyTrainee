@@ -128,10 +128,22 @@ public class UsersController extends AbstractController {
 			paginationEnd = Config.PAGINATION_MAX_SIZE;
 
 		int midPagination = (int) Config.PAGINATION_MAX_SIZE / 2;
+		if (Config.PAGINATION_MAX_SIZE % 2 != 0)
+			midPagination++;
 
 		if (offset > midPagination) {
 			paginationBegin = offset - midPagination + 1;
+
+			if (Config.PAGINATION_MAX_SIZE % 2 != 0)
+				paginationBegin++;
+
 			paginationEnd = offset + midPagination;
+
+			if (paginationEnd > nbNeededPages) {
+				paginationBegin = nbNeededPages - Config.PAGINATION_MAX_SIZE
+						+ 1;
+				paginationEnd = nbNeededPages;
+			}
 		}
 
 		request.setAttribute(ATT_PAGINATION_BEGIN, paginationBegin);
