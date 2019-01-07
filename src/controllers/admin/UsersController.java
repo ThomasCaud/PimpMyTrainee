@@ -143,6 +143,9 @@ public class UsersController extends AbstractController {
 				paginationBegin = nbNeededPages - Config.PAGINATION_MAX_SIZE
 						+ 1;
 				paginationEnd = nbNeededPages;
+
+				if (paginationBegin < 1)
+					paginationBegin = 1;
 			}
 		}
 
