@@ -13,6 +13,7 @@ public class Config {
 	public static final String CONF_DAO_FACTORY = "daofactory";
 	public static final Integer NB_USERS_PER_PAGE = 3;
 	public static final Integer NB_QUIZZES_PER_PAGE = 3;
+	public static final Integer PAGINATION_MAX_SIZE = 10;
 
 	// URLS
 	public static final String URL_ROOT = "";

@@ -144,7 +144,7 @@
 					href="<c:url value = "/${applicationScope.URL_USERS}?p="/>${paginationActive-1}<c:if test="${param.n!=null}">&n=${param.n}</c:if>">&laquo;</a>
 				</li>
 
-				<c:forEach var="i" begin="1" end="${paginationTotal}">
+				<c:forEach var="i" begin="${paginationBegin}" end="${paginationEnd}">
 					<li
 						class="page-item <c:if test = "${paginationActive == i}">active</c:if>">
 						<a class="page-link"
