@@ -13,6 +13,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+/**
+ * Used in order to check if the user is connected in order to access to the
+ * request asked
+ *
+ */
 @WebFilter(urlPatterns = "/*")
 public class ConnectedOnlyFilter implements Filter {
 

@@ -17,6 +17,10 @@ import com.sendgrid.SendGrid;
 
 import dao.exceptions.DAOConfigurationException;
 
+/**
+ * Class used in order to send mail with the SendGrid API
+ * 
+ */
 public class GmailEmailSendor {
 
 	private static GmailEmailSendor instance;

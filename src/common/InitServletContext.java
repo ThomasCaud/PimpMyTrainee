@@ -11,6 +11,10 @@ import org.apache.log4j.Logger;
 
 import dao.DAOFactory;
 
+/**
+ * Class used in order to factorize the initialization of the servlet context
+ *
+ */
 @WebListener
 public class InitServletContext implements ServletContextListener {
 
