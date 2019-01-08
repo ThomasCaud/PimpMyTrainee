@@ -129,7 +129,7 @@
 							<tr>
 								<td>${record.quiz.title}</td>
 								<td>${record.quiz.theme.label}</td>
-								<td>${record.score}/${record.answers.size()}</td>
+								<td>${record.score}/${record.quiz.questions.size()}</td>
 								<td>${record.duration}sec.</td>
 								<td class="text-center"><a
 									href="<c:url value = "/${applicationScope.URL_VIEW_RECORD}/${record.id}"/>"

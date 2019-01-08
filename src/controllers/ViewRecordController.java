@@ -15,6 +15,7 @@ import common.Config;
 import dao.DAOFactory;
 import dao.interfaces.RecordDAO;
 import models.beans.Answer;
+import models.beans.Question;
 import models.beans.Quiz;
 import models.beans.Record;
 import models.beans.User;
@@ -28,6 +29,7 @@ public class ViewRecordController extends AbstractController {
 	private static final String ATT_RECORD = "record";
 	private static final String ATT_QUIZ = "quiz";
 	private static final String ATT_ANSWERS_ID = "answersID";
+	private static final String ATT_NOTANSWEREDQUESTIONS_ID = "notAnsweredQuestionsID";
 	private static RecordDAO recordDAO;
 
 	public static void setDAOs(RecordDAO recordDAO) {
@@ -72,9 +74,24 @@ public class ViewRecordController extends AbstractController {
 			answersID.add(a.getId());
 		}
 
+		ArrayList<Integer> notAnsweredQuestionsID = new ArrayList<Integer>();
+		for (Question q : quiz.getQuestions()) {
+			int notAnsweredQuestionID = q.getId();
+			for (Answer a : q.getPossibleAnswers()) {
+				if (answersID.contains(a.getId())) {
+					notAnsweredQuestionID = -1;
+				}
+			}
+			if (notAnsweredQuestionID != -1) {
+				notAnsweredQuestionsID.add(notAnsweredQuestionID);
+			}
+		}
+
 		request.setAttribute(ATT_RECORD, record);
 		request.setAttribute(ATT_QUIZ, quiz);
 		request.setAttribute(ATT_ANSWERS_ID, answersID);
+		request.setAttribute(ATT_NOTANSWEREDQUESTIONS_ID,
+				notAnsweredQuestionsID);
 
 		this.getServletContext().getRequestDispatcher(VIEW).forward(request,
 				response);

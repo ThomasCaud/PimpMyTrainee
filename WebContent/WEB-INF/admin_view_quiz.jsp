@@ -88,7 +88,7 @@
 										<tr>
 											<td>${record.trainee.firstname}</td>
 											<td>${record.trainee.lastname}</td>
-											<td>${record.score}/${record.answers.size()}</td>
+											<td>${record.score}/${record.quiz.questions.size()}</td>
 											<td>${record.duration}sec.</td>
 											<td>${record.ranking.scoreRank}/${record.ranking.nbRespondents}</td>
 											<td class="text-center"><a
