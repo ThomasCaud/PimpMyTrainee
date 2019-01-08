@@ -21,7 +21,7 @@
 			<div class="row">
 				<div class="col-12 col-sm-8 offset-sm-2 mb-2">
 					<strong>Duration :</strong> ${record.duration} sec.<br/>
-					<strong>Score :</strong> ${record.score}/${fn:length(record.answers)}
+					<strong>Score :</strong> ${record.score}/${fn:length(record.quiz.questions)}
 				</div>
 			</div>
 			
