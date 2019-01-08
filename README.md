@@ -32,7 +32,7 @@
 * Lancer le serveur tomcat avec les sources de l'application
 * Aller sur la page **databaseAdministration** pour créer les différentes tables de l'application, ainsi qu'un premier compte administrateur
 
-*NB : Vous pouvez changer l'url et le driver si vous utilisez autre chose
+*NB : Vous pouvez changer l'url et le driver si vous utilisez autre chose*
 
 ## Links
 [subject](https://e.edim.co/125089730/Projet1.pdf?&Expires=1538641667&Signature=KSnoNLeWNyCXUW2MLOhubhjVYgON-M67J0OPsC~UKobCK19MLI90~hkmrX0Ppt6dINvlzjJiqLUFz8RxVwGITyPFPfD2pRHZKnSI4VQhYCZKSjHcoMQcHNW4-eWK6X~oJvkG5ueoDfBa7WkHBKsF58A67IrfnKNmjDhghgY~u-~shGPTjxOH3oZK6bIK7zhlJMPNmMWZuQtGXXQkncHSB54XjioRjWo2QBDDYn~yPFXfIigd7aBNSJOKYsVPnGg6qldFJiNZxoFnVN69zDNGEf9GXNhx7HuW0yMJq7v2UeuDA-piW5E-O-G5cYmxg89KUSgIEHx~1z9Dip7AMdRlvQ__&Key-Pair-Id=APKAJMSU6JYPN6FG5PBQ)
