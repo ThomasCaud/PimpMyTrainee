@@ -2,6 +2,12 @@ package common;
 
 import org.jasypt.util.password.ConfigurablePasswordEncryptor;
 
+/**
+ * Used in order to manage Password encryption
+ * 
+ * @author Thomas
+ *
+ */
 public class PasswordManager {
 	private static PasswordManager instance;
 	private ConfigurablePasswordEncryptor passwordEncryptor;

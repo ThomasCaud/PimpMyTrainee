@@ -1,5 +1,11 @@
 package common;
 
+/**
+ * Used in order to generate random string
+ * 
+ * @author Thomas
+ *
+ */
 public class RandomStringGenerator {
 
 	private static final String Xsi = "abcdefghijklmnopqrstuvwxyz";

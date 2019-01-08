@@ -21,13 +21,23 @@ public class QuizzesManager {
 	private static final String ATT_QUIZZES = "quizzes";
 	private static final String ATT_PAGINATION_ACTIVE = "paginationActive";
 	private static final String ATT_PAGINATION_TOTAL = "paginationTotal";
-
 	private QuizDAO quizDAO;
 
+	/**
+	 * Constructor of the QuizzesManager
+	 * 
+	 * @param dao An instance of a QuizDAO
+	 */
 	public QuizzesManager(QuizDAO dao) {
 		this.quizDAO = dao;
 	}
 
+	/**
+	 * Get the number of available quizzes,
+	 * 
+	 * @param user
+	 * @return
+	 */
 	public int getCount(User user) {
 		return user.getRole() == E_Role.ADMIN ? quizDAO.count("creator", user.getId())
 				: quizDAO.countAvailableQuizzes(user);
@@ -55,6 +65,13 @@ public class QuizzesManager {
 		}
 	}
 
+	/**
+	 * Get the number of needed pages, knowing the number of quizzes per page
+	 * 
+	 * @param user
+	 * @param nbQuizzesPerPage
+	 * @return int
+	 */
 	public int getNbNeededPage(User user, int nbQuizzesPerPage) {
 		Integer nbAllQuizzes = getCount(user);
 

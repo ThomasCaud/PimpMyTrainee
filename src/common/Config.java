@@ -1,5 +1,9 @@
 package common;
 
+/**
+ * Class where we centralize of attributs, URL and others configurations
+ *
+ */
 public class Config {
 	public static final String ATT_SESSION_USER = "sessionUser";
 	public static final String ATT_SESSION_QUIZ = "sessionQuiz";
