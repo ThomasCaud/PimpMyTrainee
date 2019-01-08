@@ -220,7 +220,7 @@ public class Quiz implements Serializable, Container {
 	}
 
 	/**
-	 * Overwrite toString
+	 * @return String with better representation
 	 */
 	public String toString() {
 		String str = "";
